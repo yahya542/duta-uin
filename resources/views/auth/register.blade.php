@@ -42,12 +42,12 @@
             
             <!-- STEP 1: PRIBADI -->
             <div x-show="step == 1" x-transition>
-                <div style="display: grid; grid-template-cols: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div class="form-group" style="margin-bottom: 0;">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
                         <label class="form-label">Nama Depan</label>
                         <input type="text" name="first_name" x-model="firstName" required class="form-input" placeholder="Depan">
                     </div>
-                    <div class="form-group" style="margin-bottom: 0;">
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
                         <label class="form-label">Nama Belakang</label>
                         <input type="text" name="last_name" x-model="lastName" required class="form-input" placeholder="Belakang">
                     </div>
