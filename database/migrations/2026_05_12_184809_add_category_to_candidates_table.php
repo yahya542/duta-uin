@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('voter')->after('email');
+        Schema::table('candidates', function (Blueprint $table) {
+            $table->enum('category', ['putra', 'putri'])->default('putra')->after('name');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
+        Schema::table('candidates', function (Blueprint $table) {
+            $table->dropColumn('category');
         });
     }
 };

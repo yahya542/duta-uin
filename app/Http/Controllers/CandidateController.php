@@ -14,13 +14,11 @@ class CandidateController extends Controller
      */
     public function index()
     {
-        $candidates = Candidate::orderBy('total_votes', 'desc')->get();
+        $putra = Candidate::where('category', 'putra')->orderBy('total_votes', 'desc')->get();
+        $putri = Candidate::where('category', 'putri')->orderBy('total_votes', 'desc')->get();
         $totalVotes = Vote::where('status', 'approved')->sum('vote_point');
         
-        // Podium logic
-        $podium = $candidates->take(3);
-        
-        return view('welcome', compact('candidates', 'totalVotes', 'podium'));
+        return view('welcome', compact('putra', 'putri', 'totalVotes'));
     }
 
     /**
@@ -39,11 +37,12 @@ class CandidateController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'category' => 'required|in:putra,putri',
             'photo' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
         ]);
 
-        $data = $request->only(['name', 'description']);
+        $data = $request->only(['name', 'category', 'description']);
         
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('candidates', 'public');
@@ -61,12 +60,13 @@ class CandidateController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'category' => 'required|in:putra,putri',
             'photo' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'total_votes' => 'nullable|integer',
         ]);
 
-        $data = $request->only(['name', 'description', 'total_votes']);
+        $data = $request->only(['name', 'category', 'description', 'total_votes']);
         
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('candidates', 'public');

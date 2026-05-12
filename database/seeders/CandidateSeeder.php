@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Candidate;
 
 class CandidateSeeder extends Seeder
 {
@@ -12,29 +12,34 @@ class CandidateSeeder extends Seeder
      */
     public function run(): void
     {
-        $candidates = [
-            [
-                'name' => 'Ahmad Fauzi',
-                'description' => 'Mewujudkan kampus digital yang inovatif dan inklusif bagi seluruh mahasiswa.',
-                'total_votes' => 150,
-                'percentage' => 45.5,
-            ],
-            [
-                'name' => 'Siti Aminah',
-                'description' => 'Meningkatkan kesejahteraan mahasiswa melalui kolaborasi industri dan riset.',
-                'total_votes' => 120,
-                'percentage' => 36.4,
-            ],
-            [
-                'name' => 'Budi Santoso',
-                'description' => 'Mengembangkan bakat minat mahasiswa dalam bidang seni dan olahraga prestasi.',
-                'total_votes' => 60,
-                'percentage' => 18.2,
-            ],
+        $putra = [
+            'Nafiri Wahid Hidayat', 'Mohammad Sirojuddin', 'Achmadi', 'Alif Rafiansyah', 
+            'Ach.Fauzi Bowo', 'Moh.Rafi\'i Rohman', 'Alfin Hidayatullah', 
+            'Ach.Daris Rizqi Amrullah', 'Achmad Maulana', 'M.Pathan Agustiana'
         ];
 
-        foreach ($candidates as $candidate) {
-            \App\Models\Candidate::create($candidate);
+        $putri = [
+            'Shofiah Nuril Izzah', 'Anis Fitriya Oktafia', 'Khoiria Isnania Imami', 
+            'Iklimatil Udhiyah', 'Siti Nur Musyafira', 'Meida Yanuarti Fariqoh', 
+            'Azzahrah Rindu Ilahi', 'Ramadhani Gita Gunawan', 'Ikfina Aulina', 'Dewi Putri Kesha'
+        ];
+
+        foreach ($putra as $name) {
+            Candidate::create([
+                'name' => $name,
+                'category' => 'putra',
+                'description' => 'Kandidat Duta Kampus UIN Madura 2026 kategori Putra.',
+                'total_votes' => rand(10, 50),
+            ]);
+        }
+
+        foreach ($putri as $name) {
+            Candidate::create([
+                'name' => $name,
+                'category' => 'putri',
+                'description' => 'Kandidat Duta Kampus UIN Madura 2026 kategori Putri.',
+                'total_votes' => rand(10, 50),
+            ]);
         }
     }
 }
