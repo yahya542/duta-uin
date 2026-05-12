@@ -11,8 +11,11 @@
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" name="email" required class="form-input" placeholder="name@example.com">
+                <label class="form-label">Email / Username</label>
+                <input type="text" name="login" required class="form-input" placeholder="Email or username" value="{{ old('login') }}">
+                @error('login')
+                    <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-group">

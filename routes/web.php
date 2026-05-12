@@ -28,12 +28,15 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/login', function (\Illuminate\Http\Request $request) {
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
+    $request->validate([
+        'login' => ['required', 'string'],
         'password' => ['required'],
     ]);
 
-    if (Auth::attempt($credentials)) {
+    $login = $request->input('login');
+    $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+    if (Auth::attempt([$fieldType => $login, 'password' => $request->password])) {
         $request->session()->regenerate();
         if (Auth::user()->role === 'admin') {
             return redirect()->intended('/admin');
@@ -42,7 +45,7 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
     }
 
     return back()->withErrors([
-        'email' => 'The provided credentials do not match our records.',
+        'login' => 'The provided credentials do not match our records.',
     ]);
 });
 
@@ -52,14 +55,21 @@ Route::get('/register', function () {
 
 Route::post('/register', function (\Illuminate\Http\Request $request) {
     $data = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
+        'first_name' => ['required', 'string', 'max:100'],
+        'last_name' => ['required', 'string', 'max:100'],
+        'username' => ['required', 'string', 'max:50', 'unique:users'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'whatsapp' => ['required', 'string', 'max:20'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
     ]);
 
     $user = User::create([
-        'name' => $data['name'],
+        'first_name' => $data['first_name'],
+        'last_name' => $data['last_name'],
+        'username' => $data['username'],
+        'name' => $data['first_name'] . ' ' . $data['last_name'],
         'email' => $data['email'],
+        'whatsapp' => $data['whatsapp'],
         'password' => Hash::make($data['password']),
         'role' => 'voter',
     ]);
