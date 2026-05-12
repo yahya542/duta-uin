@@ -16,7 +16,7 @@ class VoteService
      */
     public function calculatePoints(int $nominal): int
     {
-        return floor($nominal / 5000);
+        return floor($nominal / 1000); // 1 point per 1000 IDR based on seeder logic
     }
 
     /**
@@ -24,21 +24,23 @@ class VoteService
      */
     public function refreshStatistics()
     {
-        $candidates = Candidate::orderBy('total_votes', 'desc')->get();
-        $totalVotes = Vote::where('status', 'approved')->sum('vote_point');
+        $totalPutra = Candidate::where('category', 'putra')->sum('total_votes');
+        $totalPutri = Candidate::where('category', 'putri')->sum('total_votes');
+        
+        $candidates = Candidate::all();
 
-        foreach ($candidates as $index => $candidate) {
-            $candidateVotes = $candidate->votes()->where('status', 'approved')->sum('vote_point');
-            $candidate->total_votes = $candidateVotes;
-            $candidate->percentage = $totalVotes > 0 ? ($candidateVotes / $totalVotes) * 100 : 0;
+        foreach ($candidates as $candidate) {
+            $categoryTotal = $candidate->category === 'putra' ? $totalPutra : $totalPutri;
+            
+            $candidate->percentage = $categoryTotal > 0 ? ($candidate->total_votes / $categoryTotal) * 100 : 0;
             $candidate->save();
 
-            // Log ranking (assuming candidates are ordered by votes)
+            // Log ranking
             LeaderboardLog::create([
                 'candidate_id' => $candidate->id,
                 'total_votes' => $candidate->total_votes,
                 'percentage' => $candidate->percentage,
-                'ranking' => $index + 1,
+                'ranking' => 0, // Simplified for now
             ]);
         }
     }
@@ -53,6 +55,10 @@ class VoteService
             
             $vote = $transaction->vote;
             $vote->update(['status' => 'approved']);
+
+            // Update total_votes on candidate first
+            $candidate = $vote->candidate;
+            $candidate->increment('total_votes', $vote->vote_point);
 
             $this->refreshStatistics();
             

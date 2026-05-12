@@ -14,11 +14,30 @@ class CandidateController extends Controller
      */
     public function index()
     {
+        $totalPutra = Candidate::where('category', 'putra')->sum('total_votes');
+        $totalPutri = Candidate::where('category', 'putri')->sum('total_votes');
+        
         $putra = Candidate::where('category', 'putra')->orderBy('total_votes', 'desc')->get();
         $putri = Candidate::where('category', 'putri')->orderBy('total_votes', 'desc')->get();
-        $totalVotes = Vote::where('status', 'approved')->sum('vote_point');
+
+        // Calculate dynamic percentages relative to category total
+        $putra->map(function ($c) use ($totalPutra) {
+            $c->percentage = $totalPutra > 0 ? ($c->total_votes / $totalPutra) * 100 : 0;
+            return $c;
+        });
+
+        $putri->map(function ($c) use ($totalPutri) {
+            $c->percentage = $totalPutri > 0 ? ($c->total_votes / $totalPutri) * 100 : 0;
+            return $c;
+        });
         
-        return view('welcome', compact('putra', 'putri', 'totalVotes'));
+        $totalApprovedVotes = Vote::where('status', 'approved')->sum('vote_point');
+        
+        return view('welcome', [
+            'putra' => $putra,
+            'putri' => $putri,
+            'totalVotes' => $totalApprovedVotes
+        ]);
     }
 
     /**
@@ -74,10 +93,11 @@ class CandidateController extends Controller
 
         $candidate->update($data);
 
-        event(new VoteUpdated(
-            Candidate::orderBy('total_votes', 'desc')->get(),
-            Vote::where('status', 'approved')->sum('vote_point')
-        ));
+        // Recalculate and trigger update for real-time
+        $all = Candidate::orderBy('total_votes', 'desc')->get();
+        $total = Vote::where('status', 'approved')->sum('vote_point');
+
+        event(new VoteUpdated($all, $total));
 
         return redirect()->back()->with('success', 'Candidate updated successfully.');
     }
