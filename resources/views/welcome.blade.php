@@ -3,6 +3,12 @@
 @section('content')
 <section class="candidate-section pt-32">
     <div class="container">
+        <!-- Hero Content (Top of page) -->
+        <div class="text-center mb-16">
+            <h1 class="hero-title">Pilih <span>Duta Favorit</span> Anda Sekarang</h1>
+            <p class="hero-desc" style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
+        </div>
+
         <!-- TOP: Leaderboard Podium -->
         <div class="section-header">
             <h2 class="section-title">Leaderboard Podium</h2>
@@ -67,7 +73,7 @@
         </div>
 
         <!-- MIDDLE: Stats Bar -->
-        <div class="stats-grid">
+        <div class="stats-grid mb-24">
             <div class="stat-card">
                 <span class="stat-value">{{ $candidates->count() }}</span>
                 <span class="stat-label">Kandidat</span>
@@ -86,17 +92,10 @@
             </div>
         </div>
 
-        <!-- Hero Content -->
-        <div class="text-center mb-24">
-            <h1 class="hero-title">Pilih <span>Duta Favorit</span> Anda Sekarang</h1>
-            <p class="hero-desc" style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
-        </div>
 
-        <!-- BOTTOM: Remaining Candidates -->
+
+        <!-- BOTTOM: Remaining Candidates (The "section candidat card") -->
         @if($remaining->count() > 0)
-        <div class="section-header">
-            <h3 class="text-xl font-bold">Kandidat Lainnya</h3>
-        </div>
         <div class="grid-candidates">
             @foreach($remaining as $candidate)
                 <div class="card-candidate" onclick="window.location='{{ Auth::check() ? route('votes.payment', $candidate->id) : route('login') }}'">
