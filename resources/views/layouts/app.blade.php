@@ -13,9 +13,9 @@
             <a href="{{ route('home') }}" class="nav-brand">DUTA<span>KAMPUS</span></a>
             
             <ul class="nav-links">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
-                <li><a href="#leaderboard">Leaderboard</a></li>
-                <li><a href="#tutorial">Tutorial</a></li>
+                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
+                <li><a href="{{ route('home') }}#leaderboard">Leaderboard</a></li>
+                <li><a href="{{ route('tutorial') }}" class="{{ request()->routeIs('tutorial') ? 'active' : '' }}">Tutorial</a></li>
             </ul>
 
             <div style="display: flex; gap: 1rem; align-items: center;">
@@ -25,10 +25,10 @@
                     @endif
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Logout</button>
+                        <button type="submit" class="btn btn-primary">Keluar</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                    <a href="{{ route('login') }}" class="btn btn-primary">Masuk</a>
                 @endauth
             </div>
         </div>

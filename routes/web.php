@@ -22,6 +22,10 @@ Route::get('/success', function () {
     return view('success');
 })->name('success');
 
+Route::get('/tutorial', function () {
+    return view('tutorial');
+})->name('tutorial');
+
 // Auth Routes (Unified Login & Register)
 Route::get('/login', function () {
     return view('auth.login');
