@@ -44,7 +44,7 @@
         </div>
 
         <!-- LEADERBOARD CONTENT -->
-        <div class="leaderboard-container">
+        <div id="leaderboard" class="leaderboard-container">
             <!-- PUTRA SECTION -->
             <div x-show="category === 'putra'" x-transition>
                 @php
