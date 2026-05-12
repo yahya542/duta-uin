@@ -86,7 +86,7 @@
 
                 <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
                     <button type="button" @click="step = 1" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
-                    <button type="button" @click="step = 3" class="btn-submit">Review <span>→</span></button>
+                    <button type="button" @click="step = 3" class="btn-submit">Lanjutkan <span>→</span></button>
                 </div>
             </div>
 
