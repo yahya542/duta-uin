@@ -25,7 +25,7 @@
         <div class="podium-wrapper">
             <!-- Rank 2 -->
             @if($top2)
-            <div class="podium-item podium-rank-2" onclick="window.location='{{ Auth::check() ? route('votes.payment', $top2->id) : route('login') }}'">
+            <div class="podium-item podium-rank-2">
                 <div class="podium-card">
                     <div class="podium-medal">🥈</div>
                     <div class="podium-img">
@@ -38,7 +38,10 @@
                         <div class="progress-box">
                             <div id="candidate-bar-{{ $top2->id }}" class="progress-fill" style="width: {{ $top2->percentage }}%"></div>
                         </div>
-                        <p class="podium-percent"><span id="candidate-percentage-{{ $top2->id }}">{{ number_format($top2->percentage, 1) }}</span>%</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="podium-percent"><span id="candidate-percentage-{{ $top2->id }}">{{ number_format($top2->percentage, 1) }}</span>%</p>
+                            <a href="{{ route('votes.payment', $top2->id) }}" class="btn btn-primary py-2 px-4 text-xs">VOTE NOW</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,7 +49,7 @@
 
             <!-- Rank 1 -->
             @if($top1)
-            <div class="podium-item podium-rank-1" onclick="window.location='{{ Auth::check() ? route('votes.payment', $top1->id) : route('login') }}'">
+            <div class="podium-item podium-rank-1">
                 <div class="podium-card">
                     <div class="podium-medal">🥇</div>
                     <div class="podium-img">
@@ -59,7 +62,10 @@
                         <div class="progress-box">
                             <div id="candidate-bar-{{ $top1->id }}" class="progress-fill" style="width: {{ $top1->percentage }}%"></div>
                         </div>
-                        <p class="podium-percent"><span id="candidate-percentage-{{ $top1->id }}">{{ number_format($top1->percentage, 1) }}</span>%</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="podium-percent"><span id="candidate-percentage-{{ $top1->id }}">{{ number_format($top1->percentage, 1) }}</span>%</p>
+                            <a href="{{ route('votes.payment', $top1->id) }}" class="btn btn-primary py-2 px-6 text-xs">VOTE NOW</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +73,7 @@
 
             <!-- Rank 3 -->
             @if($top3)
-            <div class="podium-item podium-rank-3" onclick="window.location='{{ Auth::check() ? route('votes.payment', $top3->id) : route('login') }}'">
+            <div class="podium-item podium-rank-3">
                 <div class="podium-card">
                     <div class="podium-medal">🥉</div>
                     <div class="podium-img">
@@ -80,7 +86,10 @@
                         <div class="progress-box">
                             <div id="candidate-bar-{{ $top3->id }}" class="progress-fill" style="width: {{ $top3->percentage }}%"></div>
                         </div>
-                        <p class="podium-percent"><span id="candidate-percentage-{{ $top3->id }}">{{ number_format($top3->percentage, 1) }}</span>%</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="podium-percent"><span id="candidate-percentage-{{ $top3->id }}">{{ number_format($top3->percentage, 1) }}</span>%</p>
+                            <a href="{{ route('votes.payment', $top3->id) }}" class="btn btn-primary py-2 px-4 text-xs">VOTE NOW</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,7 +123,7 @@
         </div>
         <div class="grid-candidates">
             @foreach($remaining as $candidate)
-                <div class="card-candidate" onclick="window.location='{{ Auth::check() ? route('votes.payment', $candidate->id) : route('login') }}'">
+                <div class="card-candidate">
                     <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=200&background=1e293b&color=3b82f6' }}" alt="{{ $candidate->name }}">
                     <div class="flex-1">
                         <h4 class="candidate-name">{{ $candidate->name }}</h4>
@@ -123,8 +132,11 @@
                         </div>
                         <p class="candidate-meta"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span> Suara • #0{{ $loop->iteration + 3 }}</p>
                     </div>
-                    <div class="text-primary font-black">
-                        <span id="candidate-percentage-{{ $candidate->id }}">{{ number_format($candidate->percentage, 1) }}</span>%
+                    <div class="flex flex-col items-end gap-2">
+                        <div class="text-primary font-black">
+                            <span id="candidate-percentage-{{ $candidate->id }}">{{ number_format($candidate->percentage, 1) }}</span>%
+                        </div>
+                        <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1 px-3 text-[10px]">VOTE</a>
                     </div>
                 </div>
             @endforeach

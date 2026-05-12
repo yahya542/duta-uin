@@ -1,132 +1,133 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="section pt-32">
-    <div class="mb-12">
-        <a href="{{ route('home') }}" class="text-slate-400 hover:text-white transition-colors">← Kembali ke Beranda</a>
-    </div>
+<section class="candidate-section">
+    <div class="container">
+        <div class="mb-12">
+            <a href="{{ route('home') }}" class="text-slate-500 hover:text-primary transition-colors text-sm font-bold flex items-center gap-2">
+                <span>←</span> KEMBALI KE BERANDA
+            </a>
+        </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <!-- Candidate info -->
-        <div class="lg:col-span-4">
-            <div class="stat-item p-0 overflow-hidden text-left">
-                <div class="h-64 relative">
+        <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 4rem; align-items: start;">
+            <!-- LEFT: Candidate Detail -->
+            <div class="stat-card" style="padding: 0; overflow: hidden; text-align: left;">
+                <div style="height: 340px; background: #1e293b;">
                     <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=1e293b&color=3b82f6' }}" 
-                         class="w-full h-full object-cover">
+                         style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <div class="p-8">
-                    <h2 class="text-2xl font-bold mb-2">{{ $candidate->name }}</h2>
-                    <p class="text-slate-400 text-sm italic mb-6">"{{ $candidate->description }}"</p>
+                <div style="padding: 2rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">{{ $candidate->name }}</h2>
+                    <p style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.6; margin-bottom: 2rem;">{{ $candidate->description }}</p>
                     
-                    <div class="pt-6 border-t border-white/5">
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1">Total Suara</span>
-                        <span class="text-3xl font-black text-primary">{{ number_format($candidate->total_votes) }}</span>
+                    <div style="padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                        <span style="font-size: 0.625rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 0.25rem;">Total Suara Terkumpul</span>
+                        <span style="font-size: 2rem; font-weight: 900; color: var(--primary);">{{ number_format($candidate->total_votes) }}</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Voting Steps -->
-        <div class="lg:col-span-8">
-            <div class="space-y-12">
-                <!-- Step 1 -->
+            <!-- RIGHT: Voting Workflow -->
+            <div style="display: flex; flex-direction: column; gap: 3rem;">
+                
+                <!-- STEP 1: Select Package -->
                 <div>
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-4">
-                        <span class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">01</span>
+                    <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                        <span style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</span>
                         Pilih Paket Vote
                     </h3>
                     
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div style="display: grid; grid-template-cols: repeat(4, 1fr); gap: 1rem;">
                         @php
                             $packages = [
                                 ['points' => 10, 'price' => 10000, 'label' => 'Basic'],
-                                ['points' => 50, 'price' => 50000, 'label' => 'Standard', 'popular' => true],
+                                ['points' => 50, 'price' => 50000, 'label' => 'Popular', 'popular' => true],
                                 ['points' => 100, 'price' => 100000, 'label' => 'Premium'],
                                 ['points' => 500, 'price' => 500000, 'label' => 'Ultimate'],
                             ];
                         @endphp
 
                         @foreach($packages as $pkg)
-                            <div class="stat-item cursor-pointer hover:border-primary transition-all relative group {{ isset($pkg['popular']) ? 'border-primary' : '' }}" 
-                                 onclick="selectPackage({{ $pkg['points'] }}, {{ $pkg['price'] }}, this)">
+                            <div class="stat-card" style="cursor: pointer; transition: all 0.2s; position: relative; {{ isset($pkg['popular']) ? 'border-color: var(--primary);' : '' }}" 
+                                 onclick="selectPackage({{ $pkg['points'] }}, {{ $pkg['price'] }}, this)"
+                                 class="package-card">
                                 @if(isset($pkg['popular']))
-                                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-[10px] font-bold px-2 py-1 rounded-full text-white">POPULAR</div>
+                                    <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">BEST VALUE</span>
                                 @endif
-                                <span class="text-3xl font-black block mb-1">{{ $pkg['points'] }}</span>
-                                <span class="text-xs text-slate-400 font-bold uppercase">{{ $pkg['label'] }}</span>
-                                <div class="mt-4 text-sm font-bold text-primary">Rp {{ number_format($pkg['price'], 0, ',', '.') }}</div>
+                                <span style="display: block; font-size: 1.5rem; font-weight: 900; margin-bottom: 0.25rem;">{{ $pkg['points'] }}</span>
+                                <span style="font-size: 0.625rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Points</span>
+                                <div style="margin-top: 1rem; font-weight: 800; color: var(--primary); font-size: 0.875rem;">Rp {{ number_format($pkg['price'], 0, ',', '.') }}</div>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <!-- Step 2 -->
+                <!-- STEP 2: Payment Detail -->
                 <form action="{{ route('votes.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
                     <input type="hidden" name="nominal" id="inputNominal">
                     <input type="hidden" name="vote_point" id="inputPoints">
 
-                    <div class="space-y-12">
+                    <div style="display: flex; flex-direction: column; gap: 3rem;">
                         <div>
-                            <h3 class="text-xl font-bold mb-6 flex items-center gap-4">
-                                <span class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">02</span>
-                                Detail Pembayaran
+                            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                                <span style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">2</span>
+                                Konfirmasi Pembayaran
                             </h3>
                             
-                            <div class="stat-item flex flex-col md:flex-row gap-8 items-center text-left">
-                                <div class="flex-1 space-y-6">
-                                    <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
-                                        <div class="text-xs font-bold text-slate-500 mb-2 uppercase">Bank BRI</div>
-                                        <div class="text-xl font-black mb-1">1234-5678-9012-345</div>
-                                        <div class="text-sm text-slate-400">A.N. Panitia Duta Kampus</div>
+                            <div class="stat-card" style="display: grid; grid-template-cols: 1fr 1fr; gap: 2rem; text-align: left; align-items: center;">
+                                <div>
+                                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                        <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); margin-bottom: 4px;">TRANSFER KE BRI</div>
+                                        <div style="font-size: 1.25rem; font-weight: 900; letter-spacing: 1px;">1234-5678-9012-345</div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">A.N. PANITIA DUTA KAMPUS</div>
                                     </div>
-
-                                    <div class="space-y-2">
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-slate-400">Paket Terpilih</span>
-                                            <span id="displayPoints" class="font-bold">-</span>
+                                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
+                                            <span style="color: var(--text-muted);">Points</span>
+                                            <span id="displayPoints" style="font-weight: 800;">-</span>
                                         </div>
-                                        <div class="flex justify-between text-lg">
-                                            <span class="font-bold">Total Bayar</span>
-                                            <span id="displayTotal" class="font-black text-primary">Rp 0</span>
+                                        <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 900;">
+                                            <span>Total</span>
+                                            <span id="displayTotal" style="color: var(--primary);">Rp 0</span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="w-full md:w-48 text-center space-y-4">
-                                    <div class="bg-white p-2 rounded-2xl inline-block">
-                                        <img src="{{ asset('qris/qris-dana.png') }}" alt="QRIS" class="w-40 h-40">
+                                <div style="text-align: center;">
+                                    <div style="background: white; padding: 0.75rem; border-radius: 1rem; display: inline-block; margin-bottom: 0.5rem;">
+                                        <img src="{{ asset('qris/qris-dana.png') }}" style="width: 140px; height: 140px;">
                                     </div>
-                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Scan QRIS Dana</p>
+                                    <p style="font-size: 10px; font-weight: 800; color: var(--text-muted);">SCAN QRIS DANA</p>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- STEP 3: Upload Proof -->
                         <div>
-                            <h3 class="text-xl font-bold mb-6 flex items-center gap-4">
-                                <span class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">03</span>
-                                Konfirmasi & Upload
+                            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                                <span style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">3</span>
+                                Kirim Bukti & Vote
                             </h3>
                             
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Nama Pengirim</label>
-                                    <input type="text" name="voter_name" required 
-                                           class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-primary transition-all" 
-                                           placeholder="Sesuai bukti transfer">
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Nama Sesuai Rekening/Bukti</label>
+                                    <input type="text" name="voter_name" required class="form-input" placeholder="Nama pengirim transfer">
                                 </div>
 
-                                <div class="p-12 border-2 border-dashed border-white/10 rounded-3xl text-center cursor-pointer hover:bg-white/5 transition-all"
-                                     onclick="document.getElementById('proofInput').click()">
-                                    <span class="text-3xl block mb-2">📁</span>
-                                    <p class="text-sm font-bold text-slate-300">Upload Bukti Transfer</p>
-                                    <p class="text-xs text-slate-500 mt-2">JPG, PNG, PDF (Maks 2MB)</p>
-                                    <input type="file" name="proof_image" id="proofInput" class="hidden" required onchange="updateFileName(this)">
-                                    <div id="fileName" class="mt-4 text-primary font-bold text-sm"></div>
+                                <div style="border: 2px dashed var(--border); border-radius: 1.5rem; padding: 3rem; text-align: center; cursor: pointer; transition: background 0.2s;"
+                                     onclick="document.getElementById('proofInput').click()"
+                                     onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                                     onmouseout="this.style.background='transparent'">
+                                    <span style="font-size: 2rem; display: block; margin-bottom: 1rem;">📸</span>
+                                    <p style="font-weight: 700; font-size: 0.875rem;">Klik untuk Upload Bukti Transfer</p>
+                                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">JPG, PNG (Maks 2MB)</p>
+                                    <input type="file" name="proof_image" id="proofInput" style="display: none;" required onchange="updateFileName(this)">
+                                    <div id="fileName" style="margin-top: 1rem; color: var(--primary); font-weight: 800; font-size: 0.875rem;"></div>
                                 </div>
 
-                                <button type="submit" class="btn-primary w-full justify-center py-5 text-lg">Kirim Vote</button>
+                                <button type="submit" class="btn btn-primary" style="padding: 1.25rem; font-size: 1rem; letter-spacing: 1px;">KONFIRMASI VOTE</button>
                             </div>
                         </div>
                     </div>
@@ -141,17 +142,17 @@
     function selectPackage(points, price, el) {
         document.getElementById('inputNominal').value = price;
         document.getElementById('inputPoints').value = points;
-        document.getElementById('displayPoints').innerText = points + ' Poin';
+        document.getElementById('displayPoints').innerText = points + ' Points';
         const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(price);
         document.getElementById('displayTotal').innerText = formattedPrice;
 
-        document.querySelectorAll('.stat-item').forEach(card => card.classList.remove('border-primary'));
-        el.classList.add('border-primary');
+        document.querySelectorAll('.package-card').forEach(card => card.style.borderColor = 'var(--border)');
+        el.style.borderColor = 'var(--primary)';
     }
 
     function updateFileName(input) {
         const name = input.files[0] ? input.files[0].name : '';
-        document.getElementById('fileName').innerText = name;
+        document.getElementById('fileName').innerText = 'Terpilih: ' + name;
     }
 </script>
 @endpush
