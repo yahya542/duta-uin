@@ -11,6 +11,7 @@ class Vote extends Model
 
     protected $fillable = [
         'candidate_id',
+        'user_id',
         'voter_name',
         'nominal',
         'vote_point',
@@ -25,5 +26,10 @@ class Vote extends Model
     public function transaction()
     {
         return $this->hasOne(Transaction::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Scripts & Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,31 +18,30 @@
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-brand">
-            <img src="https://ui-avatars.com/api/?name=UIN&background=0D1B2A&color=C9A84C" alt="Logo UIN">
-            <div class="nav-divider"></div>
             <div class="nav-brand-text">
-                DUTA KAMPUS
-                <small>UIN MADURA 2026</small>
+                DUTA<span>KAMPUS</span>
             </div>
         </div>
         
         <ul class="nav-links">
-            <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">BERANDA</a></li>
-            <li><a href="#leaderboard">LEADERBOARD</a></li>
-            <li><a href="#tutorial">TUTORIAL</a></li>
+            <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
+            <li><a href="#leaderboard">Leaderboard</a></li>
+            <li><a href="#tutorial">Tutorial</a></li>
         </ul>
 
-        @auth
-            <div class="flex items-center gap-4">
-                <a href="{{ route('admin.dashboard') }}" class="nav-links a">DASHBOARD</a>
+        <div class="flex items-center gap-3">
+            @auth
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Admin</a>
+                @endif
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn-secondary">LOGOUT</button>
+                    <button type="submit" class="btn-primary">Logout</button>
                 </form>
-            </div>
-        @else
-            <a href="{{ route('login') }}" class="btn-secondary">ADMIN LOGIN</a>
-        @endauth
+            @else
+                <a href="{{ route('login') }}" class="btn-primary">Login</a>
+            @endauth
+        </div>
     </nav>
 
     <main>

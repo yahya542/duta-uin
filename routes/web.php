@@ -6,17 +6,23 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 // Public Routes
 Route::get('/', [CandidateController::class, 'index'])->name('home');
-Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
-Route::get('/payment/{vote_id}', [VoteController::class, 'showPayment'])->name('payment');
-Route::post('/payment/{vote_id}/upload', [VoteController::class, 'uploadProof'])->name('payment.upload');
+
+// Voting Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::post('/vote', [VoteController::class, 'store'])->name('votes.store');
+    Route::get('/payment/{candidate_id}', [VoteController::class, 'showPayment'])->name('votes.payment');
+});
+
 Route::get('/success', function () {
     return view('success');
 })->name('success');
 
-// Auth Routes (Login)
+// Auth Routes (Unified Login & Register)
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -29,12 +35,38 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
-        return redirect()->intended('/admin');
+        if (Auth::user()->role === 'admin') {
+            return redirect()->intended('/admin');
+        }
+        return redirect()->intended('/');
     }
 
     return back()->withErrors([
         'email' => 'The provided credentials do not match our records.',
     ]);
+});
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::post('/register', function (\Illuminate\Http\Request $request) {
+    $data = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        'role' => 'voter',
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/');
 });
 
 Route::post('/logout', function (\Illuminate\Http\Request $request) {
@@ -52,6 +84,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/candidates', [CandidateController::class, 'adminIndex'])->name('admin.candidates.index');
     Route::post('/candidates', [CandidateController::class, 'store'])->name('admin.candidates.store');
     Route::put('/candidates/{candidate}', [CandidateController::class, 'update'])->name('admin.candidates.update');
+    Route::delete('/candidates/{candidate}', [CandidateController::class, 'destroy'])->name('admin.candidates.destroy');
     
     // Transactions Management
     Route::get('/transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');

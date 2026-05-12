@@ -2,40 +2,34 @@
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center p-4">
-    <div class="modal max-w-md w-full">
-        <div class="text-center mb-8">
-            <h1 class="hero-title text-3xl">ADMIN <span>PORTAL</span></h1>
-            <p class="section-desc">Silakan login untuk mengelola sistem voting.</p>
+    <div class="modal max-w-md w-full animate-fade-in">
+        <div class="text-center mb-10">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-4">Voter Portal</div>
+            <h1 class="text-4xl font-black letter-spacing-tight mb-2">Welcome Back</h1>
+            <p class="text-slate-400 text-sm">Please login to cast your vote.</p>
         </div>
 
-        <form action="{{ route('login') }}" method="POST" class="space-y-6">
+        <form action="{{ route('login') }}" method="POST" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-gold tracking-widest uppercase mb-2">EMAIL ADDRESS</label>
+                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Email Address</label>
                 <input type="email" name="email" required 
-                       class="w-full bg-navy-3 border border-slate-700 rounded-xl p-4 text-cream focus:border-gold outline-none transition-all" 
-                       placeholder="admin@example.com">
+                       class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary outline-none transition-all" 
+                       placeholder="you@example.com">
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-gold tracking-widest uppercase mb-2">PASSWORD</label>
+                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Password</label>
                 <input type="password" name="password" required 
-                       class="w-full bg-navy-3 border border-slate-700 rounded-xl p-4 text-cream focus:border-gold outline-none transition-all" 
+                       class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary outline-none transition-all" 
                        placeholder="••••••••">
             </div>
 
-            <div class="flex items-center justify-between text-xs">
-                <label class="flex items-center gap-2 text-slate-400 cursor-pointer">
-                    <input type="checkbox" class="accent-gold"> Ingat Saya
-                </label>
-                <a href="#" class="text-gold hover:text-gold-light">Lupa Password?</a>
-            </div>
-
-            <button type="submit" class="btn-primary w-full py-4 text-lg">MASUK KE DASHBOARD</button>
+            <button type="submit" class="btn-primary w-full justify-center py-4 text-sm uppercase tracking-widest">Login</button>
         </form>
 
-        <div class="mt-8 pt-6 border-t border-slate-800 text-center">
-            <p class="text-xs text-slate-500 italic">© 2026 UIN Madura - Official Voting System</p>
+        <div class="mt-8 text-center">
+            <p class="text-sm text-slate-500">Don't have an account? <a href="{{ route('register') }}" class="text-primary font-bold">Register here</a></p>
         </div>
     </div>
 </div>

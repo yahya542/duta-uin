@@ -2,67 +2,51 @@
 
 @section('content')
 <div class="hero">
-    <div class="hero-logos animate-bounce-subtle">
-        <img src="https://ui-avatars.com/api/?name=UIN&size=200&background=0D1B2A&color=C9A84C" alt="Logo UIN">
-        <div class="logo-sep"></div>
-        <img src="https://ui-avatars.com/api/?name=DK&size=200&background=C9A84C&color=0D1B2A" class="duta-img" alt="Logo Duta">
+    <div class="hero-badge animate-fade-in">
+        LIVE VOTING SYSTEM 2026
     </div>
 
-    <div class="hero-badge">
-        <span class="dot"></span>
-        VOTING SEDANG BERLANGSUNG
-    </div>
+    <h1 class="hero-title animate-fade-in">Pilih <span>Duta Favorit</span><br>Anda Sekarang</h1>
+    <p class="hero-sub animate-fade-in">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
 
-    <h1 class="hero-title">PILIH <span>DUTA FAVORIT</span><br>ANDA SEKARANG</h1>
-    <p class="hero-sub">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
-
-    <div class="divider-ornament">
-        <span class="diamond">◆</span>
+    <div class="flex gap-4 animate-fade-in">
+        <a href="#leaderboard" class="btn-primary">Mulai Vote</a>
+        <a href="#tutorial" class="btn-secondary">Cara Vote</a>
     </div>
 </div>
 
-<div class="stats-bar">
+<div class="stats-bar section px-4">
     <div class="stat-item">
         <span class="stat-num">{{ $candidates->count() }}</span>
-        <span class="stat-label">KANDIDAT</span>
+        <span class="stat-label">Kandidat</span>
     </div>
     <div class="stat-item">
         <span class="stat-num" id="total-votes-display">{{ number_format($totalVotes) }}</span>
-        <span class="stat-label">TOTAL SUARA</span>
+        <span class="stat-label">Total Suara</span>
     </div>
     <div class="stat-item">
         <span class="stat-num">2026</span>
-        <span class="stat-label">TAHUN EVENT</span>
+        <span class="stat-label">Tahun</span>
     </div>
     <div class="stat-item">
         <span class="stat-num">30</span>
-        <span class="stat-label">HARI LAGI</span>
+        <span class="stat-label">Hari Lagi</span>
     </div>
 </div>
 
 <section id="leaderboard" class="section">
-    <h2 class="section-title">DAFTAR KANDIDAT</h2>
+    <h2 class="section-title">Kandidat Duta</h2>
     <p class="section-desc">Pilih salah satu kandidat di bawah ini untuk memberikan dukungan suara Anda.</p>
-
-    <div class="tab-bar">
-        <button class="tab-btn active">SEMUA KANDIDAT</button>
-        <button class="tab-btn">PUTRA</button>
-        <button class="tab-btn">PUTRI</button>
-    </div>
 
     <div class="candidates-grid">
         @foreach($candidates as $candidate)
-            <div class="candidate-card" onclick="window.location='{{ route('votes.payment', $candidate->id) }}'">
+            <div class="candidate-card" 
+                 onclick="window.location='{{ Auth::check() ? route('votes.payment', $candidate->id) : route('login') }}'">
                 <div class="candidate-banner">
-                    <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=1E3A55&color=C9A84C' }}" 
-                         alt="{{ $candidate->name }}" 
-                         class="w-full h-full object-cover opacity-80">
+                    <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=1e293b&color=3b82f6' }}" 
+                         alt="{{ $candidate->name }}">
                     
                     <div class="candidate-num">#0{{ $loop->iteration }}</div>
-                    
-                    <div class="candidate-type-badge {{ $loop->even ? 'badge-putri' : 'badge-putra' }}">
-                        {{ $loop->even ? 'PUTRI' : 'PUTRA' }}
-                    </div>
                 </div>
 
                 <div class="candidate-body">
@@ -79,44 +63,42 @@
                         <span class="text-xs text-slate-400 font-medium"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span> Suara</span>
                     </div>
 
-                    <button class="btn-vote">BERIKAN VOTE</button>
+                    <button class="btn-primary w-full justify-center mt-6">Berikan Vote</button>
                 </div>
             </div>
         @endforeach
     </div>
 </section>
 
-<section id="tutorial" class="section">
-    <h2 class="section-title">CARA MELAKUKAN VOTE</h2>
-    <p class="section-desc">Ikuti langkah-langkah mudah di bawah ini untuk mendukung kandidat pilihan Anda.</p>
-
-    <div class="tutorial-steps">
-        <div class="step-card">
-            <span class="step-num">STEP 01</span>
-            <span class="step-icon">👤</span>
-            <h3 class="step-title">Pilih Kandidat</h3>
-            <p class="step-desc">Tentukan duta favorit Anda dari daftar kandidat yang tersedia.</p>
+<section id="tutorial" class="section bg-slate-900/20">
+    <h2 class="section-title">Cara Melakukan Vote</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
+        <div class="stat-item">
+            <span class="text-2xl mb-2 block">👤</span>
+            <h3 class="font-bold mb-2">Pilih</h3>
+            <p class="text-xs text-slate-400">Pilih kandidat favorit Anda dari daftar.</p>
         </div>
-        <div class="step-card">
-            <span class="step-num">STEP 02</span>
-            <span class="step-icon">💰</span>
-            <h3 class="step-title">Pilih Paket</h3>
-            <p class="step-desc">Pilih jumlah poin vote yang ingin Anda berikan (1 Poin = Rp 1.000).</p>
+        <div class="stat-item">
+            <span class="text-2xl mb-2 block">💰</span>
+            <h3 class="font-bold mb-2">Paket</h3>
+            <p class="text-xs text-slate-400">Pilih jumlah poin vote yang diinginkan.</p>
         </div>
-        <div class="step-card">
-            <span class="step-num">STEP 03</span>
-            <span class="step-icon">📲</span>
-            <h3 class="step-title">Pembayaran</h3>
-            <p class="step-desc">Scan QRIS DANA atau transfer manual ke rekening yang tersedia.</p>
+        <div class="stat-item">
+            <span class="text-2xl mb-2 block">📲</span>
+            <h3 class="font-bold mb-2">Bayar</h3>
+            <p class="text-xs text-slate-400">Transfer atau Scan QRIS yang tersedia.</p>
         </div>
-        <div class="step-card">
-            <span class="step-num">STEP 04</span>
-            <span class="step-icon">📄</span>
-            <h3 class="step-title">Konfirmasi</h3>
-            <p class="step-desc">Upload bukti transfer. Admin akan memvalidasi suara Anda segera.</p>
+        <div class="stat-item">
+            <span class="text-2xl mb-2 block">📄</span>
+            <h3 class="font-bold mb-2">Kirim</h3>
+            <p class="text-xs text-slate-400">Upload bukti. Suara akan divalidasi admin.</p>
         </div>
     </div>
 </section>
+
+<footer class="py-12 border-t border-white/5 text-center">
+    <p class="text-slate-500 text-sm">© 2026 UIN Madura. Built with Precision.</p>
+</footer>
 
 @push('scripts')
 <script type="module">
@@ -124,8 +106,6 @@
         if (window.Echo) {
             window.Echo.channel('voting-channel')
                 .listen('.vote.updated', (e) => {
-                    console.log('Vote updated:', e);
-                    
                     const totalVotesEl = document.getElementById('total-votes-display');
                     if (totalVotesEl) {
                         totalVotesEl.innerText = new Intl.NumberFormat('id-ID').format(e.totalVotes);
