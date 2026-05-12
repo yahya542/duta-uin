@@ -65,7 +65,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p2->id }}">{{ number_format($p2->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p2->id) }}" class="auth-link text-[10px] uppercase tracking-widest mt-2 block">Vote Sekarang</a>
+                        <a href="{{ route('votes.payment', $p2->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
 
@@ -91,7 +91,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p3->id }}">{{ number_format($p3->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p3->id) }}" class="auth-link text-[10px] uppercase tracking-widest mt-2 block">Vote Sekarang</a>
+                        <a href="{{ route('votes.payment', $p3->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
                 </div>
@@ -102,12 +102,13 @@
                             <tr>
                                 <th>Peringkat</th>
                                 <th>Nama Kandidat</th>
-                                <th>Total Voting</th>
+                                <th style="text-align: right;">Total Voting</th>
+                                <th style="text-align: right; width: 140px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($remainingPutra as $candidate)
-                            <tr onclick="window.location='{{ route('votes.payment', $candidate->id) }}'" style="cursor: pointer;">
+                            <tr>
                                 <td class="rank-num">{{ $loop->iteration + 3 }}</td>
                                 <td>
                                     <div class="voter-info">
@@ -117,6 +118,11 @@
                                 </td>
                                 <td>
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
+                                </td>
+                                <td>
+                                    <div class="flex justify-end">
+                                        <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -145,7 +151,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi2->id }}">{{ number_format($pi2->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi2->id) }}" class="auth-link text-[10px] uppercase tracking-widest mt-2 block">Vote Sekarang</a>
+                        <a href="{{ route('votes.payment', $pi2->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
 
@@ -171,7 +177,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi3->id }}">{{ number_format($pi3->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi3->id) }}" class="auth-link text-[10px] uppercase tracking-widest mt-2 block">Vote Sekarang</a>
+                        <a href="{{ route('votes.payment', $pi3->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
                 </div>
@@ -182,12 +188,13 @@
                             <tr>
                                 <th>Peringkat</th>
                                 <th>Nama Kandidat</th>
-                                <th>Total Voting</th>
+                                <th style="text-align: right;">Total Voting</th>
+                                <th style="text-align: right; width: 140px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($remainingPutri as $candidate)
-                            <tr onclick="window.location='{{ route('votes.payment', $candidate->id) }}'" style="cursor: pointer;">
+                            <tr>
                                 <td class="rank-num">{{ $loop->iteration + 3 }}</td>
                                 <td>
                                     <div class="voter-info">
@@ -197,6 +204,11 @@
                                 </td>
                                 <td>
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
+                                </td>
+                                <td>
+                                    <div class="flex justify-end">
+                                        <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
