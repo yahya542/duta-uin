@@ -85,7 +85,10 @@
                 </div>
 
                 <template x-if="errorMsg && step == 1">
-                    <p class="text-red-500 text-[11px] mb-4 font-bold" x-text="errorMsg"></p>
+                    <div class="error-alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span x-text="errorMsg"></span>
+                    </div>
                 </template>
 
                 <button type="button" @click="validateStep1()" class="btn-submit">Lanjutkan <span>→</span></button>
@@ -114,7 +117,10 @@
                 </div>
 
                 <template x-if="errorMsg && step == 2">
-                    <p class="text-red-500 text-[11px] mb-4 font-bold" x-text="errorMsg"></p>
+                    <div class="error-alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span x-text="errorMsg"></span>
+                    </div>
                 </template>
 
                 <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
