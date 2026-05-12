@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="candidate-section pt-32">
+<section class="candidate-section">
     <div class="container">
         <!-- Hero Content (Top of page) -->
         <div class="text-center mb-16">
@@ -34,6 +34,11 @@
                     <div class="podium-info">
                         <h3 class="podium-name">{{ $top2->name }}</h3>
                         <p class="podium-votes"><span id="candidate-votes-{{ $top2->id }}">{{ number_format($top2->total_votes) }}</span> SUARA</p>
+                        
+                        <div class="progress-box">
+                            <div id="candidate-bar-{{ $top2->id }}" class="progress-fill" style="width: {{ $top2->percentage }}%"></div>
+                        </div>
+                        <p class="podium-percent"><span id="candidate-percentage-{{ $top2->id }}">{{ number_format($top2->percentage, 1) }}</span>%</p>
                     </div>
                 </div>
             </div>
@@ -50,6 +55,11 @@
                     <div class="podium-info">
                         <h3 class="podium-name">{{ $top1->name }}</h3>
                         <p class="podium-votes"><span id="candidate-votes-{{ $top1->id }}">{{ number_format($top1->total_votes) }}</span> SUARA</p>
+                        
+                        <div class="progress-box">
+                            <div id="candidate-bar-{{ $top1->id }}" class="progress-fill" style="width: {{ $top1->percentage }}%"></div>
+                        </div>
+                        <p class="podium-percent"><span id="candidate-percentage-{{ $top1->id }}">{{ number_format($top1->percentage, 1) }}</span>%</p>
                     </div>
                 </div>
             </div>
@@ -66,6 +76,11 @@
                     <div class="podium-info">
                         <h3 class="podium-name">{{ $top3->name }}</h3>
                         <p class="podium-votes"><span id="candidate-votes-{{ $top3->id }}">{{ number_format($top3->total_votes) }}</span> SUARA</p>
+                        
+                        <div class="progress-box">
+                            <div id="candidate-bar-{{ $top3->id }}" class="progress-fill" style="width: {{ $top3->percentage }}%"></div>
+                        </div>
+                        <p class="podium-percent"><span id="candidate-percentage-{{ $top3->id }}">{{ number_format($top3->percentage, 1) }}</span>%</p>
                     </div>
                 </div>
             </div>
@@ -92,16 +107,20 @@
             </div>
         </div>
 
-
-
-        <!-- BOTTOM: Remaining Candidates (The "section candidat card") -->
+        <!-- BOTTOM: Remaining Candidates -->
         @if($remaining->count() > 0)
+        <div class="section-header">
+            <h3 class="text-xl font-bold">Kandidat Lainnya</h3>
+        </div>
         <div class="grid-candidates">
             @foreach($remaining as $candidate)
                 <div class="card-candidate" onclick="window.location='{{ Auth::check() ? route('votes.payment', $candidate->id) : route('login') }}'">
                     <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=200&background=1e293b&color=3b82f6' }}" alt="{{ $candidate->name }}">
                     <div class="flex-1">
                         <h4 class="candidate-name">{{ $candidate->name }}</h4>
+                        <div class="progress-box" style="margin: 0.25rem 0;">
+                            <div id="candidate-bar-{{ $candidate->id }}" class="progress-fill" style="width: {{ $candidate->percentage }}%"></div>
+                        </div>
                         <p class="candidate-meta"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span> Suara • #0{{ $loop->iteration + 3 }}</p>
                     </div>
                     <div class="text-primary font-black">
@@ -125,9 +144,11 @@
                 e.candidates.forEach(candidate => {
                     const percentEls = document.querySelectorAll(`[id^="candidate-percentage-${candidate.id}"]`);
                     const votesEls = document.querySelectorAll(`[id^="candidate-votes-${candidate.id}"]`);
+                    const barEls = document.querySelectorAll(`[id^="candidate-bar-${candidate.id}"]`);
 
                     percentEls.forEach(el => el.innerText = candidate.percentage.toFixed(1));
                     votesEls.forEach(el => el.innerText = new Intl.NumberFormat('id-ID').format(candidate.total_votes));
+                    barEls.forEach(el => el.style.width = `${candidate.percentage}%`);
                 });
             });
         }
