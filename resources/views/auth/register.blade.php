@@ -19,9 +19,11 @@
             
             <template x-for="i in [1, 2, 3]">
                 <div style="position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                    <div :class="step >= i ? 'bg-primary border-primary' : 'bg-slate-900 border-white/10'"
-                         style="width: 24px; height: 24px; border-radius: 50%; border-width: 2px; border-style: solid; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; transition: all 0.3s;"
-                         x-text="i"></div>
+                    <div class="step-circle"
+                         :style="step >= i ? 'background: var(--primary); border-color: var(--primary); color: white;' : 'background: var(--bg-card); border-color: rgba(255,255,255,0.2); color: var(--text-muted);'">
+                        <span x-show="step <= i" x-text="i"></span>
+                        <span x-show="step > i">✓</span>
+                    </div>
                     <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);" 
                           x-text="i == 1 ? 'Pribadi' : (i == 2 ? 'Akun' : 'Review')"></span>
                 </div>
@@ -125,6 +127,20 @@
 </div>
 
 <style>
-[x-cloak] { display: none !not-important; }
+[x-cloak] { display: none !important; }
+.step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border-width: 2px;
+    border-style: solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    transition: all 0.3s;
+    z-index: 10;
+}
 </style>
 @endsection
