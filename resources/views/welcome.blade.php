@@ -9,20 +9,6 @@
             <p class="hero-desc" style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
         </div>
 
-        <!-- Category Tabs -->
-        <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
-            <button @click="category = 'putra'" 
-                    :class="category === 'putra' ? 'btn-primary' : 'btn-outline'"
-                    class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
-                Duta Putra
-            </button>
-            <button @click="category = 'putri'" 
-                    :class="category === 'putri' ? 'btn-primary' : 'btn-outline'"
-                    class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
-                Duta Putri
-            </button>
-        </div>
-
         <!-- Stats Bar -->
         <div class="stats-grid mb-12">
             <div class="stat-card">
@@ -41,6 +27,20 @@
                 <span class="stat-value">30</span>
                 <span class="stat-label">Hari Lagi</span>
             </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
+            <button @click="category = 'putra'" 
+                    :class="category === 'putra' ? 'btn-primary' : 'btn-outline'"
+                    class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
+                Duta Putra
+            </button>
+            <button @click="category = 'putri'" 
+                    :class="category === 'putri' ? 'btn-primary' : 'btn-outline'"
+                    class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
+                Duta Putri
+            </button>
         </div>
 
         <!-- PUTRA SECTION -->
