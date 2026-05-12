@@ -1,105 +1,175 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white py-16 sm:py-24">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl">
-            <nav class="flex mb-8" aria-label="Breadcrumb">
-                <ol role="list" class="flex items-center space-x-4">
-                    <li>
-                        <div>
-                            <a href="{{ route('home') }}" class="text-slate-400 hover:text-slate-500">
-                                <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7a1 1 0 010 1.414l-7 7a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-5.293-5.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="h-5 w-5 flex-shrink-0 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" /></svg>
-                            <span class="ml-4 text-sm font-medium text-slate-500">Pembayaran Voting</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+<section class="section">
+    <div class="mb-8">
+        <a href="{{ route('home') }}" class="btn-secondary">← KEMBALI</a>
+    </div>
 
-            <div class="overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-xl">
-                <div class="bg-slate-900 px-6 py-8 text-center text-white">
-                    <h2 class="text-2xl font-bold">Instruksi Pembayaran</h2>
-                    <p class="mt-2 text-slate-400">Scan QRIS di bawah untuk menyelesaikan voting</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Candidate Info -->
+        <div class="lg:col-span-1">
+            <div class="candidate-card selected">
+                <div class="candidate-banner h-64">
+                    <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=1E3A55&color=C9A84C' }}" 
+                         alt="{{ $candidate->name }}" 
+                         class="w-full h-full object-cover">
                 </div>
-                
-                <div class="p-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                        <div class="flex flex-col items-center">
-                            <div class="p-4 bg-white border-4 border-slate-100 rounded-3xl shadow-inner">
-                                <img src="{{ asset('qris/qris-dana.png') }}" 
-                                     alt="QRIS DANA" 
-                                     class="w-64 h-64 object-contain"
-                                     onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=VotingSystem';">
-                            </div>
-                            <div class="mt-6 flex items-center gap-2">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="h-6">
-                                <span class="text-lg font-bold text-slate-900">QRIS DANA</span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-6">
-                            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-                                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Detail Voting</h3>
-                                <div class="mt-4 space-y-3">
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-600">Voter</span>
-                                        <span class="font-bold text-slate-900">{{ $vote->voter_name }}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-600">Kandidat</span>
-                                        <span class="font-bold text-indigo-600">{{ $vote->candidate->name }}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center pt-3 border-t border-slate-200">
-                                        <span class="text-slate-900 font-bold">Total Bayar</span>
-                                        <span class="text-2xl font-black text-slate-900">Rp {{ number_format($vote->nominal, 0, ',', '.') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <form action="{{ route('payment.upload', $vote->id) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="space-y-4">
-                                    <label class="block">
-                                        <span class="text-sm font-bold text-slate-700">Upload Bukti Transfer</span>
-                                        <div class="mt-2 flex justify-center rounded-2xl border-2 border-dashed border-slate-300 px-6 pt-5 pb-6 hover:border-indigo-500 transition-colors cursor-pointer group">
-                                            <div class="space-y-1 text-center">
-                                                <svg class="mx-auto h-12 w-12 text-slate-400 group-hover:text-indigo-500 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                                <div class="flex text-sm text-slate-600">
-                                                    <span class="relative cursor-pointer rounded-md font-semibold text-indigo-600 hover:text-indigo-500">Pilih file</span>
-                                                    <p class="pl-1">atau drag and drop</p>
-                                                </div>
-                                                <p class="text-xs text-slate-500">PNG, JPG, JPEG up to 2MB</p>
-                                                <input id="file-upload" name="proof_image" type="file" class="sr-only" required onchange="updateFileName(this)">
-                                            </div>
-                                        </div>
-                                        <p id="file-name" class="mt-2 text-sm text-indigo-600 font-medium"></p>
-                                    </label>
-                                    
-                                    <button type="submit" class="w-full rounded-2xl bg-indigo-600 px-4 py-4 text-lg font-bold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
-                                        Konfirmasi Pembayaran
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                <div class="candidate-body">
+                    <div class="hero-badge mb-2">TARGET VOTE</div>
+                    <h3 class="candidate-name text-2xl">{{ $candidate->name }}</h3>
+                    <p class="text-sm text-slate-400 italic mb-4">"{{ $candidate->description }}"</p>
+                    
+                    <div class="vote-meta border-t border-slate-700 pt-4">
+                        <span class="text-slate-400">Total Suara Saat Ini</span>
+                        <span class="vote-pct">{{ number_format($candidate->total_votes) }}</span>
                     </div>
                 </div>
             </div>
+
+            <div class="note-box mt-6">
+                <h4>PENTING!</h4>
+                <ul>
+                    <li>Pastikan nominal transfer sesuai dengan paket yang dipilih.</li>
+                    <li>Sertakan nama lengkap Anda pada kolom pengirim.</li>
+                    <li>Admin akan melakukan verifikasi maksimal 1x24 jam.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Voting Flow -->
+        <div class="lg:col-span-2">
+            <h2 class="section-title text-left ml-0 mb-4">LANGKAH 01: PILIH PAKET VOTE</h2>
+            
+            <div class="packages-grid mb-12">
+                @php
+                    $packages = [
+                        ['points' => 10, 'price' => 10000, 'label' => 'STARTER'],
+                        ['points' => 50, 'price' => 50000, 'label' => 'POPULAR', 'popular' => true],
+                        ['points' => 100, 'price' => 100000, 'label' => 'PRO'],
+                        ['points' => 500, 'price' => 500000, 'label' => 'ELITE'],
+                    ];
+                @endphp
+
+                @foreach($packages as $pkg)
+                    <div class="pkg-card {{ isset($pkg['popular']) ? 'popular' : '' }}" 
+                         onclick="selectPackage({{ $pkg['points'] }}, {{ $pkg['price'] }}, this)">
+                        @if(isset($pkg['popular']))
+                            <div class="pkg-popular-badge">PALING POPULER</div>
+                        @endif
+                        <span class="pkg-points">{{ $pkg['points'] }}</span>
+                        <span class="pkg-label">{{ $pkg['label'] }}</span>
+                        <div class="pkg-price">Rp {{ number_format($pkg['price'], 0, ',', '.') }}</div>
+                        <span class="pkg-note">Poin Vote</span>
+                    </div>
+                @endforeach
+            </div>
+
+            <form action="{{ route('votes.store') }}" method="POST" enctype="multipart/form-data" id="voteForm">
+                @csrf
+                <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
+                <input type="hidden" name="nominal" id="inputNominal">
+                <input type="hidden" name="vote_point" id="inputPoints">
+
+                <div x-data="{ step: 1 }">
+                    <div class="mb-8">
+                        <h2 class="section-title text-left ml-0 mb-4">LANGKAH 02: DETAIL PEMBAYARAN</h2>
+                        
+                        <div class="payment-box">
+                            <div class="payment-info">
+                                <h3>TRANSFER MANUAL / QRIS</h3>
+                                
+                                <div class="bank-row">
+                                    <div class="bank-logo bank-bri">BRI</div>
+                                    <div class="bank-detail">
+                                        <div class="bank-name">BANK BRI</div>
+                                        <div class="bank-number">1234-5678-9012-345</div>
+                                        <div class="bank-holder">A.N. PANITIA DUTA KAMPUS</div>
+                                    </div>
+                                    <button type="button" class="copy-btn">SALIN</button>
+                                </div>
+
+                                <div class="calc-box">
+                                    <h4>RINCIAN PEMBAYARAN</h4>
+                                    <div class="calc-row">
+                                        <span class="calc-label">Paket Dipilih</span>
+                                        <span class="calc-val" id="displayPoints">0 Poin</span>
+                                    </div>
+                                    <div class="calc-row">
+                                        <span class="calc-label">Subtotal</span>
+                                        <span class="calc-val" id="displayPrice">Rp 0</span>
+                                    </div>
+                                    <div class="calc-row calc-total-row">
+                                        <span class="calc-label">TOTAL TRANSFER</span>
+                                        <span class="calc-val" id="displayTotal">Rp 0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="qr-section">
+                                <span class="qr-label">SCAN QRIS DANA</span>
+                                <div class="qr-frame">
+                                    <img src="{{ asset('qris/qris-dana.png') }}" alt="QRIS DANA">
+                                </div>
+                                <p class="qr-sub">Scan melalui aplikasi DANA,<br>OVO, GoPay, atau LinkAja</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="section-title text-left ml-0 mb-4">LANGKAH 03: KONFIRMASI TRANSFER</h2>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-slate-400 mb-2">NAMA LENGKAP PENGIRIM</label>
+                            <input type="text" name="voter_name" required 
+                                   class="w-full bg-navy-2 border border-slate-700 rounded-lg p-3 text-cream focus:border-gold outline-none" 
+                                   placeholder="Masukkan nama sesuai bukti transfer">
+                        </div>
+
+                        <div class="upload-area" onclick="document.getElementById('proofInput').click()">
+                            <span class="upload-icon">📁</span>
+                            <div class="upload-text">Klik untuk <strong>Upload Bukti Transfer</strong></div>
+                            <p class="text-xs text-slate-500 mt-2">Format: JPG, PNG, PDF (Maks. 2MB)</p>
+                            <input type="file" name="proof_image" id="proofInput" class="hidden" required onchange="updateFileName(this)">
+                            <div id="fileName" class="mt-2 text-gold font-medium"></div>
+                        </div>
+
+                        <div class="flex flex-col gap-4 mt-8">
+                            <button type="submit" class="btn-primary w-full justify-center text-lg py-4">KIRIM VOTE SEKARANG</button>
+                            <p class="text-center text-xs text-slate-500">Dengan menekan tombol di atas, Anda setuju dengan syarat dan ketentuan voting.</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+</section>
 
+@push('scripts')
 <script>
+    function selectPackage(points, price, el) {
+        // Update inputs
+        document.getElementById('inputNominal').value = price;
+        document.getElementById('inputPoints').value = points;
+
+        // Update display
+        document.getElementById('displayPoints').innerText = points + ' Poin';
+        const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(price);
+        document.getElementById('displayPrice').innerText = formattedPrice;
+        document.getElementById('displayTotal').innerText = formattedPrice;
+
+        // Visual feedback
+        document.querySelectorAll('.pkg-card').forEach(card => card.classList.remove('popular'));
+        el.classList.add('popular');
+        
+        // Scroll to details
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     function updateFileName(input) {
-        const fileName = input.files[0] ? input.files[0].name : '';
-        document.getElementById('file-name').textContent = fileName ? 'Selected: ' + fileName : '';
+        const name = input.files[0] ? input.files[0].name : '';
+        document.getElementById('fileName').innerText = name;
     }
 </script>
+@endpush
 @endsection
