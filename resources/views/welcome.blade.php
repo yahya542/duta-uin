@@ -1,126 +1,136 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="hero">
-    <div class="hero-badge animate-fade-in">
-        LIVE VOTING SYSTEM 2026
-    </div>
+<section class="candidate-section pt-32">
+    <div class="container">
+        <!-- TOP: Leaderboard Podium -->
+        <div class="section-header">
+            <h2 class="section-title">Leaderboard Podium</h2>
+            <p class="text-slate-400">Tiga kandidat dengan perolehan suara tertinggi saat ini.</p>
+        </div>
 
-    <h1 class="hero-title animate-fade-in">Pilih <span>Duta Favorit</span><br>Anda Sekarang</h1>
-    <p class="hero-sub animate-fade-in">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
+        @php
+            $top1 = $candidates->get(0);
+            $top2 = $candidates->get(1);
+            $top3 = $candidates->get(2);
+            $remaining = $candidates->slice(3);
+        @endphp
 
-    <div class="flex gap-4 animate-fade-in">
-        <a href="#leaderboard" class="btn-primary">Mulai Vote</a>
-        <a href="#tutorial" class="btn-secondary">Cara Vote</a>
-    </div>
-</div>
-
-<div class="stats-bar section px-4">
-    <div class="stat-item">
-        <span class="stat-num">{{ $candidates->count() }}</span>
-        <span class="stat-label">Kandidat</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-num" id="total-votes-display">{{ number_format($totalVotes) }}</span>
-        <span class="stat-label">Total Suara</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-num">2026</span>
-        <span class="stat-label">Tahun</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-num">30</span>
-        <span class="stat-label">Hari Lagi</span>
-    </div>
-</div>
-
-<section id="leaderboard" class="section">
-    <h2 class="section-title">Kandidat Duta</h2>
-    <p class="section-desc">Pilih salah satu kandidat di bawah ini untuk memberikan dukungan suara Anda.</p>
-
-    <div class="candidates-grid">
-        @foreach($candidates as $candidate)
-            <div class="candidate-card" 
-                 onclick="window.location='{{ Auth::check() ? route('votes.payment', $candidate->id) : route('login') }}'">
-                <div class="candidate-banner">
-                    <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=1e293b&color=3b82f6' }}" 
-                         alt="{{ $candidate->name }}">
-                    
-                    <div class="candidate-num">#0{{ $loop->iteration }}</div>
-                </div>
-
-                <div class="candidate-body">
-                    <h3 class="candidate-name">{{ $candidate->name }}</h3>
-                    
-                    <div class="vote-progress-bar">
-                        <div id="candidate-bar-{{ $candidate->id }}" 
-                             class="vote-progress-fill" 
-                             style="width: {{ $candidate->percentage }}%"></div>
+        <div class="podium-wrapper">
+            <!-- Rank 2 -->
+            @if($top2)
+            <div class="podium-item podium-rank-2" onclick="window.location='{{ Auth::check() ? route('votes.payment', $top2->id) : route('login') }}'">
+                <div class="podium-card">
+                    <div class="podium-medal">🥈</div>
+                    <div class="podium-img">
+                        <img src="{{ $top2->photo ? asset('storage/' . $top2->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($top2->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $top2->name }}">
                     </div>
-                    
-                    <div class="vote-meta">
-                        <span class="vote-pct"><span id="candidate-percentage-{{ $candidate->id }}">{{ number_format($candidate->percentage, 1) }}</span>%</span>
-                        <span class="text-xs text-slate-400 font-medium"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span> Suara</span>
+                    <div class="podium-info">
+                        <h3 class="podium-name">{{ $top2->name }}</h3>
+                        <p class="podium-votes"><span id="candidate-votes-{{ $top2->id }}">{{ number_format($top2->total_votes) }}</span> SUARA</p>
                     </div>
-
-                    <button class="btn-primary w-full justify-center mt-6">Berikan Vote</button>
                 </div>
             </div>
-        @endforeach
+            @endif
+
+            <!-- Rank 1 -->
+            @if($top1)
+            <div class="podium-item podium-rank-1" onclick="window.location='{{ Auth::check() ? route('votes.payment', $top1->id) : route('login') }}'">
+                <div class="podium-card">
+                    <div class="podium-medal">🥇</div>
+                    <div class="podium-img">
+                        <img src="{{ $top1->photo ? asset('storage/' . $top1->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($top1->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $top1->name }}">
+                    </div>
+                    <div class="podium-info">
+                        <h3 class="podium-name">{{ $top1->name }}</h3>
+                        <p class="podium-votes"><span id="candidate-votes-{{ $top1->id }}">{{ number_format($top1->total_votes) }}</span> SUARA</p>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Rank 3 -->
+            @if($top3)
+            <div class="podium-item podium-rank-3" onclick="window.location='{{ Auth::check() ? route('votes.payment', $top3->id) : route('login') }}'">
+                <div class="podium-card">
+                    <div class="podium-medal">🥉</div>
+                    <div class="podium-img">
+                        <img src="{{ $top3->photo ? asset('storage/' . $top3->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($top3->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $top3->name }}">
+                    </div>
+                    <div class="podium-info">
+                        <h3 class="podium-name">{{ $top3->name }}</h3>
+                        <p class="podium-votes"><span id="candidate-votes-{{ $top3->id }}">{{ number_format($top3->total_votes) }}</span> SUARA</p>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        <!-- MIDDLE: Stats Bar -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">{{ $candidates->count() }}</span>
+                <span class="stat-label">Kandidat</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" id="total-votes-display">{{ number_format($totalVotes) }}</span>
+                <span class="stat-label">Total Suara</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">2026</span>
+                <span class="stat-label">Tahun</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">30</span>
+                <span class="stat-label">Hari Lagi</span>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="text-center mb-24">
+            <h1 class="hero-title">Pilih <span>Duta Favorit</span> Anda Sekarang</h1>
+            <p class="hero-desc" style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
+        </div>
+
+        <!-- BOTTOM: Remaining Candidates -->
+        @if($remaining->count() > 0)
+        <div class="section-header">
+            <h3 class="text-xl font-bold">Kandidat Lainnya</h3>
+        </div>
+        <div class="grid-candidates">
+            @foreach($remaining as $candidate)
+                <div class="card-candidate" onclick="window.location='{{ Auth::check() ? route('votes.payment', $candidate->id) : route('login') }}'">
+                    <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=200&background=1e293b&color=3b82f6' }}" alt="{{ $candidate->name }}">
+                    <div class="flex-1">
+                        <h4 class="candidate-name">{{ $candidate->name }}</h4>
+                        <p class="candidate-meta"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span> Suara • #0{{ $loop->iteration + 3 }}</p>
+                    </div>
+                    <div class="text-primary font-black">
+                        <span id="candidate-percentage-{{ $candidate->id }}">{{ number_format($candidate->percentage, 1) }}</span>%
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        @endif
     </div>
 </section>
-
-<section id="tutorial" class="section bg-slate-900/20">
-    <h2 class="section-title">Cara Melakukan Vote</h2>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
-        <div class="stat-item">
-            <span class="text-2xl mb-2 block">👤</span>
-            <h3 class="font-bold mb-2">Pilih</h3>
-            <p class="text-xs text-slate-400">Pilih kandidat favorit Anda dari daftar.</p>
-        </div>
-        <div class="stat-item">
-            <span class="text-2xl mb-2 block">💰</span>
-            <h3 class="font-bold mb-2">Paket</h3>
-            <p class="text-xs text-slate-400">Pilih jumlah poin vote yang diinginkan.</p>
-        </div>
-        <div class="stat-item">
-            <span class="text-2xl mb-2 block">📲</span>
-            <h3 class="font-bold mb-2">Bayar</h3>
-            <p class="text-xs text-slate-400">Transfer atau Scan QRIS yang tersedia.</p>
-        </div>
-        <div class="stat-item">
-            <span class="text-2xl mb-2 block">📄</span>
-            <h3 class="font-bold mb-2">Kirim</h3>
-            <p class="text-xs text-slate-400">Upload bukti. Suara akan divalidasi admin.</p>
-        </div>
-    </div>
-</section>
-
-<footer class="py-12 border-t border-white/5 text-center">
-    <p class="text-slate-500 text-sm">© 2026 UIN Madura. Built with Precision.</p>
-</footer>
 
 @push('scripts')
 <script type="module">
     window.addEventListener('load', () => {
         if (window.Echo) {
-            window.Echo.channel('voting-channel')
-                .listen('.vote.updated', (e) => {
-                    const totalVotesEl = document.getElementById('total-votes-display');
-                    if (totalVotesEl) {
-                        totalVotesEl.innerText = new Intl.NumberFormat('id-ID').format(e.totalVotes);
-                    }
+            window.Echo.channel('voting-channel').listen('.vote.updated', (e) => {
+                const totalVotesEl = document.getElementById('total-votes-display');
+                if (totalVotesEl) totalVotesEl.innerText = new Intl.NumberFormat('id-ID').format(e.totalVotes);
 
-                    e.candidates.forEach(candidate => {
-                        const percentEl = document.getElementById(`candidate-percentage-${candidate.id}`);
-                        const barEl = document.getElementById(`candidate-bar-${candidate.id}`);
-                        const votesEl = document.getElementById(`candidate-votes-${candidate.id}`);
+                e.candidates.forEach(candidate => {
+                    const percentEls = document.querySelectorAll(`[id^="candidate-percentage-${candidate.id}"]`);
+                    const votesEls = document.querySelectorAll(`[id^="candidate-votes-${candidate.id}"]`);
 
-                        if (percentEl) percentEl.innerText = candidate.percentage.toFixed(1);
-                        if (barEl) barEl.style.width = `${candidate.percentage}%`;
-                        if (votesEl) votesEl.innerText = new Intl.NumberFormat('id-ID').format(candidate.total_votes);
-                    });
+                    percentEls.forEach(el => el.innerText = candidate.percentage.toFixed(1));
+                    votesEls.forEach(el => el.innerText = new Intl.NumberFormat('id-ID').format(candidate.total_votes));
                 });
+            });
         }
     });
 </script>
