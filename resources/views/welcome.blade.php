@@ -44,7 +44,8 @@
         </div>
 
         <!-- LEADERBOARD CONTENT -->
-        <div id="leaderboard" class="leaderboard-container">
+        <div class="leaderboard-container">
+            <div id="leaderboard"></div>
             <!-- PUTRA SECTION -->
             <div x-show="category === 'putra'" x-transition>
                 @php
@@ -65,7 +66,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p2->id }}">{{ number_format($p2->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p2->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <a href="{{ route('votes.payment', $p2->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
 
@@ -78,7 +79,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p1->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p1->id }}">{{ number_format($p1->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p1->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <a href="{{ route('votes.payment', $p1->id) }}" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
 
@@ -91,7 +92,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p3->id }}">{{ number_format($p3->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p3->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <a href="{{ route('votes.payment', $p3->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
                 </div>
@@ -149,7 +150,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi2->id }}">{{ number_format($pi2->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi2->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <a href="{{ route('votes.payment', $pi2->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
 
@@ -162,7 +163,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi1->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi1->id }}">{{ number_format($pi1->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi1->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <a href="{{ route('votes.payment', $pi1->id) }}" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
 
@@ -175,7 +176,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi3->id }}">{{ number_format($pi3->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi3->id) }}" class="btn btn-outline py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <a href="{{ route('votes.payment', $pi3->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
                     </div>
                     @endif
                 </div>
