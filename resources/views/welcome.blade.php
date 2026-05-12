@@ -100,10 +100,10 @@
                     <table class="lb-table">
                         <thead>
                             <tr>
-                                <th>Peringkat</th>
-                                <th>Nama Kandidat</th>
-                                <th style="text-align: right;">Total Voting</th>
-                                <th style="text-align: right; width: 140px;">Aksi</th>
+                                <th class="col-rank">Peringkat</th>
+                                <th class="col-name">Nama Kandidat</th>
+                                <th class="col-votes">Total Voting</th>
+                                <th class="col-action">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,13 +116,11 @@
                                         <span class="voter-name">{{ $candidate->name }}</span>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="col-votes">
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
                                 </td>
-                                <td>
-                                    <div class="flex justify-end">
-                                        <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
-                                    </div>
+                                <td class="col-action">
+                                    <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -186,10 +184,10 @@
                     <table class="lb-table">
                         <thead>
                             <tr>
-                                <th>Peringkat</th>
-                                <th>Nama Kandidat</th>
-                                <th style="text-align: right;">Total Voting</th>
-                                <th style="text-align: right; width: 140px;">Aksi</th>
+                                <th class="col-rank">Peringkat</th>
+                                <th class="col-name">Nama Kandidat</th>
+                                <th class="col-votes">Total Voting</th>
+                                <th class="col-action">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,13 +200,11 @@
                                         <span class="voter-name">{{ $candidate->name }}</span>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="col-votes">
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
                                 </td>
-                                <td>
-                                    <div class="flex justify-end">
-                                        <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
-                                    </div>
+                                <td class="col-action">
+                                    <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
                                 </td>
                             </tr>
                             @endforeach
