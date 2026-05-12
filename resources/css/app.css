@@ -313,11 +313,26 @@ body {
     .stats-grid { grid-template-cols: 1fr 1fr; }
     .auth-card { padding: 2rem; border-radius: 1rem; }
 
-    .leaderboard-container { padding: 2rem 1.5rem; }
-    .lb-table { table-layout: auto; }
-    .lb-table th { display: none; }
-    .col-rank, .col-votes, .col-action { width: auto; }
-    .voter-score { font-size: 1rem; }
+    .leaderboard-container { padding: 1.5rem 1rem; border-radius: 1.5rem; }
+    .lb-table { table-layout: fixed; }
+    .lb-table th { 
+        display: table-cell; 
+        font-size: 0.5rem; 
+        padding: 0.75rem 0.5rem;
+        letter-spacing: 1px;
+    }
+    .lb-table td { padding: 1rem 0.5rem; }
+    
+    .col-rank { width: 45px; }
+    .col-name { width: auto; }
+    .col-votes { width: 80px; }
+    .col-action { width: 85px; }
+
+    .rank-num { font-size: 1rem; }
+    .voter-avatar { width: 32px; height: 32px; }
+    .voter-name { font-size: 0.8125rem; white-space: normal; line-height: 1.2; }
+    .voter-score { font-size: 0.875rem; }
+    .lb-table .btn { padding: 0.4rem 0.6rem; font-size: 8px; border-radius: 0.5rem; }
 }
 
 @media (max-width: 480px) {
