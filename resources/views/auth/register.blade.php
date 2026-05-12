@@ -9,7 +9,32 @@
     email: '{{ old('email') }}',
     whatsapp: '{{ old('whatsapp') }}',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    errorMsg: '',
+    validateStep1() {
+        this.errorMsg = '';
+        if (!this.firstName || !this.lastName || !this.username) {
+            this.errorMsg = 'Harap isi semua kolom data pribadi.';
+            return;
+        }
+        this.step = 2;
+    },
+    validateStep2() {
+        this.errorMsg = '';
+        if (!this.email || !this.whatsapp || !this.password || !this.confirmPassword) {
+            this.errorMsg = 'Harap isi semua kolom kontak dan keamanan.';
+            return;
+        }
+        if (this.password.length < 8) {
+            this.errorMsg = 'Password minimal 8 karakter.';
+            return;
+        }
+        if (this.password !== this.confirmPassword) {
+            this.errorMsg = 'Konfirmasi password tidak cocok.';
+            return;
+        }
+        this.step = 3;
+    }
 }">
     <div class="auth-card" style="max-width: 500px;">
         <!-- Stepper -->
@@ -59,7 +84,11 @@
                     @error('username') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <button type="button" @click="step = 2" class="btn-submit">Lanjutkan <span>→</span></button>
+                <template x-if="errorMsg && step == 1">
+                    <p class="text-red-500 text-[11px] mb-4 font-bold" x-text="errorMsg"></p>
+                </template>
+
+                <button type="button" @click="validateStep1()" class="btn-submit">Lanjutkan <span>→</span></button>
             </div>
 
             <!-- STEP 2: KONTAK & AKUN -->
@@ -84,9 +113,13 @@
                     <input type="password" name="password_confirmation" x-model="confirmPassword" required class="form-input" placeholder="Ulangi password">
                 </div>
 
+                <template x-if="errorMsg && step == 2">
+                    <p class="text-red-500 text-[11px] mb-4 font-bold" x-text="errorMsg"></p>
+                </template>
+
                 <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
-                    <button type="button" @click="step = 1" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
-                    <button type="button" @click="step = 3" class="btn-submit">Lanjutkan <span>→</span></button>
+                    <button type="button" @click="step = 1; errorMsg = ''" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
+                    <button type="button" @click="validateStep2()" class="btn-submit">Lanjutkan <span>→</span></button>
                 </div>
             </div>
 
@@ -114,7 +147,7 @@
                 <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">Dengan mendaftar, Anda menyetujui syarat dan ketentuan voting Duta Kampus 2026.</p>
 
                 <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
-                    <button type="button" @click="step = 2" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
+                    <button type="button" @click="step = 2; errorMsg = ''" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
                     <button type="submit" class="btn-submit">Daftar Sekarang</button>
                 </div>
             </div>
