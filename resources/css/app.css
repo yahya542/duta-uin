@@ -56,15 +56,18 @@ body {
     align-items: center;
 }
 
-.nav-brand { font-size: 1.25rem; font-weight: 800; text-decoration: none; color: white; }
+.nav-brand { font-size: 1.25rem; font-weight: 800; text-decoration: none; color: white; white-space: nowrap; }
 .nav-brand span { color: var(--primary); }
 
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: white; }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; border: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all 0.2s; }
 .btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
 .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+.btn-outline:hover { background: rgba(255,255,255,0.05); }
 
 /* Main Section Padding */
 .candidate-section {
@@ -107,7 +110,7 @@ body {
 }
 
 .podium-rank-2 { order: 1; }
-.podium-rank-1 { order: 2; margin-bottom: 3rem; } /* Lifted higher */
+.podium-rank-1 { order: 2; margin-bottom: 3rem; }
 .podium-rank-3 { order: 3; }
 
 .podium-card {
@@ -196,6 +199,7 @@ body {
 /* Global Sections */
 .hero-title { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
 .hero-title span { color: var(--primary); }
+.hero-desc { font-size: 1.125rem; color: var(--text-muted); }
 
 .section-header { text-align: center; margin-bottom: 3rem; }
 .section-title { font-size: 2.25rem; font-weight: 800; }
@@ -231,16 +235,45 @@ body {
 .form-input { width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.875rem 1rem; color: white; font-size: 0.9375rem; outline: none; transition: border-color 0.2s; }
 .form-input:focus { border-color: var(--primary); }
 
-.btn-submit { width: 100%; background: var(--primary); color: white; padding: 0.875rem; border-radius: 0.75rem; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s; }
+.btn-submit { width: 100%; background: var(--primary); color: white; padding: 0.875rem; border-radius: 0.75rem; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .btn-submit:hover { background: var(--primary-hover); }
 
 .auth-footer { margin-top: 2rem; text-align: center; font-size: 0.875rem; color: var(--text-muted); }
 .auth-link { color: var(--primary); text-decoration: none; font-weight: 600; }
 .auth-link:hover { text-decoration: underline; }
 
-@media (max-width: 768px) {
-    .podium-wrapper { flex-direction: column; align-items: center; }
-    .podium-rank-1 { order: 1; margin-bottom: 1.5rem; transform: scale(1); }
-    .podium-rank-2 { order: 2; }
-    .podium-rank-3 { order: 3; }
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+    .container { padding: 0 2rem; }
+    .payment-grid { grid-template-cols: 1fr; gap: 2rem; }
 }
+
+@media (max-width: 768px) {
+    .payment-info-grid { grid-template-cols: 1fr; }
+    .candidate-section { padding-top: 100px; padding-bottom: 40px; }
+    
+    .navbar .container { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+
+    .podium-wrapper { flex-direction: column; align-items: center; gap: 3rem; margin: 2rem 0 4rem; }
+    .podium-item { width: 100%; max-width: 360px; order: initial !important; margin-bottom: 0 !important; }
+    .podium-rank-1 { transform: scale(1) !important; }
+    .podium-img { height: 320px; }
+
+    .hero-title { font-size: 2.25rem; }
+    .hero-desc { font-size: 1rem; }
+    
+    .stats-grid { grid-template-cols: 1fr 1fr; }
+    
+    .auth-card { padding: 2rem; border-radius: 1rem; }
+}
+
+@media (max-width: 480px) {
+    .stats-grid { grid-template-cols: 1fr; }
+    .grid-candidates { grid-template-cols: 1fr; }
+    .card-candidate { flex-direction: column; text-align: center; padding: 2rem; }
+    .card-candidate img { width: 100px; height: 100px; margin-bottom: 1rem; }
+}
+
+/* Payment Page Responsive */
+.payment-grid { display: grid; grid-template-cols: 1fr 2fr; gap: 4rem; align-items: start; }

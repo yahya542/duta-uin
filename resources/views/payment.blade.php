@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 4rem; align-items: start;">
+        <div class="payment-grid">
             <!-- LEFT: Candidate Detail -->
             <div class="stat-card" style="padding: 0; overflow: hidden; text-align: left;">
                 <div style="height: 340px; background: #1e293b;">
@@ -37,7 +37,7 @@
                         Pilih Paket Vote
                     </h3>
                     
-                    <div style="display: grid; grid-template-cols: repeat(4, 1fr); gap: 1rem;">
+                    <div style="display: grid; grid-template-cols: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem;">
                         @php
                             $packages = [
                                 ['points' => 10, 'price' => 10000, 'label' => 'Basic'],
@@ -76,7 +76,7 @@
                                 Konfirmasi Pembayaran
                             </h3>
                             
-                            <div class="stat-card" style="display: grid; grid-template-cols: 1fr 1fr; gap: 2rem; text-align: left; align-items: center;">
+                            <div class="stat-card payment-info-grid" style="display: grid; gap: 2rem; text-align: left; align-items: center;">
                                 <div>
                                     <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem;">
                                         <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); margin-bottom: 4px;">TRANSFER KE BRI</div>
