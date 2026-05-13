@@ -76,9 +76,11 @@
                                     <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
                                 </div>
                                 <h3 class="circular-name">{{ $p->name }}</h3>
-                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                                    <p class="circular-score"><span id="candidate-votes-{{ $p->id }}">{{ number_format($p->total_votes) }}</span></p>
-                                    <span id="candidate-pct-{{ $p->id }}" class="admin-badge info" style="font-size: 14px; padding: 0.35rem 0.75rem; font-weight: 900;">{{ number_format($pct, 1) }}%</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.15rem;">
+                                    <p class="circular-score" style="font-size: 1.1rem; color: var(--primary); font-weight: 900; margin-bottom: 0;">
+                                        <span id="candidate-votes-{{ $p->id }}">{{ number_format($p->total_votes) }}</span> Suara
+                                    </p>
+                                    <span id="candidate-pct-{{ $p->id }}" style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted);">({{ number_format($pct, 1) }}%)</span>
                                 </div>
                                 <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p->id }}" data-candidate-name="{{ e($p->name) }}">Vote Sekarang</button>
                             </div>
@@ -148,9 +150,11 @@
                                     <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
                                 </div>
                                 <h3 class="circular-name">{{ $p->name }}</h3>
-                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                                    <p class="circular-score"><span id="candidate-votes-{{ $p->id }}">{{ number_format($p->total_votes) }}</span></p>
-                                    <span id="candidate-pct-{{ $p->id }}" class="admin-badge info" style="font-size: 14px; padding: 0.35rem 0.75rem; font-weight: 900;">{{ number_format($pct, 1) }}%</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.15rem;">
+                                    <p class="circular-score" style="font-size: 1.1rem; color: var(--primary); font-weight: 900; margin-bottom: 0;">
+                                        <span id="candidate-votes-{{ $p->id }}">{{ number_format($p->total_votes) }}</span> Suara
+                                    </p>
+                                    <span id="candidate-pct-{{ $p->id }}" style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted);">({{ number_format($pct, 1) }}%)</span>
                                 </div>
                                 <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p->id }}" data-candidate-name="{{ e($p->name) }}">Vote Sekarang</button>
                             </div>
@@ -198,7 +202,7 @@
         </div>
     </div>
 
-    <!-- MODAL VOTE (Hidden for brevity, unchanged) -->
+    <!-- MODAL VOTE -->
     <div id="voteModal" class="vote-modal-backdrop" aria-hidden="true">
         <div class="vote-modal-card">
             <div class="vote-modal-header">
@@ -361,20 +365,28 @@
                 const totalVotesEl = document.getElementById('total-votes-display');
                 if (totalVotesEl) totalVotesEl.innerText = new Intl.NumberFormat('id-ID').format(e.totalVotes);
 
-                // Calculate Category Totals for Percentages
+                // Calculate Category Totals
                 const putraTotal = e.candidates.filter(c => c.category === 'putra').reduce((sum, c) => sum + parseInt(c.total_votes), 0);
                 const putriTotal = e.candidates.filter(c => c.category === 'putri').reduce((sum, c) => sum + parseInt(c.total_votes), 0);
 
                 e.candidates.forEach(candidate => {
+                    const id = candidate.id;
+                    const catTotal = candidate.category === 'putra' ? putraTotal : putriTotal;
+                    const pct = catTotal > 0 ? (candidate.total_votes / catTotal) * 100 : 0;
+
                     // Update Votes
-                    const votesEls = document.querySelectorAll(`[id^="candidate-votes-${candidate.id}"]`);
+                    const votesEls = document.querySelectorAll(`[id^="candidate-votes-${id}"]`);
                     votesEls.forEach(el => el.innerText = new Intl.NumberFormat('id-ID').format(candidate.total_votes));
 
                     // Update Percentages
-                    const catTotal = candidate.category === 'putra' ? putraTotal : putriTotal;
-                    const pct = catTotal > 0 ? (candidate.total_votes / catTotal) * 100 : 0;
-                    const pctEls = document.querySelectorAll(`[id^="candidate-pct-${candidate.id}"]`);
-                    pctEls.forEach(el => el.innerText = pct.toFixed(1) + '%');
+                    const pctEls = document.querySelectorAll(`[id^="candidate-pct-${id}"]`);
+                    pctEls.forEach(el => {
+                        if (el.closest('.circular-item')) {
+                            el.innerText = `(${pct.toFixed(1)}%)`;
+                        } else {
+                            el.innerText = pct.toFixed(1) + '%';
+                        }
+                    });
                 });
             });
         }
