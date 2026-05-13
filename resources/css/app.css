@@ -160,6 +160,40 @@ body {
 
 
 .circular-name { font-weight: 800; font-size: 1.125rem; margin-bottom: 0.25rem; }
+
+/* Segmented Switch Styles */
+.segmented-switch {
+    background: #f1f5f9;
+    padding: 0.4rem;
+    border-radius: 999px;
+    display: flex;
+    gap: 0.25rem;
+    border: 1px solid var(--border);
+    width: fit-content;
+    margin: 0 auto 4rem;
+}
+
+.switch-btn {
+    padding: 0.85rem 2.5rem;
+    border-radius: 999px;
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: transparent;
+    color: #64748b;
+}
+
+.switch-btn.active {
+    background: var(--primary) !important;
+    color: white !important;
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    transform: scale(1.05);
+}
 .circular-rank-1 .circular-name { font-size: 1.5rem; }
 .circular-score { font-weight: 900; color: var(--primary); font-size: 1.25rem; letter-spacing: 1px; }
 

@@ -1,6 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .segmented-switch {
+        display: flex !important;
+        justify-content: center !important;
+        margin-bottom: 4rem !important;
+        width: 100% !important;
+    }
+    .switch-container {
+        background: #f1f5f9 !important;
+        padding: 0.4rem !important;
+        border-radius: 999px !important;
+        display: flex !important;
+        gap: 0.25rem !important;
+        border: 1px solid rgba(0,0,0,0.08) !important;
+        width: fit-content !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .switch-btn {
+        padding: 0.85rem 2.5rem !important;
+        border-radius: 999px !important;
+        border: none !important;
+        font-size: 0.875rem !important;
+        font-weight: 800 !important;
+        cursor: pointer !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.65rem !important;
+        background: transparent !important;
+        color: #64748b !important;
+        outline: none !important;
+        text-decoration: none !important;
+    }
+    .switch-btn.active {
+        background: var(--primary) !important;
+        color: white !important;
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2) !important;
+        transform: scale(1.05);
+    }
+</style>
 <section class="candidate-section" x-data="{ category: 'putra' }">
     <div class="container">
         <!-- Hero Content -->
@@ -29,23 +69,27 @@
             </div>
         </div>
 
-        <!-- Category Tabs -->
-        <div class="category-tabs" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
-            <button @click="category = 'putra'" 
-                    :class="category === 'putra' ? 'btn-primary' : 'btn-outline'"
-                    class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
-                Duta Putra
-            </button>
-            <button @click="category = 'putri'" 
-                    :class="category === 'putri' ? 'btn-primary' : 'btn-outline'"
-                    class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
-                Duta Putri
-            </button>
-        </div>
-
         <!-- LEADERBOARD CONTENT -->
-        <div class="leaderboard-container">
+        <div class="leaderboard-container" style="position: relative;">
             <div id="leaderboard"></div>
+            
+            <!-- Premium Segmented Switch -->
+            <div class="segmented-switch">
+                <div class="switch-container">
+                    <button @click="category = 'putra'" 
+                            :class="category === 'putra' ? 'active' : ''"
+                            class="switch-btn">
+                        <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        Duta Putra
+                    </button>
+                    <button @click="category = 'putri'" 
+                            :class="category === 'putri' ? 'active' : ''"
+                            class="switch-btn">
+                        <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        Duta Putri
+                    </button>
+                </div>
+            </div>
             
             @php
                 $totalPutra = $putra->sum('total_votes');
