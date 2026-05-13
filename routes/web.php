@@ -38,6 +38,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/users', [DashboardController::class, 'users'])->name('admin.users.index');
+    Route::get('/leaderboard', [DashboardController::class, 'leaderboard'])->name('admin.leaderboard');
+    Route::get('/activity', [DashboardController::class, 'activity'])->name('admin.activity');
     
     // Candidates Management
     Route::get('/candidates', [CandidateController::class, 'adminIndex'])->name('admin.candidates.index');

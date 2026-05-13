@@ -45,8 +45,15 @@ class CandidateController extends Controller
      */
     public function adminIndex()
     {
-        $candidates = Candidate::all();
-        return view('admin.candidates.index', compact('candidates'));
+        $candidates = Candidate::orderBy('category')->orderBy('total_votes', 'desc')->get();
+        $stats = [
+            'total' => $candidates->count(),
+            'putra' => $candidates->where('category', 'putra')->count(),
+            'putri' => $candidates->where('category', 'putri')->count(),
+            'votes' => $candidates->sum('total_votes'),
+        ];
+
+        return view('admin.candidates.index', compact('candidates', 'stats'));
     }
 
     /**
@@ -100,5 +107,12 @@ class CandidateController extends Controller
         event(new VoteUpdated($all, $total));
 
         return redirect()->back()->with('success', 'Candidate updated successfully.');
+    }
+
+    public function destroy(Candidate $candidate)
+    {
+        $candidate->delete();
+
+        return redirect()->back()->with('success', 'Candidate deleted successfully.');
     }
 }

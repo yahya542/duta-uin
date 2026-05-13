@@ -21,11 +21,17 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::with(['candidate', 'vote'])
-            ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $stats = [
+            'pending' => $transactions->where('status', 'pending')->count(),
+            'success' => $transactions->where('status', 'success')->count(),
+            'rejected' => $transactions->where('status', 'rejected')->count(),
+            'revenue' => $transactions->where('status', 'success')->sum('nominal'),
+        ];
             
-        return view('admin.transactions.index', compact('transactions'));
+        return view('admin.transactions.index', compact('transactions', 'stats'));
     }
 
     /**

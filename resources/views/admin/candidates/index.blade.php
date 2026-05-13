@@ -1,74 +1,88 @@
-@extends('layouts.app')
+@extends('admin.layout')
 
-@section('content')
-<div class="py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-4">
-            <div>
-                <h1 class="hero-title text-4xl text-left ml-0">KELOLA <span>KANDIDAT</span></h1>
-                <p class="section-desc text-left ml-0">Tambah, edit, atau hapus data kandidat duta kampus.</p>
-            </div>
-            <button class="btn-primary" onclick="toggleModal('createModal')">TAMBAH KANDIDAT</button>
-        </div>
+@section('admin-title', 'Kelola Kandidat')
+@section('admin-kicker', 'Data peserta voting')
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($candidates as $candidate)
-                <div class="candidate-card">
-                    <div class="candidate-banner h-48">
-                        <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=1E3A55&color=C9A84C' }}" 
-                             alt="{{ $candidate->name }}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="candidate-body">
-                        <h3 class="candidate-name text-xl mb-2">{{ $candidate->name }}</h3>
-                        <p class="text-sm text-slate-500 line-clamp-2 mb-4">{{ $candidate->description }}</p>
-                        
-                        <div class="flex items-center justify-between border-t border-slate-800 pt-4 mt-auto">
-                            <span class="text-gold font-bold">{{ number_format($candidate->total_votes) }} Poin</span>
-                            <div class="flex gap-2">
-                                <button class="btn-secondary py-2 px-4" onclick="editCandidate({{ $candidate->id }}, '{{ $candidate->name }}', '{{ $candidate->description }}')">EDIT</button>
-                                <form action="{{ route('admin.candidates.destroy', $candidate->id) }}" method="POST" onsubmit="return confirm('Hapus kandidat ini?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-400 text-sm font-bold ml-2">HAPUS</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
+@section('admin-content')
+<div class="admin-stat-grid">
+    <div class="admin-card admin-stat"><span>Total Kandidat</span><strong>{{ $stats['total'] }}</strong></div>
+    <div class="admin-card admin-stat"><span>Duta Putra</span><strong>{{ $stats['putra'] }}</strong></div>
+    <div class="admin-card admin-stat"><span>Duta Putri</span><strong>{{ $stats['putri'] }}</strong></div>
+    <div class="admin-card admin-stat"><span>Total Suara</span><strong>{{ number_format($stats['votes']) }}</strong></div>
 </div>
 
-<!-- Simple Create Modal -->
-<div id="createModal" class="modal-overlay">
-    <div class="modal max-w-lg">
-        <button class="modal-close" onclick="toggleModal('createModal')">×</button>
-        <h2>TAMBAH KANDIDAT BARU</h2>
-        <form action="{{ route('admin.candidates.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+<div class="admin-grid-2" style="grid-template-columns: 360px minmax(0, 1fr);">
+    <div class="admin-card admin-card-pad">
+        <h2 class="admin-section-title">Tambah Kandidat</h2>
+        <form action="{{ route('admin.candidates.store') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1rem;">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-gold uppercase mb-1">NAMA LENGKAP</label>
-                <input type="text" name="name" required class="w-full bg-navy-3 border border-slate-700 rounded-lg p-3 text-cream">
+                <label class="form-label">Nama Kandidat</label>
+                <input type="text" name="name" required class="form-input">
             </div>
             <div>
-                <label class="block text-xs font-bold text-gold uppercase mb-1">FOTO KANDIDAT</label>
-                <input type="file" name="photo" class="w-full text-slate-400 text-sm">
+                <label class="form-label">Kategori</label>
+                <select name="category" required class="form-input">
+                    <option value="putra">Duta Putra</option>
+                    <option value="putri">Duta Putri</option>
+                </select>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gold uppercase mb-1">DESKRIPSI / VISI MISI</label>
-                <textarea name="description" rows="4" class="w-full bg-navy-3 border border-slate-700 rounded-lg p-3 text-cream"></textarea>
+                <label class="form-label">Foto</label>
+                <input type="file" name="photo" class="form-input">
             </div>
-            <button type="submit" class="btn-primary w-full">SIMPAN KANDIDAT</button>
+            <div>
+                <label class="form-label">Deskripsi</label>
+                <textarea name="description" rows="4" class="form-input"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Simpan Kandidat</button>
         </form>
     </div>
-</div>
 
-@push('scripts')
-<script>
-    function toggleModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.toggle('open');
-    }
-</script>
-@endpush
+    <div class="admin-card admin-card-pad">
+        <h2 class="admin-section-title">Daftar Kandidat</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+            @forelse($candidates as $candidate)
+                <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;">
+                    <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=2563eb&color=ffffff' }}" alt="{{ $candidate->name }}" style="width: 100%; height: 160px; object-fit: cover;">
+                    <div style="padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: start;">
+                            <div>
+                                <h3 style="font-weight: 900; color: var(--text-main);">{{ $candidate->name }}</h3>
+                                <span class="admin-badge info">{{ $candidate->category }}</span>
+                            </div>
+                            <strong style="color: var(--primary);">{{ number_format($candidate->total_votes) }}</strong>
+                        </div>
+                        <p style="margin: 0.8rem 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">{{ $candidate->description ?: 'Belum ada deskripsi.' }}</p>
+
+                        <details>
+                            <summary style="cursor: pointer; color: var(--primary); font-weight: 900; font-size: 0.8rem;">Edit Data</summary>
+                            <form action="{{ route('admin.candidates.update', $candidate->id) }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                                @csrf
+                                @method('PUT')
+                                <input type="text" name="name" value="{{ $candidate->name }}" required class="form-input">
+                                <select name="category" required class="form-input">
+                                    <option value="putra" @selected($candidate->category === 'putra')>Duta Putra</option>
+                                    <option value="putri" @selected($candidate->category === 'putri')>Duta Putri</option>
+                                </select>
+                                <input type="number" name="total_votes" value="{{ $candidate->total_votes }}" class="form-input">
+                                <textarea name="description" rows="3" class="form-input">{{ $candidate->description }}</textarea>
+                                <input type="file" name="photo" class="form-input">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </details>
+
+                        <form action="{{ route('admin.candidates.destroy', $candidate->id) }}" method="POST" onsubmit="return confirm('Hapus kandidat ini?')" style="margin-top: 0.75rem;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline" style="width: 100%; color: #dc2626;">Hapus Kandidat</button>
+                        </form>
+                    </div>
+                </div>
+            @empty
+                <div class="admin-empty">Belum ada kandidat.</div>
+            @endforelse
+        </div>
+    </div>
+</div>
 @endsection
