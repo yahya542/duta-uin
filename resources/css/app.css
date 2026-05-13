@@ -65,13 +65,13 @@ body {
 
 .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
 .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
-.nav-links a:hover { color: white; }
+.nav-links a:hover { color: var(--primary); }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all 0.2s; }
 .btn-primary { background: var(--primary); color: white; }
 .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
 .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-.btn-outline:hover { background: rgba(255,255,255,0.05); }
+.btn-outline:hover { background: rgba(37, 99, 235, 0.06); border-color: rgba(37, 99, 235, 0.18); color: var(--primary); }
 
 /* Main Section Padding */
 .candidate-section {
@@ -83,7 +83,7 @@ body {
 .progress-box {
     width: 100%;
     height: 6px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.06);
     border-radius: 10px;
     overflow: hidden;
     margin: 0.75rem 0;
@@ -130,7 +130,7 @@ body {
     aspect-ratio: 1;
     border-radius: 50%;
     padding: 8px;
-    background: linear-gradient(135deg, var(--border) 0%, rgba(255,255,255,0.1) 100%);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.14) 0%, rgba(15, 23, 42, 0.04) 100%);
     margin-bottom: 1.5rem;
 }
 
@@ -191,7 +191,7 @@ body {
 }
 
 .lb-table td { 
-    background: rgba(255, 255, 255, 0.02); 
+    background: rgba(15, 23, 42, 0.025); 
     padding: 1.25rem 1.5rem;
     transition: all 0.2s;
 }
@@ -208,7 +208,7 @@ body {
 .lb-table tr td:first-child { border-radius: 1rem 0 0 1rem; }
 .lb-table tr td:last-child { border-radius: 0 1rem 1rem 0; }
 
-.lb-table tr:hover td { background: rgba(255, 255, 255, 0.05); }
+.lb-table tr:hover td { background: rgba(37, 99, 235, 0.055); }
 
 .rank-num { font-size: 1.5rem; font-weight: 900; color: rgba(0,0,0,0.1); }
 .voter-info { display: flex; align-items: center; gap: 1rem; overflow: hidden; }
@@ -253,7 +253,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background: rgba(248, 250, 252, 0.85);
+    background: rgba(15, 23, 42, 0.42);
     backdrop-filter: blur(14px);
 }
 
@@ -269,6 +269,7 @@ body {
     border-radius: 1.5rem;
     padding: 1.5rem;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    color: var(--text-main);
 }
 
 .vote-modal-header {
@@ -304,7 +305,7 @@ body {
     justify-content: center;
     flex-shrink: 0;
     color: var(--text-muted);
-    background: rgba(0, 0, 0, 0.03);
+    background: #f8fafc;
     border: 1px solid var(--border);
     border-radius: 0.75rem;
     cursor: pointer;
@@ -312,8 +313,9 @@ body {
 }
 
 .vote-modal-close:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.08);
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.18);
 }
 
 .vote-balance {
@@ -351,9 +353,19 @@ body {
 }
 
 .vote-points-input {
+    background: #ffffff !important;
+    color: var(--text-main) !important;
+    -webkit-text-fill-color: var(--text-main);
+    border-color: rgba(15, 23, 42, 0.12);
     font-size: 1.25rem;
     font-weight: 900;
     text-align: center;
+}
+
+.vote-points-input:focus {
+    background: #ffffff !important;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 .vote-point-options {
@@ -366,8 +378,8 @@ body {
 .vote-point-options button {
     min-height: 42px;
     color: var(--text-main);
-    background: rgba(0, 0, 0, 0.03);
-    border: 1px solid var(--border);
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
     border-radius: 0.75rem;
     font-size: 0.75rem;
     font-weight: 900;
@@ -375,7 +387,12 @@ body {
     transition: all 0.2s;
 }
 
-.vote-point-options button:hover,
+.vote-point-options button:hover {
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.2);
+}
+
 .vote-point-options button.active {
     color: white;
     background: var(--primary);
@@ -385,7 +402,8 @@ body {
 .vote-point-options button:disabled {
     color: rgba(148, 163, 184, 0.45);
     cursor: not-allowed;
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(15, 23, 42, 0.025);
+    border-color: rgba(15, 23, 42, 0.05);
 }
 
 .vote-modal-note {
@@ -432,8 +450,15 @@ body {
 
 .form-group { margin-bottom: 1.5rem; }
 .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; }
-.form-input { width: 100%; background: rgba(0, 0, 0, 0.03); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.875rem 1rem; color: var(--text-main); font-size: 0.9375rem; outline: none; transition: border-color 0.2s; }
-.form-input:focus { border-color: var(--primary); }
+.form-input { width: 100%; background: #ffffff; border: 1px solid rgba(15, 23, 42, 0.12); border-radius: 0.75rem; padding: 0.875rem 1rem; color: var(--text-main); -webkit-text-fill-color: var(--text-main); font-size: 0.9375rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; }
+.form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12); }
+.form-input::placeholder { color: #94a3b8; -webkit-text-fill-color: #94a3b8; }
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-main);
+    box-shadow: 0 0 0 1000px #ffffff inset;
+}
 
 .btn-submit { width: 100%; background: var(--primary); color: white; padding: 0.875rem; border-radius: 0.75rem; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .btn-submit:hover { background: var(--primary-hover); }

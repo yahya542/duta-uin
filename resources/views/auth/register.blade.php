@@ -45,7 +45,7 @@
             <template x-for="i in [1, 2, 3]">
                 <div style="position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
                     <div class="step-circle"
-                         :style="step >= i ? 'background: var(--primary); border-color: var(--primary); color: white;' : 'background: var(--bg-card); border-color: rgba(255,255,255,0.2); color: var(--text-muted);'">
+                         :class="step >= i ? 'is-active' : 'is-idle'">
                         <span x-show="step <= i" x-text="i"></span>
                         <span x-show="step > i">✓</span>
                     </div>
@@ -124,14 +124,14 @@
                 </template>
 
                 <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
-                    <button type="button" @click="step = 1; errorMsg = ''" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
+                    <button type="button" @click="step = 1; errorMsg = ''" class="btn-submit btn-submit-muted">Kembali</button>
                     <button type="button" @click="validateStep2()" class="btn-submit">Lanjutkan <span>→</span></button>
                 </div>
             </div>
 
             <!-- STEP 3: REVIEW -->
             <div x-show="step == 3" x-transition x-cloak>
-                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+                <div style="background: rgba(15, 23, 42, 0.025); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem;">
                     <div style="display: flex; justify-content: space-between; font-size: 12px;">
                         <span style="color: var(--text-muted);">Nama Lengkap</span>
                         <span style="font-weight: 700;" x-text="firstName + ' ' + lastName"></span>
@@ -153,7 +153,7 @@
                 <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">Dengan mendaftar, Anda menyetujui syarat dan ketentuan voting Duta Kampus 2026.</p>
 
                 <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
-                    <button type="button" @click="step = 2; errorMsg = ''" class="btn-submit" style="background: rgba(255,255,255,0.05); color: white;">Kembali</button>
+                    <button type="button" @click="step = 2; errorMsg = ''" class="btn-submit btn-submit-muted">Kembali</button>
                     <button type="submit" class="btn-submit">Daftar Sekarang</button>
                 </div>
             </div>
@@ -180,6 +180,30 @@
     font-weight: 900;
     transition: all 0.3s;
     z-index: 10;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14), 0 0 0 4px rgba(255, 255, 255, 0.95);
+}
+.step-circle.is-active {
+    color: #ffffff;
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28), 0 0 0 4px rgba(219, 234, 254, 0.95);
+}
+.step-circle.is-idle {
+    color: var(--text-muted);
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.12);
+}
+.btn-submit-muted {
+    color: var(--text-main);
+    background: #ffffff;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+.btn-submit-muted:hover {
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.06);
+    border-color: rgba(37, 99, 235, 0.18);
 }
 </style>
 @endsection
