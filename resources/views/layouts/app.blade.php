@@ -7,20 +7,40 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body x-data="{ showToast: {{ session('success') ? 'true' : 'false' }}, toastMsg: '{{ session('success') }}' }" x-init="if(showToast) setTimeout(() => showToast = false, 5000)">
+<body x-data="{ 
+    showToast: {{ session('success') ? 'true' : 'false' }}, 
+    toastMsg: '{{ session('success') }}',
+    progress: 100,
+    startToast() {
+        if(this.showToast) {
+            let interval = setInterval(() => {
+                this.progress -= 1;
+                if(this.progress <= 0) {
+                    clearInterval(interval);
+                    this.showToast = false;
+                }
+            }, 50); // 100 units * 50ms = 5000ms (5s)
+        }
+    }
+}" x-init="startToast()">
     <!-- Toast Notification -->
     <template x-if="showToast">
         <div style="position: fixed; top: 90px; right: 2rem; z-index: 9999; animation: slideIn 0.3s ease-out;">
-            <div style="background: var(--bg-card); border: 1px solid var(--primary); border-radius: 1rem; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 20px 40px rgba(0,0,0,0.4); backdrop-filter: blur(10px);">
-                <div style="width: 32px; height: 32px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                    <svg style="width: 18px; height: 18px; color: var(--primary);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
+            <div style="background: var(--bg-card); border: 1px solid var(--primary); border-radius: 1rem; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.4); backdrop-filter: blur(10px); min-width: 300px; overflow: hidden; position: relative;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 32px; height: 32px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg style="width: 18px; height: 18px; color: var(--primary);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <span style="font-weight: 700; font-size: 0.875rem; color: white; flex-grow: 1;" x-text="toastMsg"></span>
+                    <button @click="showToast = false" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;">
+                        <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
                 </div>
-                <span style="font-weight: 700; font-size: 0.875rem; color: white;" x-text="toastMsg"></span>
-                <button @click="showToast = false" style="background: none; border: none; color: var(--text-muted); cursor: pointer; margin-left: 0.5rem;">
-                    <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
+                
+                <!-- Progress Bar -->
+                <div style="position: absolute; bottom: 0; left: 0; height: 3px; background: var(--primary); transition: width 0.05s linear;" :style="'width: ' + progress + '%'"></div>
             </div>
         </div>
     </template>
