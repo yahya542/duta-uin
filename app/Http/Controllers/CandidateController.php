@@ -31,7 +31,7 @@ class CandidateController extends Controller
             return $c;
         });
         
-        $totalApprovedVotes = Vote::where('status', 'approved')->sum('vote_point');
+        $totalApprovedVotes = Vote::where('status', 'success')->sum('vote_point');
         
         return view('welcome', [
             'putra' => $putra,
@@ -108,7 +108,7 @@ class CandidateController extends Controller
 
         // Recalculate and trigger update for real-time
         $all = Candidate::orderBy('total_votes', 'desc')->get();
-        $total = Vote::where('status', 'approved')->sum('vote_point');
+        $total = Vote::where('status', 'success')->sum('vote_point');
 
         event(new VoteUpdated($all, $total));
 
