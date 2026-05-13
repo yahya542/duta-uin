@@ -3,9 +3,9 @@
 @section('content')
 <section class="candidate-section">
     <div class="container">
-        <div class="mb-12">
-            <a href="{{ route('home') }}" class="btn btn-outline" style="border-radius: 30px; padding: 0.625rem 1.25rem; font-size: 0.75rem; letter-spacing: 1.5px; gap: 0.75rem; background: rgba(255,255,255,0.03);">
-                <svg style="width: 14px; height: 14px; transform: rotate(180deg);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+        <div style="margin-bottom: 2rem; display: flex; justify-content: flex-start;">
+            <a href="{{ route('home') }}" class="btn btn-outline" style="border-radius: 50px; padding: 0.75rem 1.75rem; font-size: 0.75rem; letter-spacing: 2px; gap: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); color: white; text-transform: uppercase; font-weight: 800;">
+                <svg style="width: 12px; height: 12px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
                 KEMBALI KE BERANDA
             </a>
         </div>
