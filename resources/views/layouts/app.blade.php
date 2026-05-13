@@ -60,12 +60,10 @@
 }" x-init="startToast()">
     <!-- Toast Notification -->
     <template x-if="showToast">
-        <div style="position: fixed; top: 90px; right: 2rem; z-index: 9999; animation: slideIn 0.3s ease-out;">
-            <div style="background: var(--bg-card); border: 1px solid; border-radius: 1rem; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.4); backdrop-filter: blur(10px); min-width: 300px; overflow: hidden; position: relative;"
-                 :style="toastType === 'success' ? 'border-color: var(--primary)' : 'border-color: #ef4444'">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
-                         :style="toastType === 'success' ? 'background: rgba(59, 130, 246, 0.1); color: var(--primary)' : 'background: rgba(239, 68, 68, 0.1); color: #ef4444'">
+        <div class="toast-wrap">
+            <div class="toast-card" :class="toastType === 'success' ? 'toast-success' : 'toast-error'">
+                <div class="toast-content">
+                    <div class="toast-icon">
                         <template x-if="toastType === 'success'">
                             <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                         </template>
@@ -73,13 +71,12 @@
                             <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                         </template>
                     </div>
-                    <span style="font-weight: 700; font-size: 0.875rem; color: white; flex-grow: 1;" x-text="toastMsg"></span>
-                    <button @click="showToast = false" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;">
+                    <span class="toast-message" x-text="toastMsg"></span>
+                    <button @click="showToast = false" class="toast-close" aria-label="Tutup notifikasi">
                         <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
-                <div style="position: absolute; bottom: 0; left: 0; height: 3px; transition: width 0.05s linear;" 
-                     :style=" (toastType === 'success' ? 'background: var(--primary);' : 'background: #ef4444;') + ' width: ' + progress + '%'"></div>
+                <div class="toast-progress" :style="'width: ' + progress + '%'"></div>
             </div>
         </div>
     </template>
@@ -125,6 +122,115 @@
     @stack('scripts')
 
     <style>
+    .toast-wrap {
+        position: fixed;
+        top: 90px;
+        right: 2rem;
+        z-index: 9999;
+        width: min(360px, calc(100vw - 2rem));
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .toast-card {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-left: 5px solid var(--primary);
+        border-radius: 1rem;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14), 0 2px 10px rgba(15, 23, 42, 0.06);
+    }
+
+    .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 1rem 1.125rem;
+    }
+
+    .toast-icon {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 999px;
+    }
+
+    .toast-message {
+        flex: 1;
+        color: var(--text-main);
+        font-size: 0.875rem;
+        font-weight: 800;
+        line-height: 1.45;
+    }
+
+    .toast-close {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--text-muted);
+        background: #f8fafc;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 0.625rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .toast-close:hover {
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.08);
+        border-color: rgba(37, 99, 235, 0.18);
+    }
+
+    .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        transition: width 0.05s linear;
+    }
+
+    .toast-success {
+        border-left-color: var(--primary);
+    }
+
+    .toast-success .toast-icon {
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.1);
+    }
+
+    .toast-success .toast-progress {
+        background: var(--primary);
+    }
+
+    .toast-error {
+        border-left-color: #dc2626;
+    }
+
+    .toast-error .toast-icon {
+        color: #dc2626;
+        background: rgba(220, 38, 38, 0.1);
+    }
+
+    .toast-error .toast-progress {
+        background: #dc2626;
+    }
+
+    @media (max-width: 640px) {
+        .toast-wrap {
+            top: 84px;
+            right: 1rem;
+            left: 1rem;
+            width: auto;
+        }
+    }
+
     @keyframes slideIn {
         from { opacity: 0; transform: translateX(20px); }
         to { opacity: 1; transform: translateX(0); }
