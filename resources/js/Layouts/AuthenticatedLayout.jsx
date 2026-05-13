@@ -90,7 +90,7 @@ export default function AuthenticatedLayout({ children }) {
             {/* MAIN CONTENT AREA */}
             <div className={`flex-1 flex flex-col transition-all duration-500 ease-in-out`}>
                 {!isAdminRoute && (
-                    <header className="sticky top-0 z-[1900] bg-white/90 backdrop-blur-2xl border-b border-slate-200/60 px-8 lg:px-16 h-24 flex items-center">
+                    <header className="sticky top-0 z-[1900] bg-white/90 backdrop-blur-2xl border-b border-slate-200/60 px-4 lg:px-16 h-24 flex items-center">
                         <div className="w-full mx-auto flex items-center justify-between">
                             <div className="flex items-center gap-6">
                                 <button onClick={() => setSidebarOpen(true)} className="w-12 h-12 flex items-center justify-center bg-white border border-slate-200 rounded-2xl text-slate-600 hover:bg-slate-50 hover:border-blue-300 hover:text-blue-600 transition-all shadow-sm active:scale-90 group">
@@ -167,7 +167,7 @@ export default function AuthenticatedLayout({ children }) {
                     </header>
                 )}
 
-                <main className={`flex-1 px-8 lg:px-16 py-16`}>
+                <main className={`flex-1 px-4 lg:px-16 py-12 lg:py-16`}>
                     <div className="max-w-7xl mx-auto">
                         {children}
                     </div>

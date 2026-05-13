@@ -32,7 +32,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
         <AuthenticatedLayout>
             <Head title="Pilih Duta Favorit Anda Sekarang" />
             
-            <section className="pt-16 pb-24 px-6">
+            <section className="pt-16 pb-24 px-0 lg:px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Hero Content */}
                     <div className="text-center mb-24">
@@ -63,23 +63,23 @@ export default function Welcome({ putra, putri, totalVotes }) {
                     </div>
 
                     {/* LEADERBOARD CONTENT */}
-                    <div id="leaderboard" className="bg-white rounded-[3.5rem] p-8 lg:p-20 border border-slate-100 shadow-2xl relative overflow-hidden">
+                    <div id="leaderboard" className="bg-white rounded-[2.5rem] lg:rounded-[3.5rem] p-4 lg:p-20 border border-slate-100 shadow-2xl relative overflow-hidden">
                         {/* Premium Segmented Switch */}
                         <div className="flex justify-center mb-24 relative z-40">
                             <div className="bg-slate-100/80 backdrop-blur-md p-2 rounded-[32px] flex gap-2 border border-slate-200 shadow-inner">
                                 <button 
                                     onClick={() => setCategory('putra')}
-                                    className={`px-12 py-4 rounded-[24px] font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-500 ${category === 'putra' ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/40 scale-105' : 'text-slate-500 hover:text-slate-900'}`}
+                                    className={`px-6 lg:px-12 py-3 lg:py-4 rounded-[20px] lg:rounded-[24px] font-black text-[10px] lg:text-xs uppercase tracking-widest flex items-center gap-2 lg:gap-3 transition-all duration-500 ${category === 'putra' ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/40 scale-105' : 'text-slate-500 hover:text-slate-900'}`}
                                 >
                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                                    Duta Putra
+                                    Putra
                                 </button>
                                 <button 
                                     onClick={() => setCategory('putri')}
-                                    className={`px-12 py-4 rounded-[24px] font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-500 ${category === 'putri' ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/40 scale-105' : 'text-slate-500 hover:text-slate-900'}`}
+                                    className={`px-6 lg:px-12 py-3 lg:py-4 rounded-[20px] lg:rounded-[24px] font-black text-[10px] lg:text-xs uppercase tracking-widest flex items-center gap-2 lg:gap-3 transition-all duration-500 ${category === 'putri' ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/40 scale-105' : 'text-slate-500 hover:text-slate-900'}`}
                                 >
                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                                    Duta Putri
+                                    Putri
                                 </button>
                             </div>
                         </div>
@@ -133,8 +133,8 @@ export default function Welcome({ putra, putri, totalVotes }) {
                             })}
                         </div>
 
-                        {/* Table Section */}
-                        <div className="border-t border-slate-100 pt-20 overflow-x-auto">
+                        {/* Desktop Table Section (Visible on LG screens) */}
+                        <div className="hidden lg:block border-t border-slate-100 pt-20 overflow-x-auto">
                             <table className="w-full border-separate border-spacing-y-5 min-w-[800px]">
                                 <thead>
                                     <tr className="text-[11px] font-black text-slate-400 uppercase tracking-[3px]">
@@ -150,7 +150,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                         const pct = totalCategoryVotes > 0 ? (candidate.total_votes / totalCategoryVotes) * 100 : 0;
                                         return (
                                             <tr key={candidate.id} className="group">
-                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 rounded-l-[2rem] transition-all duration-500">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 rounded-l-[2.5rem] transition-all duration-500">
                                                     <span className="text-3xl font-black text-slate-200 group-hover:text-blue-100 italic transition-colors">#{idx + 4}</span>
                                                 </td>
                                                 <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 transition-all duration-500">
@@ -181,6 +181,47 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     })}
                                 </tbody>
                             </table>
+                        </div>
+
+                        {/* Mobile List Section (Visible on Mobile/Tablet) */}
+                        <div className="lg:hidden space-y-6 pt-10">
+                            {remaining.map((candidate, idx) => {
+                                const pct = totalCategoryVotes > 0 ? (candidate.total_votes / totalCategoryVotes) * 100 : 0;
+                                return (
+                                    <div key={candidate.id} className="bg-slate-50/50 rounded-[2.5rem] p-6 border border-slate-100 relative overflow-hidden group active:scale-[0.98] transition-all">
+                                        <div className="flex items-center gap-5 mb-6">
+                                            <div className="relative">
+                                                <img 
+                                                    className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-xl" 
+                                                    src={candidate.photo ? `/storage/${candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&size=200&background=f1f5f9&color=2563eb&bold=true`} 
+                                                />
+                                                <span className="absolute -top-3 -left-3 w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center font-black text-slate-400 italic shadow-lg text-sm">
+                                                    #{idx + 4}
+                                                </span>
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="font-black text-slate-900 text-lg leading-tight truncate mb-1">{candidate.name}</h4>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="bg-white text-blue-600 px-3 py-0.5 rounded-lg text-[10px] font-black shadow-sm border border-slate-100">{pct.toFixed(1)}% Kontribusi</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex items-center justify-between gap-4 pt-4 border-t border-slate-200/50">
+                                            <div>
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Total Perolehan</p>
+                                                <p className="text-2xl font-black text-slate-900 tracking-tighter">{candidate.total_votes.toLocaleString()} <span className="text-[11px] text-slate-400 font-bold uppercase tracking-tight">Suara</span></p>
+                                            </div>
+                                            <button 
+                                                onClick={() => openVoteModal(candidate)}
+                                                className="py-4 px-8 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[2px] rounded-2xl shadow-xl shadow-blue-500/20 active:bg-blue-700 transition-all"
+                                            >
+                                                Vote
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
