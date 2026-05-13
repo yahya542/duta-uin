@@ -94,17 +94,6 @@ export default function AdminLayout({ children, title, kicker }) {
                         </div>
 
                         <div className="flex items-center gap-4 lg:gap-8">
-                            <div className="hidden md:block relative group">
-                                <input 
-                                    type="text" 
-                                    placeholder="Cari data..." 
-                                    className="bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm font-bold w-[200px] focus:w-[300px] focus:bg-white focus:border-blue-500 focus:shadow-xl focus:shadow-blue-500/10 outline-none transition-all duration-300"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                            </div>
-
                             <Link href="/" className="hidden sm:flex px-6 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 shadow-sm transition-all duration-300">Lihat Situs</Link>
 
                             <div className="relative">
