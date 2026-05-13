@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, usePage, Head } from '@inertiajs/react';
+import Toast from '@/Components/Toast';
 
 export default function AdminLayout({ children, title, kicker }) {
-    const { auth } = usePage().props;
+    const { auth, flash } = usePage().props;
     const { url } = usePage();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [toast, setToast] = useState(null);
+
+    useEffect(() => {
+        if (flash?.success) {
+            setToast({ message: flash.success, type: 'success' });
+        } else if (flash?.error) {
+            setToast({ message: flash.error, type: 'error' });
+        }
+    }, [flash]);
 
     const navigation = [
         { name: 'Ringkasan', href: '/admin', icon: (
@@ -144,6 +154,14 @@ export default function AdminLayout({ children, title, kicker }) {
                     {children}
                 </div>
             </main>
+            {/* Toast Notification */}
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
         </div>
     );
 }
