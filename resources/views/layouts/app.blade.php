@@ -142,6 +142,42 @@
             pointer-events: none;
         }
 
+        /* Modal Styles */
+        .modal-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(15, 23, 42, 0.4); 
+            backdrop-filter: blur(8px); 
+            z-index: 10000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 2rem;
+        }
+        .modal-card { 
+            background: white; 
+            width: 100%; 
+            max-width: 500px; 
+            border-radius: 2rem; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15); 
+            overflow: hidden;
+            position: relative;
+        }
+        .modal-header { padding: 2.5rem 2.5rem 1rem; text-align: center; }
+        .modal-body { padding: 1rem 2.5rem 2.5rem; text-align: center; }
+        .modal-icon { 
+            width: 80px; 
+            height: 80px; 
+            background: rgba(37, 99, 235, 0.1); 
+            color: var(--primary); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 1.5rem; 
+        }
+
         /* Toast Styles */
         .toast-wrap { position: fixed; top: 90px; right: 2rem; z-index: 9999; width: min(360px, calc(100vw - 2rem)); }
         .toast-card { background: white; border-radius: 1rem; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden; }
@@ -158,11 +194,27 @@
 <body x-data="{ 
     sidebarOpen: false,
     profileOpen: false,
+    showWelcomeModal: false,
+    dontShowAgain: false,
     showToast: {{ session('success') || session('error') ? 'true' : 'false' }}, 
     toastMsg: '{{ session('success') ?? session('error') }}',
     toastType: '{{ session('success') ? 'success' : 'error' }}',
     progress: 100,
     init() {
+        @guest
+            sessionStorage.removeItem('welcomeModalShown');
+        @endguest
+
+        @auth
+            const hidePermanent = localStorage.getItem('hideWelcomeModal');
+            const shownThisSession = sessionStorage.getItem('welcomeModalShown');
+
+            if (!hidePermanent && !shownThisSession) {
+                setTimeout(() => { this.showWelcomeModal = true; }, 500);
+                sessionStorage.setItem('welcomeModalShown', 'true');
+            }
+        @endauth
+
         if(this.showToast) {
             let interval = setInterval(() => {
                 this.progress -= 1;
@@ -172,6 +224,12 @@
                 }
             }, 50);
         }
+    },
+    closeModal() {
+        if (this.dontShowAgain) {
+            localStorage.setItem('hideWelcomeModal', 'true');
+        }
+        this.showWelcomeModal = false;
     }
 }">
     <!-- SIDEBAR OVERLAY -->
@@ -300,6 +358,39 @@
                     <span class="toast-message" x-text="toastMsg"></span>
                 </div>
                 <div class="toast-progress" :style="'width: ' + progress + '%'"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Welcome Modal -->
+    <template x-if="showWelcomeModal">
+        <div class="modal-overlay" @click.self="closeModal">
+            <div class="modal-card" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
+                <div class="modal-header">
+                    <div class="modal-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7V17L12 22L21 17V7L12 2Z"/><path d="M12 22V12"/><path d="M21 7L12 12L3 7"/></svg>
+                    </div>
+                    <h2 style="font-size: 1.75rem; font-weight: 900; color: var(--text-main); margin-bottom: 0.5rem;">Siap Memberi Dukungan?</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">Halo! Untuk mulai memberikan suara (vote) kepada kandidat favorit Anda, pastikan Anda memiliki poin yang cukup.</p>
+                </div>
+                <div class="modal-body">
+                    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.5rem; margin-bottom: 2rem;">
+                        <p style="font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">Langkah Cepat:</p>
+                        <p style="font-size: 0.875rem; color: var(--text-muted);">Silakan lakukan <strong>Top Up Poin</strong> terlebih dahulu untuk mendukung calon Duta pilihan Anda.</p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <a href="{{ route('topup.index') }}" class="btn btn-primary" style="padding: 1rem; font-size: 1rem; font-weight: 800; border-radius: 1rem; text-decoration: none;">Top Up Sekarang</a>
+                        <button @click="closeModal" style="background: transparent; border: none; font-weight: 700; color: var(--text-muted); cursor: pointer; padding: 0.5rem;">Nanti Saja</button>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.8125rem; font-weight: 600; color: var(--text-muted);">
+                            <input type="checkbox" x-model="dontShowAgain" style="width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--border);">
+                            Jangan tampilkan pesan ini lagi
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </template>
