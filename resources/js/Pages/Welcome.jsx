@@ -277,6 +277,16 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     <strong className="text-[#2563eb] text-lg font-black">{auth.user.points.toLocaleString()} PTS</strong>
                                 </div>
 
+                                {/* ERROR ALERT - STYLE MATCHING LOGIN PAGE */}
+                                {(votePoints > auth.user.points || voteForm.errors.points) && (
+                                    <div className="bg-red-50 border border-red-100 p-4 rounded-2xl flex items-center gap-3 animate-pulse">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-red-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                        <span className="text-red-500 text-xs font-black uppercase tracking-tight">
+                                            {voteForm.errors.points || 'Poin tidak mencukupi!'}
+                                        </span>
+                                    </div>
+                                )}
+
                                 <div>
                                     <label className="text-[10px] font-black text-[#64748b] uppercase tracking-wider block mb-3">Jumlah poin yang digunakan</label>
                                     <input 
@@ -284,8 +294,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                         className="w-full bg-slate-50 border border-black/5 rounded-2xl text-center text-3xl font-black py-5 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" 
                                         value={votePoints}
                                         min="1"
-                                        max={auth.user.points}
-                                        onChange={(e) => setVotePoints(Math.min(Math.max(1, parseInt(e.target.value) || 0), auth.user.points))}
+                                        onChange={(e) => setVotePoints(parseInt(e.target.value) || 0)}
                                         required
                                     />
                                     <div className="grid grid-cols-4 gap-2 mt-4">
@@ -308,10 +317,10 @@ export default function Welcome({ putra, putri, totalVotes }) {
 
                                 <button 
                                     type="submit"
-                                    disabled={voteForm.processing}
-                                    className="w-full py-5 bg-[#2563eb] text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                                    disabled={voteForm.processing || votePoints > auth.user.points || votePoints <= 0}
+                                    className="w-full py-5 bg-[#2563eb] text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:grayscale disabled:scale-100"
                                 >
-                                    {voteForm.processing ? 'Memproses...' : `Gunakan ${votePoints} Poin`}
+                                    {voteForm.processing ? 'Memproses...' : votePoints > auth.user.points ? 'Saldo Tidak Cukup' : `Gunakan ${votePoints} Poin`}
                                 </button>
                             </form>
                         )}
