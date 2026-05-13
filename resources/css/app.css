@@ -38,47 +38,9 @@ body {
     padding: 0 1.5rem;
 }
 
-/* Navbar */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 72px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-}
-
-.navbar .container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    min-width: 0;
-}
-
-.nav-brand { font-size: 1.25rem; font-weight: 800; text-decoration: none; color: var(--text-main); white-space: nowrap; }
-.nav-brand span { color: var(--primary); }
-
-.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-.nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
-.nav-links a:hover { color: var(--primary); }
-.nav-actions { display: flex; gap: 1rem; align-items: center; flex-shrink: 0; }
-
-.btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all 0.2s; }
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-.btn-outline:hover { background: rgba(37, 99, 235, 0.06); border-color: rgba(37, 99, 235, 0.18); color: var(--primary); }
-
-/* Main Section Padding */
+/* Main Section Padding (Adjusted for Sidebar Layout) */
 .candidate-section {
-    padding-top: 140px;
+    padding-top: 2rem;
     padding-bottom: 80px;
 }
 

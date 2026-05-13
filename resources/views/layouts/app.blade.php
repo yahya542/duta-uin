@@ -10,51 +10,136 @@
         :root {
             --primary: #2563eb !important;
             --primary-hover: #1d4ed8 !important;
-            --bg-dark: #f1f5f9 !important; /* Slightly darker background for contrast */
+            --bg-dark: #f8fafc !important;
             --bg-card: #ffffff !important;
-            --border: rgba(0, 0, 0, 0.06) !important;
+            --border: rgba(0, 0, 0, 0.08) !important;
             --text-main: #0f172a !important;
             --text-muted: #64748b !important;
         }
-        body { background-color: var(--bg-dark) !important; color: var(--text-main) !important; }
-        .navbar { background: rgba(255, 255, 255, 0.9) !important; border-bottom: 1px solid var(--border) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important; }
-        .nav-brand, .nav-links a { color: var(--text-main) !important; }
+        body { background-color: var(--bg-dark) !important; color: var(--text-main) !important; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* App Layout */
+        .app-layout { display: flex; min-height: 100vh; }
         
-        /* High Contrast Card System */
-        .leaderboard-container { 
-            background: #ffffff !important; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08) !important; 
-            border: 1px solid var(--border) !important; 
+        /* SIDEBAR */
+        .sidebar { 
+            width: 280px; 
+            background: #ffffff; 
+            border-right: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            position: fixed; 
+            height: 100vh; 
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-100%);
         }
-        .stat-card { 
-            background: #ffffff !important; 
-            border: 1px solid var(--border) !important; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04) !important; 
-        }
-        .circular-item h3, .voter-name { color: var(--text-main) !important; }
-        .rank-num { color: rgba(0,0,0,0.15) !important; }
-        .rank-tag { background: #ffffff !important; border: 1px solid var(--border) !important; color: var(--text-main) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.03) !important; }
-        .circular-rank-1 .rank-tag { background: #FFD700 !important; color: #451a03 !important; border: none !important; }
-        .circular-rank-2 .rank-tag { background: #C0C0C0 !important; color: #333 !important; border: none !important; }
-        .circular-rank-3 .rank-tag { background: #CD7F32 !important; color: #fff !important; border: none !important; }
+        .sidebar.open { transform: translateX(0); }
+        .main-content { flex: 1; margin-left: 0; min-width: 0; display: flex; flex-direction: column; min-height: 100vh; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .main-content.with-sidebar { margin-left: 280px; }
         
-        /* Hide Number Input Spinners */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .sidebar-header { padding: 1.5rem 2rem; height: 72px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+        .sidebar-nav { padding: 2rem 1.25rem; flex: 1; }
+        .sidebar-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            padding: 0.875rem 1.25rem; 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 0.875rem; 
+            border-radius: 1rem; 
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
         }
-        input[type=number] {
-            -moz-appearance: textfield;
+        .sidebar-link:hover { background: #f8fafc; color: var(--primary); }
+        .sidebar-link.active { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15); }
+        .sidebar-link svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        /* NAVBAR */
+        .navbar { 
+            height: 72px; 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid var(--border); 
+            position: sticky; 
+            top: 0; 
+            z-index: 900;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
         }
+        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Profile Dropdown */
+        .profile-dropdown { position: relative; }
+        .dropdown-menu { 
+            position: absolute; 
+            top: calc(100% + 12px); 
+            right: 0; 
+            width: 240px; 
+            background: white; 
+            border: 1px solid var(--border); 
+            border-radius: 1.25rem; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
+            padding: 0.75rem; 
+            z-index: 1100;
+            transform-origin: top right;
+        }
+        .dropdown-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.85rem; 
+            padding: 0.85rem 1rem; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 0.875rem; 
+            font-weight: 700; 
+            border-radius: 0.85rem; 
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            background: transparent;
+            text-align: left;
+        }
+        .dropdown-item:hover { background: #f8fafc; color: var(--primary); }
+        .dropdown-item.logout { color: #dc2626; margin-top: 0.5rem; border-top: 1px solid var(--border); border-radius: 0; padding-top: 0.75rem; }
+
+        /* Mobile specific */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content.with-sidebar { margin-left: 0; }
+            .navbar { padding: 0 1.25rem; }
+            .sidebar-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; backdrop-filter: blur(4px); }
+        }
+
+        .nav-brand { font-size: 1.25rem; font-weight: 900; text-decoration: none; color: var(--text-main); }
+        .nav-brand span { color: var(--primary); }
+
+        /* Toast Styles */
+        .toast-wrap { position: fixed; top: 90px; right: 2rem; z-index: 9999; width: min(360px, calc(100vw - 2rem)); }
+        .toast-card { background: white; border-radius: 1rem; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .toast-content { display: flex; align-items: center; gap: 1rem; padding: 1rem; }
+        .toast-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .toast-success .toast-icon { background: rgba(37, 99, 235, 0.1); color: var(--primary); }
+        .toast-error .toast-icon { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+        .toast-message { font-size: 0.875rem; font-weight: 800; flex: 1; }
+        .toast-progress { height: 3px; transition: width 0.05s linear; }
+        .toast-success .toast-progress { background: var(--primary); }
+        .toast-error .toast-progress { background: #dc2626; }
     </style>
 </head>
 <body x-data="{ 
+    sidebarOpen: window.innerWidth > 1024,
+    profileOpen: false,
     showToast: {{ session('success') || session('error') ? 'true' : 'false' }}, 
     toastMsg: '{{ session('success') ?? session('error') }}',
     toastType: '{{ session('success') ? 'success' : 'error' }}',
     progress: 100,
-    startToast() {
+    init() {
         if(this.showToast) {
             let interval = setInterval(() => {
                 this.progress -= 1;
@@ -65,7 +150,112 @@
             }, 50);
         }
     }
-}" x-init="startToast()">
+}">
+    <!-- SIDEBAR OVERLAY -->
+    <div x-show="sidebarOpen && window.innerWidth <= 1024" @click="sidebarOpen = false" class="sidebar-overlay" style="display: none;"></div>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
+            <div class="sidebar-header">
+                <a href="{{ route('home') }}" class="nav-brand">DUTA<span>KAMPUS</span></a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ route('home') }}" class="sidebar-link {{ request()->routeIs('home') && !str_contains(request()->fullUrl(), '#leaderboard') ? 'active' : '' }}">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                    Beranda
+                </a>
+                <a href="{{ route('home') }}#leaderboard" class="sidebar-link {{ str_contains(request()->fullUrl(), '#leaderboard') ? 'active' : '' }}">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    Leaderboard
+                </a>
+                <a href="{{ route('tutorial') }}" class="sidebar-link {{ request()->routeIs('tutorial') ? 'active' : '' }}">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                    Tutorial
+                </a>
+                @auth
+                <a href="{{ route('topup.index') }}" class="sidebar-link {{ request()->routeIs('topup.index') ? 'active' : '' }}">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM17 16v2a2 2 0 01-2 2H9a2 2 0 01-2-2v-2m5-13V3m0 0L9 5m3-2l3 2" /></svg>
+                    Top Up Poin
+                </a>
+                @endauth
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="main-content" :class="sidebarOpen && window.innerWidth > 1024 ? 'with-sidebar' : ''">
+            <!-- NAVBAR -->
+            <nav class="navbar">
+                <div class="nav-container">
+                    <div style="display: flex; align-items: center;">
+                        <button @click="sidebarOpen = !sidebarOpen" style="background: none; border: none; padding: 0.5rem; cursor: pointer; color: var(--text-main); display: flex; align-items: center; justify-content: center; margin-right: 1rem; border-radius: 0.5rem; transition: background 0.2s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
+                            <svg style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        </button>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 1.25rem;">
+                        @auth
+                        <!-- Points Display -->
+                        <div style="background: #f8fafc; border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 999px; display: flex; align-items: center; gap: 0.65rem;">
+                            <div style="width: 22px; height: 22px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            </div>
+                            <span style="font-size: 13px; font-weight: 900; color: var(--text-main);">{{ number_format(Auth::user()->points) }} <span style="font-size: 9px; color: var(--text-muted);">PTS</span></span>
+                        </div>
+
+                        <!-- Profile Dropdown -->
+                        <div class="profile-dropdown" @click.away="profileOpen = false">
+                            <button @click="profileOpen = !profileOpen" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem;">
+                                <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=100&background=2563eb&color=ffffff' }}" 
+                                     style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                                <svg style="width: 14px; height: 14px; color: var(--text-muted); transition: transform 0.2s;" :style="profileOpen ? 'transform: rotate(180deg)' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+
+                            <div class="dropdown-menu" x-show="profileOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" style="display: none;">
+                                <div style="padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem;">
+                                    <div style="font-size: 0.8125rem; font-weight: 900; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->name }}</div>
+                                    <div style="font-size: 10px; color: var(--text-muted);">Akun Supporter</div>
+                                </div>
+                                <a href="{{ route('profile.index') }}" class="dropdown-item">
+                                    <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    Edit Profil Saya
+                                </a>
+                                @if(Auth::user()->role === 'admin')
+                                    <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                                        <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                                        Admin Panel
+                                    </a>
+                                @endif
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item logout">
+                                        <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                        Keluar Akun
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-primary" style="padding: 0.65rem 1.5rem; border-radius: 999px; font-size: 0.875rem; font-weight: 800; text-decoration: none;">Masuk</a>
+                        @endauth
+                    </div>
+                </div>
+            </nav>
+
+            <!-- MAIN CONTENT -->
+            <div style="flex: 1; padding: 2.5rem 2rem;">
+                @yield('content')
+            </div>
+
+            <!-- FOOTER -->
+            <footer style="background: #ffffff; border-top: 1px solid var(--border); padding: 2.5rem 2rem; margin-top: auto;">
+                <div style="max-width: 1200px; margin: 0 auto; text-align: center; color: var(--text-muted); font-size: 0.8125rem; font-weight: 700;">
+                    &copy; 2026 Duta Kampus UIN Madura. All Rights Reserved.
+                </div>
+            </footer>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <template x-if="showToast">
         <div class="toast-wrap">
@@ -80,222 +270,12 @@
                         </template>
                     </div>
                     <span class="toast-message" x-text="toastMsg"></span>
-                    <button @click="showToast = false" class="toast-close" aria-label="Tutup notifikasi">
-                        <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
                 </div>
                 <div class="toast-progress" :style="'width: ' + progress + '%'"></div>
             </div>
         </div>
     </template>
 
-    <nav class="navbar">
-        <div class="container">
-            <a href="{{ route('home') }}" class="nav-brand">DUTA<span>KAMPUS</span></a>
-            
-            @if(!request()->is('admin*'))
-            <ul class="nav-links">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
-                <li><a href="{{ route('home') }}#leaderboard">Leaderboard</a></li>
-                <li><a href="{{ route('tutorial') }}" class="{{ request()->routeIs('tutorial') ? 'active' : '' }}">Tutorial</a></li>
-                @auth
-                    <li><a href="{{ route('topup.index') }}" class="{{ request()->routeIs('topup.index') ? 'active' : '' }}">Top Up</a></li>
-                @endauth
-            </ul>
-            @endif
-
-            <div class="nav-actions">
-                @auth
-                    <!-- Enhanced Points Display -->
-                    <div class="nav-points" style="background: rgba(37, 99, 235, 0.05); border: 1.5px solid rgba(37, 99, 235, 0.12); padding: 0.4rem 0.85rem; border-radius: 999px; display: flex; align-items: center; gap: 0.65rem; margin-right: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
-                        <div style="width: 24px; height: 24px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        </div>
-                        <div style="display: flex; flex-direction: column; line-height: 1;">
-                            <span style="font-size: 9px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Poin Anda</span>
-                            <span style="font-size: 15px; font-weight: 900; color: var(--text-main);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: var(--primary); font-weight: 900;">PTS</span></span>
-                        </div>
-                    </div>
-
-                    <a href="{{ route('profile.index') }}" class="nav-profile" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-                        <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=100&background=2563eb&color=ffffff' }}" 
-                             style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                    </a>
-
-                    @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 10px;">Admin</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn" style="padding: 0.5rem 1rem; font-size: 10px; background: #dc2626; color: white; display: flex; align-items: center; gap: 0.4rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                            Keluar
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-primary">Masuk</a>
-                @endauth
-            </div>
-        </div>
-    </nav>
-
-    <main>
-        @yield('content')
-    </main>
-
-    <!-- FOOTER -->
-    <footer style="background: #ffffff; border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 5rem;">
-        <div class="container">
-            <div class="footer-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
-                <div>
-                    <a href="{{ route('home') }}" class="nav-brand" style="font-size: 1.5rem;">DUTA<span>KAMPUS</span></a>
-                    <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-width: 320px;">
-                        Platform voting resmi pemilihan Duta Kampus UIN Madura 2026. Dukung kandidat favoritmu dan jadilah bagian dari perubahan.
-                    </p>
-                </div>
-                <div>
-                    <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem;">Tautan Cepat</h4>
-                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li><a href="{{ route('home') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Beranda</a></li>
-                        <li><a href="{{ route('home') }}#leaderboard" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Leaderboard</a></li>
-                        <li><a href="{{ route('tutorial') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Cara Voting</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem;">Akun Saya</h4>
-                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
-                        @auth
-                            <li><a href="{{ route('profile.index') }}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 800;">Edit Profil Saya</a></li>
-                            <li><a href="{{ route('topup.index') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Top Up Poin</a></li>
-                        @else
-                            <li><a href="{{ route('login') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Masuk Akun</a></li>
-                            <li><a href="{{ route('register') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Daftar Baru</a></li>
-                        @endauth
-                    </ul>
-                </div>
-            </div>
-            <div style="border-top: 1px solid var(--border); padding-top: 2rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 700;">
-                &copy; 2026 Duta Kampus UIN Madura. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
-
     @stack('scripts')
-
-    <style>
-    .toast-wrap {
-        position: fixed;
-        top: 90px;
-        right: 2rem;
-        z-index: 9999;
-        width: min(360px, calc(100vw - 2rem));
-        animation: slideIn 0.3s ease-out;
-    }
-
-    .toast-card {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        background: #ffffff;
-        border: 1px solid var(--border);
-        border-left: 5px solid var(--primary);
-        border-radius: 1rem;
-        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14), 0 2px 10px rgba(15, 23, 42, 0.06);
-    }
-
-    .toast-content {
-        display: flex;
-        align-items: center;
-        gap: 0.875rem;
-        padding: 1rem 1.125rem;
-    }
-
-    .toast-icon {
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        border-radius: 999px;
-    }
-
-    .toast-message {
-        flex: 1;
-        color: var(--text-main);
-        font-size: 0.875rem;
-        font-weight: 800;
-        line-height: 1.45;
-    }
-
-    .toast-close {
-        width: 30px;
-        height: 30px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        color: var(--text-muted);
-        background: #f8fafc;
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 0.625rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .toast-close:hover {
-        color: var(--primary);
-        background: rgba(37, 99, 235, 0.08);
-        border-color: rgba(37, 99, 235, 0.18);
-    }
-
-    .toast-progress {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 3px;
-        transition: width 0.05s linear;
-    }
-
-    .toast-success {
-        border-left-color: var(--primary);
-    }
-
-    .toast-success .toast-icon {
-        color: var(--primary);
-        background: rgba(37, 99, 235, 0.1);
-    }
-
-    .toast-success .toast-progress {
-        background: var(--primary);
-    }
-
-    .toast-error {
-        border-left-color: #dc2626;
-    }
-
-    .toast-error .toast-icon {
-        color: #dc2626;
-        background: rgba(220, 38, 38, 0.1);
-    }
-
-    .toast-error .toast-progress {
-        background: #dc2626;
-    }
-
-    @media (max-width: 640px) {
-        .toast-wrap {
-            top: 84px;
-            right: 1rem;
-            left: 1rem;
-            width: auto;
-        }
-    }
-
-    @keyframes slideIn {
-        from { opacity: 0; transform: translateX(20px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    </style>
 </body>
 </html>
