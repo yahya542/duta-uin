@@ -150,28 +150,28 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                         const pct = totalCategoryVotes > 0 ? (candidate.total_votes / totalCategoryVotes) * 100 : 0;
                                         return (
                                             <tr key={candidate.id} className="group">
-                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 rounded-l-[2.5rem] transition-all duration-500">
-                                                    <span className="text-4xl font-black text-slate-200 group-hover:text-blue-100 italic transition-colors">#{idx + 4}</span>
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 rounded-l-[2rem] transition-all duration-500">
+                                                    <span className="text-3xl font-black text-slate-200 group-hover:text-blue-100 italic transition-colors">#{idx + 4}</span>
                                                 </td>
-                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 transition-all duration-500">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 transition-all duration-500">
                                                     <div className="flex items-center gap-6">
                                                         <img 
-                                                            className="w-16 h-16 rounded-2xl object-cover border-4 border-white shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" 
+                                                            className="w-16 h-16 rounded-2xl object-cover border-4 border-white shadow-xl group-hover:scale-110 transition-all duration-500" 
                                                             src={candidate.photo ? `/storage/${candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&size=200&background=f1f5f9&color=2563eb&bold=true`} 
                                                         />
                                                         <span className="font-black text-slate-900 text-xl tracking-tight group-hover:text-blue-600 transition-colors">{candidate.name}</span>
                                                     </div>
                                                 </td>
-                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 text-right transition-all duration-500">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 text-right transition-all duration-500">
                                                     <span className="font-black text-slate-900 text-2xl tracking-tighter">{candidate.total_votes.toLocaleString()}</span>
                                                 </td>
-                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 text-right transition-all duration-500">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 text-right transition-all duration-500">
                                                     <span className="bg-white text-blue-600 px-5 py-2 rounded-2xl text-xs font-black shadow-lg shadow-blue-500/5 border border-slate-100">{pct.toFixed(1)}%</span>
                                                 </td>
-                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 text-right rounded-r-[2.5rem] transition-all duration-500">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-6 text-right rounded-r-[2rem] transition-all duration-500">
                                                     <button 
                                                         onClick={() => openVoteModal(candidate)}
-                                                        className="py-4 px-10 bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[2px] rounded-2xl shadow-sm group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 group-hover:shadow-xl group-hover:shadow-blue-500/20 transition-all active:scale-95"
+                                                        className="py-4 px-10 bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[2px] rounded-2xl shadow-sm group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all active:scale-95"
                                                     >
                                                         Vote
                                                     </button>

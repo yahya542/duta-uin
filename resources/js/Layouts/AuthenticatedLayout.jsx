@@ -31,20 +31,23 @@ export default function AuthenticatedLayout({ children }) {
             {/* SIDEBAR OVERLAY */}
             {sidebarOpen && (
                 <div 
-                    className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[2000] lg:hidden transition-all duration-300" 
+                    className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[2000] transition-all duration-300" 
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* SIDEBAR */}
-            <aside className={`fixed top-0 left-0 h-full w-[280px] bg-white border-r border-slate-200/60 z-[2100] transition-transform duration-500 ease-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <div className="h-24 px-10 flex items-center border-b border-slate-100/80">
+            <aside className={`fixed top-0 left-0 h-full w-[280px] bg-white border-r border-slate-200/60 z-[2100] transition-transform duration-500 ease-out shadow-2xl ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                <div className="h-24 px-10 flex items-center justify-between border-b border-slate-100/80">
                     <Link href="/" className="flex items-center gap-4 group">
                         <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-xl shadow-blue-500/20 group-hover:rotate-6 transition-transform duration-300">
                             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                         </div>
                         <span className="text-2xl font-black text-slate-900 tracking-tighter">DUTA<span className="text-blue-600">KAMPUS</span></span>
                     </Link>
+                    <button onClick={() => setSidebarOpen(false)} className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
                 </div>
                 
                 <nav className="p-8 space-y-2">
@@ -85,15 +88,15 @@ export default function AuthenticatedLayout({ children }) {
             </aside>
 
             {/* MAIN CONTENT AREA */}
-            <div className={`flex-1 flex flex-col transition-all duration-500 ease-in-out ${!isAdminRoute ? 'lg:ml-[280px]' : ''}`}>
+            <div className={`flex-1 flex flex-col transition-all duration-500 ease-in-out`}>
                 {!isAdminRoute && (
                     <header className="sticky top-0 z-[1900] bg-white/90 backdrop-blur-2xl border-b border-slate-200/60 px-8 lg:px-16 h-24 flex items-center">
                         <div className="w-full mx-auto flex items-center justify-between">
                             <div className="flex items-center gap-6">
-                                <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-12 h-12 flex items-center justify-center bg-white border border-slate-200 rounded-2xl text-slate-600 hover:bg-slate-50 transition-all shadow-sm active:scale-90">
-                                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+                                <button onClick={() => setSidebarOpen(true)} className="w-12 h-12 flex items-center justify-center bg-white border border-slate-200 rounded-2xl text-slate-600 hover:bg-slate-50 hover:border-blue-300 hover:text-blue-600 transition-all shadow-sm active:scale-90 group">
+                                    <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
                                 </button>
-                                <div className="hidden lg:block">
+                                <div className="hidden sm:block">
                                     <div className="flex items-center gap-3">
                                         <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
                                         <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[4px]">E-VOTING PORTAL 2026</h2>
@@ -104,7 +107,7 @@ export default function AuthenticatedLayout({ children }) {
                             <div className="flex items-center gap-4 lg:gap-8">
                                 {auth.user ? (
                                     <>
-                                        <div className="flex items-center gap-3 bg-white px-5 py-2.5 rounded-2xl border border-slate-200 shadow-sm">
+                                        <div className="hidden md:flex items-center gap-3 bg-white px-5 py-2.5 rounded-2xl border border-slate-200 shadow-sm">
                                             <div className="w-7 h-7 bg-amber-400 rounded-lg flex items-center justify-center text-white shadow-lg shadow-amber-200">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                                             </div>
@@ -164,7 +167,7 @@ export default function AuthenticatedLayout({ children }) {
                     </header>
                 )}
 
-                <main className={`flex-1 ${!isAdminRoute ? 'px-8 lg:px-16 py-16' : ''}`}>
+                <main className={`flex-1 px-8 lg:px-16 py-16`}>
                     <div className="max-w-7xl mx-auto">
                         {children}
                     </div>
