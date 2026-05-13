@@ -12,8 +12,12 @@ Route::get('/', [CandidateController::class, 'index'])->name('home');
 
 // Voting Protected Routes
 Route::middleware('auth')->group(function () {
-    Route::post('/vote', [VoteController::class, 'store'])->name('votes.store');
-    Route::get('/payment/{candidate_id}', [VoteController::class, 'showPayment'])->name('votes.payment');
+    // Top Up
+    Route::get('/topup', [VoteController::class, 'showTopUp'])->name('topup.index');
+    Route::post('/topup', [VoteController::class, 'storeTopUp'])->name('topup.store');
+    
+    // Direct Voting
+    Route::post('/vote/cast', [VoteController::class, 'castVote'])->name('votes.cast');
 });
 
 Route::get('/success', function () {

@@ -6,7 +6,7 @@
         <!-- Hero Content -->
         <div class="text-center mb-16">
             <h1 class="hero-title">Pilih <span>Duta Favorit</span> Anda Sekarang</h1>
-            <p class="hero-desc" style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">Dukung kandidat terbaik untuk mewakili UIN Madura dalam kancah nasional dan internasional tahun 2026.</p>
+            <p class="hero-desc" style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">Gunakan poin Anda untuk mendukung kandidat terbaik mewakili UIN Madura tahun 2026.</p>
         </div>
 
         <!-- Stats Bar -->
@@ -66,7 +66,12 @@
                         </div>
                         <h3 class="circular-name">{{ $p2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p2->id }}">{{ number_format($p2->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p2->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <form action="{{ route('votes.cast') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="candidate_id" value="{{ $p2->id }}">
+                            <input type="hidden" name="points" value="1">
+                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
+                        </form>
                     </div>
                     @endif
 
@@ -79,7 +84,12 @@
                         </div>
                         <h3 class="circular-name">{{ $p1->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p1->id }}">{{ number_format($p1->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p1->id) }}" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE SEKARANG</a>
+                        <form action="{{ route('votes.cast') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="candidate_id" value="{{ $p1->id }}">
+                            <input type="hidden" name="points" value="1">
+                            <button type="submit" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE (1 PTS)</button>
+                        </form>
                     </div>
                     @endif
 
@@ -92,7 +102,12 @@
                         </div>
                         <h3 class="circular-name">{{ $p3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p3->id }}">{{ number_format($p3->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $p3->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <form action="{{ route('votes.cast') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="candidate_id" value="{{ $p3->id }}">
+                            <input type="hidden" name="points" value="1">
+                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
+                        </form>
                     </div>
                     @endif
                 </div>
@@ -121,7 +136,12 @@
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
                                 </td>
                                 <td class="col-action">
-                                    <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
+                                    <form action="{{ route('votes.cast') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
+                                        <input type="hidden" name="points" value="1">
+                                        <button type="submit" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</button>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
@@ -150,7 +170,12 @@
                         </div>
                         <h3 class="circular-name">{{ $pi2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi2->id }}">{{ number_format($pi2->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi2->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <form action="{{ route('votes.cast') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="candidate_id" value="{{ $pi2->id }}">
+                            <input type="hidden" name="points" value="1">
+                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
+                        </form>
                     </div>
                     @endif
 
@@ -163,7 +188,12 @@
                         </div>
                         <h3 class="circular-name">{{ $pi1->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi1->id }}">{{ number_format($pi1->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi1->id) }}" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE SEKARANG</a>
+                        <form action="{{ route('votes.cast') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="candidate_id" value="{{ $pi1->id }}">
+                            <input type="hidden" name="points" value="1">
+                            <button type="submit" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE (1 PTS)</button>
+                        </form>
                     </div>
                     @endif
 
@@ -176,7 +206,12 @@
                         </div>
                         <h3 class="circular-name">{{ $pi3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi3->id }}">{{ number_format($pi3->total_votes) }}</span></p>
-                        <a href="{{ route('votes.payment', $pi3->id) }}" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE SEKARANG</a>
+                        <form action="{{ route('votes.cast') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="candidate_id" value="{{ $pi3->id }}">
+                            <input type="hidden" name="points" value="1">
+                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
+                        </form>
                     </div>
                     @endif
                 </div>
@@ -205,7 +240,12 @@
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
                                 </td>
                                 <td class="col-action">
-                                    <a href="{{ route('votes.payment', $candidate->id) }}" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</a>
+                                    <form action="{{ route('votes.cast') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
+                                        <input type="hidden" name="points" value="1">
+                                        <button type="submit" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</button>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach

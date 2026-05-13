@@ -59,19 +59,41 @@ class VoteService
             $vote = $transaction->vote;
             $vote->update([
                 'status' => 'success',
-                'vote_point' => $finalPoints // Update to correct points
+                'vote_point' => $finalPoints
             ]);
 
-            // Update total_votes on candidate
-            $candidate = $vote->candidate;
-            $candidate->increment('total_votes', $finalPoints);
+            // ADD POINTS TO USER instead of candidate
+            $user = $vote->user;
+            if ($user) {
+                $user->increment('points', $finalPoints);
+            }
+
+            // Statistics don't change until the user actually votes for a candidate
+            // So we don't call refreshStatistics() or broadcast VoteUpdated here
+        });
+    }
+
+    /**
+     * Deduct points from user and add to candidate.
+     */
+    public function castVote(User $user, Candidate $candidate, int $points)
+    {
+        return DB::transaction(function () use ($user, $candidate, $points) {
+            if ($user->points < $points) {
+                return false;
+            }
+
+            $user->decrement('points', $points);
+            $candidate->increment('total_votes', $points);
 
             $this->refreshStatistics();
             
             event(new VoteUpdated(
                 Candidate::orderBy('total_votes', 'desc')->get(),
-                Vote::where('status', 'success')->sum('vote_point')
+                Candidate::sum('total_votes')
             ));
+
+            return true;
         });
     }
 }

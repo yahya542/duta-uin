@@ -20,33 +20,30 @@ class VoteController extends Controller
     }
 
     /**
-     * Show payment page for a specific candidate.
+     * Show top-up page.
      */
-    public function showPayment($candidate_id)
+    public function showTopUp()
     {
-        $candidate = Candidate::findOrFail($candidate_id);
-        return view('payment', compact('candidate'));
+        return view('topup');
     }
 
     /**
-     * Store the vote and transaction.
+     * Store the top-up transaction.
      */
-    public function store(Request $request)
+    public function storeTopUp(Request $request)
     {
         $request->validate([
-            'candidate_id' => 'required|exists:candidates,id',
-            'voter_name' => 'required|string|max:255',
             'nominal' => 'required|integer',
             'vote_point' => 'required|integer',
             'proof_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'voter_name' => 'required|string|max:255',
         ]);
 
         return DB::transaction(function () use ($request) {
-            $candidate = Candidate::findOrFail($request->candidate_id);
-
-            // Create Vote
+            // Create a placeholder Vote record for the transaction
+            // In the new system, 'Vote' model might represent a TopUp request
             $vote = Vote::create([
-                'candidate_id' => $candidate->id,
+                'candidate_id' => null, // Not voting yet
                 'user_id' => Auth::id(),
                 'voter_name' => $request->voter_name,
                 'nominal' => $request->nominal,
@@ -54,21 +51,18 @@ class VoteController extends Controller
                 'status' => 'pending',
             ]);
 
-            // Save Proof
             $path = $request->file('proof_image')->store('proofs', 'public');
 
-            // Create Transaction
             Transaction::create([
                 'vote_id' => $vote->id,
-                'candidate_id' => $candidate->id,
+                'candidate_id' => null,
                 'nominal' => $request->nominal,
                 'proof_image' => $path,
                 'status' => 'pending',
             ]);
 
-            // Redirect with URLs
             $waNumber = '6281932551947';
-            $message = "Halo Admin,\nSaya sudah transfer voting.\n\nNama: {$vote->voter_name}\nKandidat: {$candidate->name}\nNominal: Rp" . number_format($vote->nominal, 0, ',', '.');
+            $message = "Halo Admin,\nSaya sudah transfer Top Up Poin.\n\nNama: {$vote->voter_name}\nNominal: Rp" . number_format($vote->nominal, 0, ',', '.');
             $waUrl = "https://wa.me/{$waNumber}?text=" . urlencode($message);
             $gformUrl = "https://forms.gle/vLRtuTee8izHMPfp7";
 
@@ -77,5 +71,35 @@ class VoteController extends Controller
                 'gformUrl' => $gformUrl
             ]);
         });
+    }
+
+    /**
+     * Cast a direct vote using user points.
+     */
+    public function castVote(Request $request)
+    {
+        $request->validate([
+            'candidate_id' => 'required|exists:candidates,id',
+            'points' => 'required|integer|min:1'
+        ]);
+
+        $user = Auth::user();
+        $candidate = Candidate::findOrFail($request->candidate_id);
+
+        if ($user->points <= 0) {
+            return redirect()->route('topup.index')->with('error', 'Poin Anda habis. Silakan lakukan Top Up terlebih dahulu.');
+        }
+
+        if ($user->points < $request->points) {
+            return back()->with('error', 'Poin tidak mencukupi.');
+        }
+
+        $success = $this->voteService->castVote($user, $candidate, $request->points);
+
+        if ($success) {
+            return redirect()->route('home')->with('success', "Berhasil memberikan {$request->points} vote untuk {$candidate->name}!");
+        }
+
+        return back()->with('error', 'Terjadi kesalahan saat melakukan voting.');
     }
 }
