@@ -11,18 +11,8 @@
     </div>
 
     <div class="container" style="margin-top: -8rem;">
-        <!-- Pricing Category Tabs (Optional but adds to the look) -->
-        <div style="background: white; border-radius: 1rem; display: inline-flex; padding: 0.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 0 auto 4rem; position: relative; left: 50%; transform: translateX(-50%);">
-            <button class="pricing-tab active" style="padding: 1rem 2.5rem; border-radius: 0.75rem; border: none; font-weight: 800; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; background: var(--primary); color: white; transition: all 0.2s;">
-                Paket Voting
-            </button>
-            <button class="pricing-tab" style="padding: 1rem 2.5rem; border-radius: 0.75rem; border: none; font-weight: 800; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.2s;">
-                Support Event
-            </button>
-        </div>
-
         <!-- Pricing Grid -->
-        <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 6rem; align-items: stretch;">
+        <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 6rem; align-items: stretch;">
             @php
                 $packages = [
                     [
@@ -30,71 +20,74 @@
                         'desc' => 'Dukungan awal untuk kandidat.',
                         'price' => 5000,
                         'points' => 1,
-                        'features' => ['1x Poin Suara', 'Update Realtime', 'Akses Leaderboard'],
-                        'popular' => false
+                        'features' => ['1x Poin Suara', 'Update Realtime', 'Akses Leaderboard']
+                    ],
+                    [
+                        'name' => 'Lite',
+                        'desc' => 'Pilihan praktis untuk supporter.',
+                        'price' => 10000,
+                        'points' => 2,
+                        'features' => ['2x Poin Suara', 'Update Realtime', 'Akses Leaderboard']
                     ],
                     [
                         'name' => 'Popular',
-                        'desc' => 'Pilihan favorit para supporter.',
+                        'desc' => 'Dukungan yang signifikan.',
                         'price' => 25000,
                         'points' => 5,
-                        'features' => ['5x Poin Suara', 'Update Realtime', 'Akses Leaderboard', 'History Voting'],
-                        'popular' => true
+                        'features' => ['5x Poin Suara', 'Update Realtime', 'Akses Leaderboard', 'History Voting']
                     ],
                     [
                         'name' => 'Pro',
                         'desc' => 'Dukungan kuat untuk menang.',
+                        'price' => 50000,
+                        'points' => 10,
+                        'features' => ['10x Poin Suara', 'Semua Fitur Basic', 'Badge Supporter']
+                    ],
+                    [
+                        'name' => 'Ultra',
+                        'desc' => 'Bawa kandidatmu ke puncak.',
                         'price' => 100000,
                         'points' => 20,
-                        'features' => ['20x Poin Suara', 'Semua Fitur Basic', 'Support Prioritas', 'Badge Supporter'],
-                        'popular' => false
+                        'features' => ['20x Poin Suara', 'Semua Fitur Pro', 'Badge Supporter Plus']
                     ],
                     [
                         'name' => 'Whale',
-                        'desc' => 'Bawa kandidatmu ke puncak.',
+                        'desc' => 'Dukungan maksimal tanpa batas.',
                         'price' => 250000,
                         'points' => 50,
-                        'features' => ['50x Poin Suara', 'Eksklusif Badge', 'Support Prioritas', 'Voter Utama'],
-                        'popular' => false
+                        'features' => ['50x Poin Suara', 'Eksklusif Badge', 'Support Prioritas', 'Voter Utama']
                     ]
                 ];
             @endphp
 
             @foreach($packages as $pkg)
-                <div class="pricing-card {{ $pkg['popular'] ? 'is-popular' : '' }}" 
-                     style="background: white; border: 1px solid var(--border); border-radius: 1.5rem; padding: 3rem 2rem; display: flex; flex-direction: column; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; {{ $pkg['popular'] ? 'border: 2.5px solid var(--primary); box-shadow: 0 30px 70px rgba(37, 99, 235, 0.15); transform: scale(1.03); z-index: 10;' : 'box-shadow: 0 10px 30px rgba(0,0,0,0.03);' }}">
+                <div class="pricing-card" 
+                     style="background: white; border: 1px solid var(--border); border-radius: 1.5rem; padding: 2.5rem 1.5rem; display: flex; flex-direction: column; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
                     
-                    @if($pkg['popular'])
-                        <div style="position: absolute; top: 0; left: 0; right: 0; background: #1e3a8a; color: white; padding: 0.5rem; text-align: center; border-radius: 1.35rem 1.35rem 0 0; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">
-                            Paling Populer
-                        </div>
-                    @endif
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--text-main); margin-bottom: 0.5rem;">{{ $pkg['name'] }}</h3>
+                        <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.4;">{{ $pkg['desc'] }}</p>
+                    </div>
 
                     <div style="text-align: center; margin-bottom: 2.5rem;">
-                        <h3 style="font-size: 1.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 0.75rem;">{{ $pkg['name'] }}</h3>
-                        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.5;">{{ $pkg['desc'] }}</p>
-                    </div>
-
-                    <div style="text-align: center; margin-bottom: 3rem;">
                         <div style="display: flex; align-items: baseline; justify-content: center; gap: 0.25rem;">
-                            <span style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">Rp</span>
-                            <span style="font-size: 3.5rem; font-weight: 900; color: var(--text-main); line-height: 1;">{{ number_format($pkg['price']/1000, 0) }}k</span>
+                            <span style="font-size: 1rem; font-weight: 700; color: var(--text-main);">Rp</span>
+                            <span style="font-size: 2.75rem; font-weight: 900; color: var(--text-main); line-height: 1;">{{ number_format($pkg['price']/1000, 0) }}k</span>
                         </div>
-                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 1px;">Satu Kali Bayar</p>
+                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 1px;">{{ $pkg['points'] }} Voting Points</p>
                     </div>
 
-                    <button type="button" class="btn {{ $pkg['popular'] ? 'btn-primary' : 'btn-outline' }}" 
-                            style="width: 100%; padding: 1.25rem; font-size: 0.875rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 1rem; margin-bottom: 3rem;"
+                    <button type="button" class="btn btn-outline" 
+                            style="width: 100%; padding: 1rem; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 0.85rem; margin-bottom: 2rem;"
                             onclick="scrollToForm({{ $pkg['points'] }}, {{ $pkg['price'] }}, '{{ $pkg['name'] }}')">
                         Pilih Paket
                     </button>
 
                     <div style="margin-top: auto;">
-                        <p style="font-size: 0.75rem; font-weight: 900; color: var(--text-main); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">Keuntungan Paket:</p>
-                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
+                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
                             @foreach($pkg['features'] as $feature)
-                                <li style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.875rem; color: var(--text-muted); font-weight: 500;">
-                                    <svg style="width: 18px; height: 18px; color: #10b981; flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <li style="display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">
+                                    <svg style="width: 14px; height: 14px; color: #10b981; flex-shrink: 0; margin-top: 1px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                     </svg>
                                     {{ $feature }}
@@ -105,6 +98,7 @@
                 </div>
             @endforeach
         </div>
+
 
         <!-- Payment Confirmation Section (Appears after selection) -->
         <div id="payment-section" style="scroll-margin-top: 100px; max-width: 1000px; margin: 0 auto 8rem;">
