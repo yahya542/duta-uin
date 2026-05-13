@@ -114,7 +114,7 @@
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         </div>
                         <div style="display: flex; flex-direction: column; line-height: 1;">
-                            <span style="font-size: 9px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Saldo Anda</span>
+                            <span style="font-size: 9px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Poin Anda</span>
                             <span style="font-size: 15px; font-weight: 900; color: var(--text-main);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: var(--primary); font-weight: 900;">PTS</span></span>
                         </div>
                     </div>
