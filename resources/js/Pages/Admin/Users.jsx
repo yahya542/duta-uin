@@ -8,6 +8,8 @@ export default function Users({ users, stats }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [confirmingDeletion, setConfirmingDeletion] = useState(null);
+    const [avatarPreview, setAvatarPreview] = useState(null);
     const itemsPerPage = 10;
 
     // Reset page when search changes
@@ -51,6 +53,7 @@ export default function Users({ users, stats }) {
             points: user.points || 0,
             avatar: null,
         });
+        setAvatarPreview(null);
         setIsModalOpen(true);
     };
 
@@ -60,16 +63,19 @@ export default function Users({ users, stats }) {
             onSuccess: () => {
                 setIsModalOpen(false);
                 reset();
+                setAvatarPreview(null);
             },
         });
     };
 
-    const handleDelete = () => {
-        if (confirm('Hapus user ini secara permanen?')) {
-            destroy(`/admin/users/${selectedUser.id}`, {
-                onSuccess: () => setIsModalOpen(false),
-            });
-        }
+    const handleDelete = (id) => {
+        setConfirmingDeletion(id);
+    };
+
+    const confirmDelete = () => {
+        destroy(`/admin/users/${confirmingDeletion}`, {
+            onSuccess: () => setConfirmingDeletion(null),
+        });
     };
 
     return (
@@ -157,12 +163,20 @@ export default function Users({ users, stats }) {
                                         <strong className="text-[#2563eb] font-black">{user.points.toLocaleString()}</strong>
                                     </td>
                                     <td className="bg-[#f8fafc] px-6 py-4 rounded-r-2xl text-right group-hover:bg-blue-50 transition-colors">
-                                        <button 
-                                            onClick={() => openEditModal(user)}
-                                            className="px-4 py-2 bg-white border border-black/5 rounded-xl text-[10px] font-black uppercase tracking-wider hover:bg-white hover:border-[#2563eb] hover:text-[#2563eb] shadow-sm transition-all"
-                                        >
-                                            Edit
-                                        </button>
+                                        <div className="flex justify-end gap-2">
+                                            <button 
+                                                onClick={() => openEditModal(user)}
+                                                className="w-9 h-9 bg-white border border-black/5 rounded-xl flex items-center justify-center text-[#64748b] hover:text-[#2563eb] shadow-sm transition-all"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                            </button>
+                                            <button 
+                                                onClick={() => handleDelete(user.id)}
+                                                className="w-9 h-9 bg-white border border-black/5 rounded-xl flex items-center justify-center text-[#64748b] hover:text-red-500 shadow-sm transition-all"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             )) : (
@@ -197,11 +211,33 @@ export default function Users({ users, stats }) {
                         </div>
 
                         <form onSubmit={submit} className="space-y-6">
-                            <div className="flex justify-center mb-4">
-                                <img 
-                                    src={selectedUser.avatar ? `/storage/${selectedUser.avatar}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.name || selectedUser.username)}&size=200&background=2563eb&color=ffffff`} 
-                                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-2xl"
-                                />
+                            <div className="flex flex-col items-center gap-4 mb-8">
+                                <div className="relative group">
+                                    <div className="w-32 h-32 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl group-hover:border-blue-100 transition-all">
+                                        <img 
+                                            src={avatarPreview || (selectedUser.avatar ? `/storage/${selectedUser.avatar}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.name || selectedUser.username)}&size=200&background=2563eb&color=ffffff`)} 
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <label className="absolute bottom-0 right-0 w-10 h-10 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-xl cursor-pointer hover:scale-110 active:scale-90 transition-all border-4 border-white">
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                        <input 
+                                            type="file" 
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={e => {
+                                                const file = e.target.files[0];
+                                                setData('avatar', file);
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (e) => setAvatarPreview(e.target.result);
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }}
+                                        />
+                                    </label>
+                                </div>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Klik ikon kamera untuk ganti avatar</p>
                             </div>
 
                             <div className="space-y-2">
@@ -259,23 +295,45 @@ export default function Users({ users, stats }) {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-[1fr_auto] gap-4 pt-6">
+                            <div className="pt-6">
                                 <button 
                                     type="submit" 
                                     disabled={processing}
-                                    className="bg-[#2563eb] text-white py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all"
+                                    className="w-full bg-[#2563eb] text-white py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all"
                                 >
                                     {processing ? 'Menyimpan...' : 'Update Profil'}
                                 </button>
-                                <button 
-                                    type="button"
-                                    onClick={handleDelete}
-                                    className="px-5 bg-red-50 text-red-500 border border-red-100 rounded-2xl hover:bg-red-100 transition-colors"
-                                >
-                                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* CUSTOM CONFIRM DELETION MODAL */}
+            {confirmingDeletion && (
+                <div className="fixed inset-0 z-[4000] flex items-center justify-center p-6">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300"></div>
+                    <div className="bg-white w-full max-w-[400px] rounded-[2.5rem] p-10 shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
+                        <div className="w-20 h-20 bg-red-50 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </div>
+                        <h3 className="text-xl font-black text-[#0f172a] text-center mb-2">Hapus Pengguna?</h3>
+                        <p className="text-sm font-bold text-slate-500 text-center mb-8 leading-relaxed">Tindakan ini permanen. Seluruh riwayat transaksi dan poin milik user ini akan ikut terhapus.</p>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                            <button 
+                                onClick={() => setConfirmingDeletion(null)}
+                                className="py-4 bg-slate-100 text-slate-600 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-200 transition-all"
+                            >
+                                Batal
+                            </button>
+                            <button 
+                                onClick={confirmDelete}
+                                className="py-4 bg-red-500 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-red-100 hover:scale-[1.02] active:scale-95 transition-all"
+                            >
+                                Ya, Hapus
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
