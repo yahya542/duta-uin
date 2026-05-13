@@ -3,7 +3,7 @@
 @section('title', 'Profil Saya — VOTE DUTA KAMPUS')
 
 @section('content')
-<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+<div class="container" style="padding-top: 8rem; padding-bottom: 5rem;">
     <div class="profile-layout" style="max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;">
         
         <!-- Sidebar Profile -->
