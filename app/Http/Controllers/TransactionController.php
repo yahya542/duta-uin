@@ -42,7 +42,10 @@ class TransactionController extends Controller
             'revenue' => $transactions->where('status', 'success')->sum('nominal'),
         ];
             
-        return view('admin.transactions.index', compact('transactions', 'stats'));
+        return \Inertia\Inertia::render('Admin/Transactions', [
+            'transactions' => $transactions,
+            'stats' => $stats,
+        ]);
     }
 
     /**

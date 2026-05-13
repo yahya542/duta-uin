@@ -30,7 +30,7 @@ Route::get('/success', function () {
 })->name('success');
 
 Route::get('/tutorial', function () {
-    return view('tutorial');
+    return \Inertia\Inertia::render('Tutorial');
 })->name('tutorial');
 
 // Auth Routes

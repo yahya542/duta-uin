@@ -29,7 +29,11 @@ class DashboardController extends Controller
 
         $topCandidates = Candidate::orderBy('total_votes', 'desc')->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentTransactions', 'topCandidates'));
+        return \Inertia\Inertia::render('Admin/Dashboard', [
+            'stats' => $stats,
+            'recentTransactions' => $recentTransactions,
+            'topCandidates' => $topCandidates,
+        ]);
     }
 
     public function users(Request $request)
@@ -53,7 +57,10 @@ class DashboardController extends Controller
             'total_points' => User::sum('points'),
         ];
 
-        return view('admin.users.index', compact('users', 'stats'));
+        return \Inertia\Inertia::render('Admin/Users', [
+            'users' => $users,
+            'stats' => $stats,
+        ]);
     }
 
     public function leaderboard()
@@ -62,7 +69,11 @@ class DashboardController extends Controller
         $putri = Candidate::where('category', 'putri')->orderBy('total_votes', 'desc')->get();
         $totalVotes = Candidate::sum('total_votes');
 
-        return view('admin.leaderboard', compact('putra', 'putri', 'totalVotes'));
+        return \Inertia\Inertia::render('Admin/Leaderboard', [
+            'putra' => $putra,
+            'putri' => $putri,
+            'totalVotes' => $totalVotes,
+        ]);
     }
 
     public function activity(Request $request)
@@ -95,7 +106,11 @@ class DashboardController extends Controller
         $votes = $votesQuery->take(20)->get();
         $logs = $logsQuery->take(20)->get();
 
-        return view('admin.activity', compact('transactions', 'votes', 'logs'));
+        return \Inertia\Inertia::render('Admin/Activity', [
+            'transactions' => $transactions,
+            'votes' => $votes,
+            'logs' => $logs,
+        ]);
     }
     public function updateUser(Request $request, User $user)
     {

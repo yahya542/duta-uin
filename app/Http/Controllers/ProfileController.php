@@ -11,7 +11,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('profile', ['user' => Auth::user()]);
+        return \Inertia\Inertia::render('Profile');
     }
 
     public function update(Request $request)

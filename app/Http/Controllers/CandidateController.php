@@ -33,7 +33,7 @@ class CandidateController extends Controller
         
         $totalApprovedVotes = Vote::where('status', 'success')->sum('vote_point');
         
-        return view('welcome', [
+        return \Inertia\Inertia::render('Welcome', [
             'putra' => $putra,
             'putri' => $putri,
             'totalVotes' => $totalApprovedVotes
@@ -59,7 +59,10 @@ class CandidateController extends Controller
             'votes' => $candidates->sum('total_votes'),
         ];
 
-        return view('admin.candidates.index', compact('candidates', 'stats'));
+        return \Inertia\Inertia::render('Admin/Candidates', [
+            'candidates' => $candidates,
+            'stats' => $stats,
+        ]);
     }
 
     /**

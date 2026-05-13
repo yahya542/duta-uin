@@ -24,7 +24,7 @@ class VoteController extends Controller
      */
     public function showTopUp()
     {
-        return view('topup');
+        return \Inertia\Inertia::render('TopUp');
     }
 
     /**
@@ -66,7 +66,7 @@ class VoteController extends Controller
             $waUrl = "https://wa.me/{$waNumber}?text=" . urlencode($message);
             $gformUrl = "https://forms.gle/vLRtuTee8izHMPfp7";
 
-            return view('success', [
+            return \Inertia\Inertia::render('Success', [
                 'waUrl' => $waUrl,
                 'gformUrl' => $gformUrl
             ]);
