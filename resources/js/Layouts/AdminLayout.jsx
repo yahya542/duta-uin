@@ -5,6 +5,7 @@ export default function AdminLayout({ children, title, kicker }) {
     const { auth } = usePage().props;
     const { url } = usePage();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
     const navigation = [
@@ -92,18 +93,60 @@ export default function AdminLayout({ children, title, kicker }) {
                             <h1 className="text-xl lg:text-2xl font-black text-slate-900 leading-tight truncate">{title}</h1>
                         </div>
 
-                        <div className="hidden md:flex items-center gap-6">
-                            <div className="relative group">
+                        <div className="flex items-center gap-4 lg:gap-8">
+                            <div className="hidden md:block relative group">
                                 <input 
                                     type="text" 
                                     placeholder="Cari data..." 
-                                    className="bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm font-bold w-[240px] focus:w-[320px] focus:bg-white focus:border-blue-500 focus:shadow-xl focus:shadow-blue-500/10 outline-none transition-all duration-300"
+                                    className="bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm font-bold w-[200px] focus:w-[300px] focus:bg-white focus:border-blue-500 focus:shadow-xl focus:shadow-blue-500/10 outline-none transition-all duration-300"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                                 <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                             </div>
-                            <Link href="/" className="px-6 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 shadow-sm transition-all duration-300">Lihat Situs</Link>
+
+                            <Link href="/" className="hidden sm:flex px-6 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 shadow-sm transition-all duration-300">Lihat Situs</Link>
+
+                            <div className="relative">
+                                <button 
+                                    onClick={() => setProfileOpen(!profileOpen)}
+                                    className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-50 transition-all duration-300 group active:scale-95"
+                                >
+                                    <div className="w-11 h-11 rounded-2xl border-2 border-white shadow-lg overflow-hidden group-hover:border-blue-100 transition-all">
+                                        <img 
+                                            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(auth.user.name)}&background=2563eb&color=fff&bold=true`} 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                    </div>
+                                    <div className="hidden md:block text-left">
+                                        <p className="text-xs font-black text-slate-900 leading-none mb-1">{auth.user.username}</p>
+                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider leading-none">Administrator</p>
+                                    </div>
+                                    <svg className={`hidden md:block w-4 h-4 text-slate-300 transition-transform duration-500 ${profileOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4"><path d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+
+                                {profileOpen && (
+                                    <>
+                                        <div className="fixed inset-0 z-[2000]" onClick={() => setProfileOpen(false)}></div>
+                                        <div className="absolute right-0 mt-4 w-[280px] bg-white border border-slate-200 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.12)] z-[2100] py-6 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                                            <div className="px-8 py-4 border-b border-slate-50 bg-slate-50/50 mb-4">
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[2px] mb-1 text-center">Profil Admin</p>
+                                                <p className="text-sm font-bold text-slate-900 text-center truncate">{auth.user.email}</p>
+                                            </div>
+                                            <div className="px-3 space-y-1.5">
+                                                <Link href="/profile" className="flex items-center gap-4 w-full p-4 px-6 text-sm font-bold text-slate-700 hover:bg-blue-600 hover:text-white rounded-[1.5rem] transition-all duration-300 group">
+                                                    <svg className="w-5 h-5 opacity-60 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                                    Pengaturan Profil
+                                                </Link>
+                                                <Link href="/logout" method="post" as="button" className="flex items-center gap-4 w-full p-4 px-6 text-sm font-bold text-red-500 hover:bg-red-50 rounded-[1.5rem] transition-all duration-300 group text-left">
+                                                    <svg className="w-5 h-5 opacity-60 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                                    Keluar Aplikasi
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </header>
