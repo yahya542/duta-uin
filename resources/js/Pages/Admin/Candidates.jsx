@@ -13,6 +13,7 @@ export default function Candidates({ candidates, stats }) {
     const [editPreview, setEditPreview] = useState(null);
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [confirmingDeletion, setConfirmingDeletion] = useState(null);
     const itemsPerPage = 10;
 
     // Reset page when search changes
@@ -101,17 +102,13 @@ export default function Candidates({ candidates, stats }) {
     };
 
     const handleDelete = (id) => {
-        if (confirm('Hapus kandidat ini secara permanen? Seluruh data voting terkait juga akan hilang.')) {
-            useForm().delete(`/admin/candidates/${id}`);
-        }
+        setConfirmingDeletion(id);
     };
 
-    const handleModalDelete = () => {
-        if (confirm('Hapus kandidat ini secara permanen?')) {
-            editForm.delete(`/admin/candidates/${selectedCandidate.id}`, {
-                onSuccess: () => setIsEditModalOpen(false),
-            });
-        }
+    const confirmDelete = () => {
+        useForm().delete(`/admin/candidates/${confirmingDeletion}`, {
+            onSuccess: () => setConfirmingDeletion(null),
+        });
     };
 
     return (
@@ -429,23 +426,45 @@ export default function Candidates({ candidates, stats }) {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-[1fr_auto] gap-4 pt-8">
+                            <div className="pt-8">
                                 <button 
                                     type="submit" 
                                     disabled={editForm.processing}
-                                    className="bg-[#2563eb] text-white py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all"
+                                    className="w-full bg-[#2563eb] text-white py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all"
                                 >
                                     {editForm.processing ? 'Memproses...' : 'Update Data'}
                                 </button>
-                                <button 
-                                    type="button"
-                                    onClick={handleModalDelete}
-                                    className="px-5 bg-red-50 text-red-500 border border-red-100 rounded-2xl hover:bg-red-100 transition-colors"
-                                >
-                                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1v3M4 7h16" /></svg>
-                                </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* CUSTOM CONFIRM DELETION MODAL */}
+            {confirmingDeletion && (
+                <div className="fixed inset-0 z-[4000] flex items-center justify-center p-6">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300"></div>
+                    <div className="bg-white w-full max-w-[400px] rounded-[2.5rem] p-10 shadow-2xl relative z-10 animate-in zoom-in-95 duration-200">
+                        <div className="w-20 h-20 bg-red-50 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1v3M4 7h16" /></svg>
+                        </div>
+                        <h3 className="text-xl font-black text-[#0f172a] text-center mb-2">Hapus Kandidat?</h3>
+                        <p className="text-sm font-bold text-slate-500 text-center mb-8 leading-relaxed">Tindakan ini tidak bisa dibatalkan. Seluruh data voting terkait kandidat ini akan hilang selamanya.</p>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                            <button 
+                                onClick={() => setConfirmingDeletion(null)}
+                                className="py-4 bg-slate-100 text-slate-600 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-200 transition-all"
+                            >
+                                Batal
+                            </button>
+                            <button 
+                                onClick={confirmDelete}
+                                className="py-4 bg-red-500 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-red-100 hover:scale-[1.02] active:scale-95 transition-all"
+                            >
+                                Ya, Hapus
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
