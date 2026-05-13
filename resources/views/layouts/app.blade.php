@@ -12,7 +12,7 @@
             --primary-hover: #1d4ed8 !important;
             --bg-dark: #f8fafc !important;
             --bg-card: #ffffff !important;
-            --border: rgba(0, 0, 0, 0.08) !important;
+            --border: rgba(0, 0, 0, 0.1) !important;
             --text-main: #0f172a !important;
             --text-muted: #64748b !important;
         }
@@ -24,15 +24,19 @@
         /* SIDEBAR */
         .sidebar { 
             width: 280px; 
-            background: #ffffff; 
+            background: #ffffff !important; 
             border-right: 1px solid var(--border); 
             display: flex; 
             flex-direction: column; 
             position: fixed; 
+            left: 0;
+            top: 0;
+            bottom: 0;
             height: 100vh; 
-            z-index: 1000;
+            z-index: 2000 !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateX(-100%);
+            /* Flat design, no shadow for seamless integration with header */
         }
         .sidebar.open { transform: translateX(0); }
         .main-content { flex: 1; margin-left: 0; min-width: 0; display: flex; flex-direction: column; min-height: 100vh; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
