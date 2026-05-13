@@ -336,7 +336,7 @@
             const votersList = document.getElementById('publicVotersList');
             votersList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Memuat pendukung...</div>';
 
-            fetch(`/api/candidates/${id}/voters`)
+            fetch(`/api/candidates/${id}/voters?t=${new Date().getTime()}`)
                 .then(res => res.json())
                 .then(voters => {
                     if (voters.length === 0) {

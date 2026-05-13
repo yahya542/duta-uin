@@ -91,7 +91,7 @@ class VoteService
             $lockedCandidate->increment('total_votes', $points);
 
             // LOG THE VOTE for transparency
-            Vote::create([
+            $v = Vote::create([
                 'candidate_id' => $candidate->id,
                 'user_id' => $user->id,
                 'voter_name' => $user->name,

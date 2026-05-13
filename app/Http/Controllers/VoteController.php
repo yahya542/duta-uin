@@ -94,10 +94,15 @@ class VoteController extends Controller
             return back()->with('error', 'Poin tidak mencukupi.');
         }
 
-        $success = $this->voteService->castVote($user, $candidate, $request->points);
+        try {
+            $success = $this->voteService->castVote($user, $candidate, $request->points);
 
-        if ($success) {
-            return redirect()->route('home')->with('success', "Berhasil memberikan {$request->points} vote untuk {$candidate->name}!");
+            if ($success) {
+                return redirect()->route('home')->with('success', "Berhasil memberikan {$request->points} vote untuk {$candidate->name}!");
+            }
+        } catch (\Exception $e) {
+            \Log::error('Vote casting failed: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
 
         return back()->with('error', 'Terjadi kesalahan saat melakukan voting.');
