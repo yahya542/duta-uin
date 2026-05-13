@@ -332,12 +332,35 @@ export default function Candidates({ candidates, stats }) {
                         </div>
 
                         <form onSubmit={handleEditSubmit} className="space-y-6">
-                            <div className="flex justify-center">
-                                <img 
-                                    src={editPreview || (selectedCandidate.photo ? `/storage/${selectedCandidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedCandidate.name)}&size=200&background=2563eb&color=ffffff`)} 
-                                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-2xl"
-                                />
+                            <div className="flex flex-col items-center gap-4 mb-8">
+                                <div className="relative group">
+                                    <div className="w-32 h-32 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-2xl group-hover:border-blue-100 transition-all">
+                                        <img 
+                                            src={editPreview || (selectedCandidate.photo ? `/storage/${selectedCandidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedCandidate.name)}&size=200&background=2563eb&color=ffffff`)} 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                    </div>
+                                    <label className="absolute bottom-0 right-0 w-10 h-10 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-xl cursor-pointer hover:scale-110 active:scale-90 transition-all border-4 border-white">
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                        <input 
+                                            type="file" 
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={e => {
+                                                const file = e.target.files[0];
+                                                editForm.setData('photo', file);
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (e) => setEditPreview(e.target.result);
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            }}
+                                        />
+                                    </label>
+                                </div>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Klik ikon kamera untuk ganti foto</p>
                             </div>
+
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black text-[#64748b] uppercase tracking-widest block px-1">Nama Lengkap</label>
                                 <input 
@@ -406,24 +429,7 @@ export default function Candidates({ candidates, stats }) {
                                 </div>
                             </div>
 
-                            <div className="space-y-2 pt-6">
-                                <label className="text-[10px] font-black text-[#64748b] uppercase tracking-widest block px-1">Ganti Foto (Opsional)</label>
-                                <input 
-                                    type="file" 
-                                    className="w-full bg-[#f8fafc] border border-black/10 rounded-2xl px-5 py-3 font-bold text-xs outline-none focus:border-[#2563eb] transition-all"
-                                    onChange={e => {
-                                        const file = e.target.files[0];
-                                        editForm.setData('photo', file);
-                                        if (file) {
-                                            const reader = new FileReader();
-                                            reader.onload = (e) => setEditPreview(e.target.result);
-                                            reader.readAsDataURL(file);
-                                        }
-                                    }}
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-[1fr_auto] gap-4 pt-4">
+                            <div className="grid grid-cols-[1fr_auto] gap-4 pt-8">
                                 <button 
                                     type="submit" 
                                     disabled={editForm.processing}
@@ -436,7 +442,7 @@ export default function Candidates({ candidates, stats }) {
                                     onClick={handleModalDelete}
                                     className="px-5 bg-red-50 text-red-500 border border-red-100 rounded-2xl hover:bg-red-100 transition-colors"
                                 >
-                                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1v3M4 7h16" /></svg>
                                 </button>
                             </div>
                         </form>
