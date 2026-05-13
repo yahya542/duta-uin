@@ -29,10 +29,10 @@
         
         <!-- Filter Tabs -->
         <div class="admin-filter-tabs" style="display: flex; background: #f1f5f9; padding: 0.35rem; border-radius: 0.85rem; gap: 0.25rem;">
-            <button type="button" class="filter-tab active" data-filter="all">Semua</button>
-            <button type="button" class="filter-tab" data-filter="pending">Pending</button>
-            <button type="button" class="filter-tab" data-filter="success">Berhasil</button>
-            <button type="button" class="filter-tab" data-filter="rejected">Ditolak</button>
+            <button type="button" class="filter-tab active all" data-filter="all">Semua</button>
+            <button type="button" class="filter-tab pending" data-filter="pending">Pending</button>
+            <button type="button" class="filter-tab success" data-filter="success">Berhasil</button>
+            <button type="button" class="filter-tab rejected" data-filter="rejected">Ditolak</button>
         </div>
     </div>
 
@@ -48,12 +48,13 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .filter-tab:hover { color: var(--primary); }
-        .filter-tab.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-        }
+        .filter-tab:hover { background: rgba(0,0,0,0.03); }
+        
+        /* Active States */
+        .filter-tab.active.all { background: white; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .filter-tab.active.pending { background: #fefce8; color: #a16207; box-shadow: 0 4px 12px rgba(161, 98, 7, 0.1); }
+        .filter-tab.active.success { background: #f0fdf4; color: #15803d; box-shadow: 0 4px 12px rgba(21, 128, 61, 0.1); }
+        .filter-tab.active.rejected { background: #fef2f2; color: #b91c1c; box-shadow: 0 4px 12px rgba(185, 28, 28, 0.1); }
     </style>
 
     <div class="admin-table-wrap">
