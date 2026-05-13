@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Pagination';
 
 export default function Transactions({ transactions, stats }) {
     const [filter, setFilter] = useState('all');
     const [search, setSearch] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Reset page when search or filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [search, filter]);
 
     const filteredTransactions = transactions.filter(tx => {
         const matchesFilter = filter === 'all' || tx.status === filter;
@@ -14,6 +22,12 @@ export default function Transactions({ transactions, stats }) {
         
         return matchesFilter && matchesSearch;
     });
+
+    const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+    const paginatedTransactions = filteredTransactions.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     const handleAction = (id, action) => {
         if (confirm(`Apakah Anda yakin ingin ${action === 'approve' ? 'menyetujui' : 'menolak'} pembayaran ini?`)) {
@@ -92,7 +106,7 @@ export default function Transactions({ transactions, stats }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredTransactions.length > 0 ? filteredTransactions.map((tx) => (
+                            {paginatedTransactions.length > 0 ? paginatedTransactions.map((tx) => (
                                 <tr key={tx.id} className="group">
                                     <td className="bg-[#f8fafc] px-6 py-4 rounded-l-2xl group-hover:bg-blue-50 transition-colors text-[11px] font-bold text-[#64748b]">
                                         {new Date(tx.created_at).toLocaleString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
@@ -156,6 +170,14 @@ export default function Transactions({ transactions, stats }) {
                         </tbody>
                     </table>
                 </div>
+
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    totalItems={filteredTransactions.length}
+                    itemsPerPage={itemsPerPage}
+                />
             </div>
         </AdminLayout>
     );

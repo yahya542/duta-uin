@@ -1,10 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Head, useForm, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Pagination';
 
 export default function Users({ users, stats }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [search, setSearch] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Reset page when search changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [search]);
+
+    const filteredUsers = users.filter(user => {
+        const query = search.toLowerCase();
+        return (
+            (user.name || '').toLowerCase().includes(query) ||
+            (user.username || '').toLowerCase().includes(query) ||
+            (user.email || '').toLowerCase().includes(query)
+        );
+    });
+
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+    const paginatedUsers = filteredUsers.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     const { data, setData, post, processing, errors, reset, delete: destroy } = useForm({
         _method: 'PUT',
@@ -70,10 +94,24 @@ export default function Users({ users, stats }) {
             </div>
 
             <div className="bg-white border border-black/5 rounded-[2.5rem] p-8 shadow-xl shadow-gray-200/50">
-                <h2 className="text-lg font-black text-[#0f172a] mb-8 flex items-center gap-2">
-                    <span className="w-2 h-6 bg-[#2563eb] rounded-full"></span>
-                    Daftar Pengguna
-                </h2>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                    <h2 className="text-xl font-black text-[#0f172a] flex items-center gap-3">
+                        <span className="w-2 h-7 bg-[#2563eb] rounded-full"></span>
+                        Daftar Pengguna
+                    </h2>
+
+                    {/* Search Input */}
+                    <div className="relative group w-full md:w-[320px]">
+                        <input 
+                            type="text" 
+                            placeholder="Cari nama, email, atau username..." 
+                            className="w-full bg-[#f8fafc] border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm font-bold focus:bg-white focus:border-blue-500 focus:shadow-xl focus:shadow-blue-500/10 outline-none transition-all duration-300"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </div>
+                </div>
                 
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-separate border-spacing-y-2">
@@ -90,7 +128,7 @@ export default function Users({ users, stats }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.length > 0 ? users.map((user) => (
+                            {paginatedUsers.length > 0 ? paginatedUsers.map((user) => (
                                 <tr key={user.id} className="group">
                                     <td className="bg-[#f8fafc] px-6 py-4 rounded-l-2xl group-hover:bg-blue-50 transition-colors">
                                         <img 
@@ -133,6 +171,14 @@ export default function Users({ users, stats }) {
                         </tbody>
                     </table>
                 </div>
+
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    totalItems={filteredUsers.length}
+                    itemsPerPage={itemsPerPage}
+                />
             </div>
 
             {/* MODAL EDIT USER */}
