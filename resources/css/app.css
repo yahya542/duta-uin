@@ -5,6 +5,15 @@
 }
 
 @layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+  input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+  }
   body {
     @apply bg-[#f8fafc] text-[#0f172a] antialiased selection:bg-blue-100 selection:text-blue-600;
   }
