@@ -79,6 +79,12 @@
 
         <form action="{{ route('admin.candidates.store') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
             @csrf
+            
+            <div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">
+                <img id="addCandidatePreview" src="https://ui-avatars.com/api/?name=C&size=200&background=f1f5f9&color=64748b" 
+                     style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            </div>
+
             <div>
                 <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Nama Lengkap</label>
                 <input type="text" name="name" required class="form-input" style="margin-top: 0.5rem;">
@@ -92,7 +98,7 @@
             </div>
             <div>
                 <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Foto Kandidat</label>
-                <input type="file" name="photo" class="form-input" style="margin-top: 0.5rem;">
+                <input type="file" name="photo" class="form-input js-candidate-photo-input" data-target="addCandidatePreview" style="margin-top: 0.5rem;">
             </div>
             <div>
                 <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Deskripsi / Visi Misi</label>
@@ -147,7 +153,7 @@
             </div>
             <div>
                 <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Ganti Foto (Opsional)</label>
-                <input type="file" name="photo" class="form-input" style="margin-top: 0.5rem;">
+                <input type="file" name="photo" class="form-input js-candidate-photo-input" data-target="editCandidatePreview" style="margin-top: 0.5rem;">
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; margin-top: 1rem;">
@@ -183,7 +189,10 @@
         };
 
         // Open Add
-        document.querySelector('.js-open-add-modal').addEventListener('click', () => openModal(addModal));
+        document.querySelector('.js-open-add-modal').addEventListener('click', () => {
+            document.getElementById('addCandidatePreview').src = 'https://ui-avatars.com/api/?name=C&size=200&background=f1f5f9&color=64748b';
+            openModal(addModal);
+        });
 
         // Open Edit
         document.querySelectorAll('.js-open-edit-modal').forEach(btn => {
@@ -208,6 +217,21 @@
                 deleteForm.action = `/admin/candidates/${data.id}`;
 
                 openModal(editModal);
+            });
+        });
+
+        // Instant Preview Logic
+        document.querySelectorAll('.js-candidate-photo-input').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const targetId = input.dataset.target;
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        document.getElementById(targetId).src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
         });
 

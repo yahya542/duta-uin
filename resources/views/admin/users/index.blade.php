@@ -171,6 +171,18 @@
             });
         });
 
+        // Instant Preview
+        document.querySelector('input[name="avatar"]').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('userPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         // Close buttons
         document.querySelectorAll('.js-close-modal').forEach(btn => {
             btn.addEventListener('click', (e) => {
