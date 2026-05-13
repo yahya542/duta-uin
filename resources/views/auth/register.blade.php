@@ -123,7 +123,7 @@
                     </div>
                 </template>
 
-                <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
                     <button type="button" @click="step = 1; errorMsg = ''" class="btn-submit btn-submit-muted">Kembali</button>
                     <button type="button" @click="validateStep2()" class="btn-submit">Lanjutkan <span>→</span></button>
                 </div>
@@ -152,7 +152,7 @@
 
                 <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">Dengan mendaftar, Anda menyetujui syarat dan ketentuan voting Duta Kampus 2026.</p>
 
-                <div style="display: grid; grid-template-cols: 1fr 2fr; gap: 1rem;">
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
                     <button type="button" @click="step = 2; errorMsg = ''" class="btn-submit btn-submit-muted">Kembali</button>
                     <button type="submit" class="btn-submit">Daftar Sekarang</button>
                 </div>

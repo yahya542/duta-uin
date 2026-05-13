@@ -38,10 +38,6 @@
         .circular-rank-2 .rank-tag { background: #C0C0C0 !important; color: #333 !important; border: none !important; }
         .circular-rank-3 .rank-tag { background: #CD7F32 !important; color: #fff !important; border: none !important; }
         
-        /* Table rows distinction */
-        .lb-table td { background: #ffffff !important; border-bottom: 1px solid rgba(0,0,0,0.02) !important; }
-        .lb-table tr:hover td { background: #f8fafc !important; }
-
         /* Hide Number Input Spinners */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -108,10 +104,10 @@
             </ul>
             @endif
 
-            <div style="display: flex; gap: 1rem; align-items: center;">
+            <div class="nav-actions">
                 @auth
                     <!-- Enhanced Points Display -->
-                    <div style="background: rgba(37, 99, 235, 0.05); border: 1.5px solid rgba(37, 99, 235, 0.12); padding: 0.4rem 0.85rem; border-radius: 999px; display: flex; align-items: center; gap: 0.65rem; margin-right: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                    <div class="nav-points" style="background: rgba(37, 99, 235, 0.05); border: 1.5px solid rgba(37, 99, 235, 0.12); padding: 0.4rem 0.85rem; border-radius: 999px; display: flex; align-items: center; gap: 0.65rem; margin-right: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
                         <div style="width: 24px; height: 24px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         </div>
@@ -121,7 +117,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('profile.index') }}" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <a href="{{ route('profile.index') }}" class="nav-profile" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
                         <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=100&background=2563eb&color=ffffff' }}" 
                              style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                     </a>
@@ -131,7 +127,7 @@
                     @endif
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 10px;">Keluar</button>
+                        <button type="submit" class="btn" style="padding: 0.5rem 1rem; font-size: 10px; background: #dc2626; color: white;">Keluar</button>
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-primary">Masuk</a>
@@ -147,7 +143,7 @@
     <!-- FOOTER -->
     <footer style="background: #ffffff; border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 5rem;">
         <div class="container">
-            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
+            <div class="footer-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
                 <div>
                     <a href="{{ route('home') }}" class="nav-brand" style="font-size: 1.5rem;">DUTA<span>KAMPUS</span></a>
                     <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-width: 320px;">

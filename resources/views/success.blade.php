@@ -50,7 +50,7 @@
 <style>
 @media (max-width: 640px) {
     .auth-card { padding: 2rem 1.5rem !important; }
-    div[style*="grid-template-cols: 1fr 1fr"] { grid-template-cols: 1fr !important; }
+    div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
 }
 </style>
 @endsection

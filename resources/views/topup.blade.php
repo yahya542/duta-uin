@@ -11,14 +11,14 @@
         </div>
 
         <!-- Top Up Wrapper -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 2.5rem; padding: 4rem; box-shadow: 0 20px 60px rgba(0,0,0,0.05); overflow: hidden;">
+        <div class="topup-wrapper" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 2.5rem; padding: 4rem; box-shadow: 0 20px 60px rgba(0,0,0,0.05); overflow: hidden;">
             
             <div style="text-align: center; margin-bottom: 5rem;">
                 <h1 style="font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 1rem;">Top Up <span>Poin Voting</span></h1>
                 <p style="font-size: 1.125rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">Isi saldo poin Anda untuk memberikan dukungan kepada kandidat favorit.</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start;">
+            <div class="topup-layout" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start;">
                 <!-- LEFT: Packages -->
                 <div>
                     <h3 style="font-size: 0.875rem; font-weight: 800; margin-bottom: 2.5rem; color: var(--text-main); display: flex; align-items: center; gap: 1rem; text-transform: uppercase; letter-spacing: 2px;">
@@ -26,7 +26,7 @@
                         Pilih Paket Poin
                     </h3>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="topup-package-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                         @php
                             $packages = [
                                 ['points' => 10, 'price' => 10000, 'label' => 'Basic'],
@@ -58,8 +58,8 @@
                         Konfirmasi Pembayaran
                     </h3>
                     
-                    <div style="background: rgba(0,0,0,0.01); border: 1px solid var(--border); border-radius: 2rem; padding: 3rem; margin-bottom: 3rem; position: relative;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 3rem; margin-bottom: 3rem;">
+                    <div class="topup-payment-card" style="background: rgba(0,0,0,0.01); border: 1px solid var(--border); border-radius: 2rem; padding: 3rem; margin-bottom: 3rem; position: relative;">
+                        <div class="topup-payment-info" style="display: flex; justify-content: space-between; align-items: center; gap: 3rem; margin-bottom: 3rem;">
                             <div style="flex-grow: 1;">
                                 <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 1rem; letter-spacing: 2px; text-transform: uppercase;">Transfer Ke Rekening BRI</div>
                                 <div style="font-size: 2rem; font-weight: 900; letter-spacing: 3px; color: var(--text-main); margin-bottom: 1rem; white-space: nowrap;">1234 5678 9012 345</div>

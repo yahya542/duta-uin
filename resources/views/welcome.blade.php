@@ -30,7 +30,7 @@
         </div>
 
         <!-- Category Tabs -->
-        <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
+        <div class="category-tabs" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
             <button @click="category = 'putra'" 
                     :class="category === 'putra' ? 'btn-primary' : 'btn-outline'"
                     class="btn px-8 py-3 text-sm tracking-widest font-black uppercase">
