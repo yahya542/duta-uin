@@ -85,6 +85,7 @@
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">DUTA<span>KAMPUS</span></a>
             
+            @if(!request()->is('admin*'))
             <ul class="nav-links">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#leaderboard">Leaderboard</a></li>
@@ -93,6 +94,7 @@
                     <li><a href="{{ route('topup.index') }}" class="{{ request()->routeIs('topup.index') ? 'active' : '' }}">Top Up</a></li>
                 @endauth
             </ul>
+            @endif
 
             <div style="display: flex; gap: 1rem; align-items: center;">
                 @auth
