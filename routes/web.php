@@ -19,6 +19,10 @@ Route::middleware('auth')->group(function () {
     
     // Direct Voting
     Route::post('/vote/cast', [VoteController::class, 'castVote'])->name('votes.cast');
+
+    // Profile
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::get('/success', function () {

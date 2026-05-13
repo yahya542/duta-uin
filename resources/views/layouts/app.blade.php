@@ -103,6 +103,11 @@
                         <span style="font-size: 14px; font-weight: 900; color: var(--primary);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: var(--text-muted);">PTS</span></span>
                     </div>
 
+                    <a href="{{ route('profile.index') }}" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                        <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&size=100&background=2563eb&color=ffffff' }}" 
+                             style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    </a>
+
                     @if(Auth::user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 10px;">Admin</a>
                     @endif
@@ -120,6 +125,43 @@
     <main>
         @yield('content')
     </main>
+
+    <!-- FOOTER -->
+    <footer style="background: #ffffff; border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 5rem;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
+                <div>
+                    <a href="{{ route('home') }}" class="nav-brand" style="font-size: 1.5rem;">DUTA<span>KAMPUS</span></a>
+                    <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; max-width: 320px;">
+                        Platform voting resmi pemilihan Duta Kampus UIN Madura 2026. Dukung kandidat favoritmu dan jadilah bagian dari perubahan.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem;">Tautan Cepat</h4>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <li><a href="{{ route('home') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Beranda</a></li>
+                        <li><a href="{{ route('home') }}#leaderboard" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Leaderboard</a></li>
+                        <li><a href="{{ route('tutorial') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Cara Voting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem;">Akun Saya</h4>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                        @auth
+                            <li><a href="{{ route('profile.index') }}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 800;">Edit Profil Saya</a></li>
+                            <li><a href="{{ route('topup.index') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Top Up Poin</a></li>
+                        @else
+                            <li><a href="{{ route('login') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Masuk Akun</a></li>
+                            <li><a href="{{ route('register') }}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Daftar Baru</a></li>
+                        @endauth
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid var(--border); padding-top: 2rem; text-align: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 700;">
+                &copy; 2026 Duta Kampus UIN Madura. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
 
     @stack('scripts')
 
