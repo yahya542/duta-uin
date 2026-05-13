@@ -1,109 +1,177 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="candidate-section">
-    <div class="container">
-        <div style="margin-bottom: 2rem; display: flex; justify-content: flex-start;">
-            <a href="{{ route('home') }}" class="btn btn-outline" style="border-radius: 50px; padding: 0.75rem 1.75rem; font-size: 0.75rem; letter-spacing: 2px; gap: 1rem; background: rgba(0,0,0,0.02); border: 1px solid var(--border); color: var(--text-main); text-transform: uppercase; font-weight: 800;">
-                <svg style="width: 12px; height: 12px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                KEMBALI KE BERANDA
-            </a>
+<section class="topup-pricing-section" style="padding-top: 72px;">
+    <!-- Blue Header Area -->
+    <div style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); padding: 6rem 0 12rem; text-align: center; color: white;">
+        <div class="container">
+            <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 1.5rem;">Dukung Kandidat Favoritmu</h1>
+            <p style="font-size: 1.25rem; opacity: 0.9; max-width: 700px; margin: 0 auto; line-height: 1.6;">Pilih paket poin voting di bawah ini untuk membantu kandidat jagoanmu memenangkan Duta Kampus UIN Madura 2026.</p>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: -8rem;">
+        <!-- Pricing Category Tabs (Optional but adds to the look) -->
+        <div style="background: white; border-radius: 1rem; display: inline-flex; padding: 0.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 0 auto 4rem; position: relative; left: 50%; transform: translateX(-50%);">
+            <button class="pricing-tab active" style="padding: 1rem 2.5rem; border-radius: 0.75rem; border: none; font-weight: 800; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; background: var(--primary); color: white; transition: all 0.2s;">
+                Paket Voting
+            </button>
+            <button class="pricing-tab" style="padding: 1rem 2.5rem; border-radius: 0.75rem; border: none; font-weight: 800; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.2s;">
+                Support Event
+            </button>
         </div>
 
-        <!-- Top Up Wrapper -->
-        <div class="topup-wrapper" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 2.5rem; padding: 4rem; box-shadow: 0 20px 60px rgba(0,0,0,0.05); overflow: hidden;">
-            
-            <div style="text-align: center; margin-bottom: 5rem;">
-                <h1 style="font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 1rem;">Top Up <span>Poin Voting</span></h1>
-                <p style="font-size: 1.125rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">Isi saldo poin Anda untuk memberikan dukungan kepada kandidat favorit.</p>
-            </div>
+        <!-- Pricing Grid -->
+        <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 6rem; align-items: stretch;">
+            @php
+                $packages = [
+                    [
+                        'name' => 'Starter',
+                        'desc' => 'Dukungan awal untuk kandidat.',
+                        'price' => 5000,
+                        'points' => 1,
+                        'features' => ['1x Poin Suara', 'Update Realtime', 'Akses Leaderboard'],
+                        'popular' => false
+                    ],
+                    [
+                        'name' => 'Popular',
+                        'desc' => 'Pilihan favorit para supporter.',
+                        'price' => 25000,
+                        'points' => 5,
+                        'features' => ['5x Poin Suara', 'Update Realtime', 'Akses Leaderboard', 'History Voting'],
+                        'popular' => true
+                    ],
+                    [
+                        'name' => 'Pro',
+                        'desc' => 'Dukungan kuat untuk menang.',
+                        'price' => 100000,
+                        'points' => 20,
+                        'features' => ['20x Poin Suara', 'Semua Fitur Basic', 'Support Prioritas', 'Badge Supporter'],
+                        'popular' => false
+                    ],
+                    [
+                        'name' => 'Whale',
+                        'desc' => 'Bawa kandidatmu ke puncak.',
+                        'price' => 250000,
+                        'points' => 50,
+                        'features' => ['50x Poin Suara', 'Eksklusif Badge', 'Support Prioritas', 'Voter Utama'],
+                        'popular' => false
+                    ]
+                ];
+            @endphp
 
-            <div class="topup-layout" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start;">
-                <!-- LEFT: Packages -->
-                <div>
-                    <h3 style="font-size: 0.875rem; font-weight: 800; margin-bottom: 2.5rem; color: var(--text-main); display: flex; align-items: center; gap: 1rem; text-transform: uppercase; letter-spacing: 2px;">
-                        <span style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</span>
-                        Pilih Paket Poin
-                    </h3>
+            @foreach($packages as $pkg)
+                <div class="pricing-card {{ $pkg['popular'] ? 'is-popular' : '' }}" 
+                     style="background: white; border: 1px solid var(--border); border-radius: 1.5rem; padding: 3rem 2rem; display: flex; flex-direction: column; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; {{ $pkg['popular'] ? 'border: 2.5px solid var(--primary); box-shadow: 0 30px 70px rgba(37, 99, 235, 0.15); transform: scale(1.03); z-index: 10;' : 'box-shadow: 0 10px 30px rgba(0,0,0,0.03);' }}">
                     
-                    <div class="topup-package-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        @php
-                            $packages = [
-                                ['points' => 10, 'price' => 10000, 'label' => 'Basic'],
-                                ['points' => 50, 'price' => 50000, 'label' => 'Popular'],
-                                ['points' => 100, 'price' => 100000, 'label' => 'Premium'],
-                                ['points' => 500, 'price' => 500000, 'label' => 'Ultimate'],
-                            ];
-                        @endphp
+                    @if($pkg['popular'])
+                        <div style="position: absolute; top: 0; left: 0; right: 0; background: #1e3a8a; color: white; padding: 0.5rem; text-align: center; border-radius: 1.35rem 1.35rem 0 0; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;">
+                            Paling Populer
+                        </div>
+                    @endif
 
-                        @foreach($packages as $pkg)
-                            <div class="package-card" style="cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; border: 1px solid var(--border); background: rgba(0,0,0,0.02); padding: 2.5rem 1.5rem; border-radius: 2rem; text-align: center; overflow: hidden;" 
-                                 onclick="selectPackage({{ $pkg['points'] }}, {{ $pkg['price'] }}, this)">
-                                <span style="display: block; font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--text-main);">{{ $pkg['points'] }}</span>
-                                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Points</span>
-                                <div style="margin-top: 2rem; font-weight: 800; color: var(--primary); font-size: 1.125rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">Rp {{ number_format($pkg['price'], 0, ',', '.') }}</div>
-                            </div>
-                        @endforeach
+                    <div style="text-align: center; margin-bottom: 2.5rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 0.75rem;">{{ $pkg['name'] }}</h3>
+                        <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.5;">{{ $pkg['desc'] }}</p>
+                    </div>
+
+                    <div style="text-align: center; margin-bottom: 3rem;">
+                        <div style="display: flex; align-items: baseline; justify-content: center; gap: 0.25rem;">
+                            <span style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">Rp</span>
+                            <span style="font-size: 3.5rem; font-weight: 900; color: var(--text-main); line-height: 1;">{{ number_format($pkg['price']/1000, 0) }}k</span>
+                        </div>
+                        <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 1px;">Satu Kali Bayar</p>
+                    </div>
+
+                    <button type="button" class="btn {{ $pkg['popular'] ? 'btn-primary' : 'btn-outline' }}" 
+                            style="width: 100%; padding: 1.25rem; font-size: 0.875rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 1rem; margin-bottom: 3rem;"
+                            onclick="scrollToForm({{ $pkg['points'] }}, {{ $pkg['price'] }}, '{{ $pkg['name'] }}')">
+                        Pilih Paket
+                    </button>
+
+                    <div style="margin-top: auto;">
+                        <p style="font-size: 0.75rem; font-weight: 900; color: var(--text-main); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">Keuntungan Paket:</p>
+                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
+                            @foreach($pkg['features'] as $feature)
+                                <li style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.875rem; color: var(--text-muted); font-weight: 500;">
+                                    <svg style="width: 18px; height: 18px; color: #10b981; flex-shrink: 0; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {{ $feature }}
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
+            @endforeach
+        </div>
 
-                <!-- RIGHT: Form -->
+        <!-- Payment Confirmation Section (Appears after selection) -->
+        <div id="payment-section" style="scroll-margin-top: 100px; max-width: 1000px; margin: 0 auto 8rem;">
+            <div style="background: white; border: 1.5px solid var(--border); border-radius: 2.5rem; padding: 4rem; box-shadow: 0 40px 100px rgba(0,0,0,0.06); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--primary);"></div>
+                
                 <form action="{{ route('topup.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="nominal" id="inputNominal">
                     <input type="hidden" name="vote_point" id="inputPoints">
 
-                    <h3 style="font-size: 0.875rem; font-weight: 800; margin-bottom: 2.5rem; color: var(--text-main); display: flex; align-items: center; gap: 1rem; text-transform: uppercase; letter-spacing: 2px;">
-                        <span style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">2</span>
-                        Konfirmasi Pembayaran
-                    </h3>
-                    
-                    <div class="topup-payment-card" style="background: rgba(0,0,0,0.01); border: 1px solid var(--border); border-radius: 2rem; padding: 3rem; margin-bottom: 3rem; position: relative;">
-                        <div class="topup-payment-info" style="display: flex; justify-content: space-between; align-items: center; gap: 3rem; margin-bottom: 3rem;">
-                            <div style="flex-grow: 1;">
-                                <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 1rem; letter-spacing: 2px; text-transform: uppercase;">Transfer Ke Rekening BRI</div>
-                                <div style="font-size: 2rem; font-weight: 900; letter-spacing: 3px; color: var(--text-main); margin-bottom: 1rem; white-space: nowrap;">1234 5678 9012 345</div>
-                                <div style="font-size: 15px; color: var(--text-main); font-weight: 700;">A.N. PANITIA DUTA KAMPUS</div>
-                            </div>
-                            <div style="flex-shrink: 0; background: white; padding: 1rem; border-radius: 1.5rem; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;">
-                                <img src="{{ asset('qris/qris-dana.png') }}" style="width: 120px; height: 120px; display: block;">
-                                <p style="font-size: 9px; font-weight: 900; color: #1e293b; margin-top: 10px; letter-spacing: 1px;">SCAN QRIS DANA</p>
-                            </div>
-                        </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+                        <!-- QRIS & Info -->
+                        <div>
+                            <h2 style="font-size: 1.75rem; font-weight: 900; margin-bottom: 1.5rem;">Konfirmasi <span>Pembayaran</span></h2>
+                            <p style="color: var(--text-muted); margin-bottom: 3rem; line-height: 1.6;">Silakan scan kode QRIS di bawah ini atau transfer ke rekening yang tertera. Setelah transfer, upload bukti pembayaran Anda.</p>
 
-                        <div style="display: flex; flex-direction: column; gap: 1.25rem; padding-top: 3rem; border-top: 1px dashed var(--border);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="color: var(--text-muted); font-size: 1rem; font-weight: 600;">Paket Poin Dipilih</span>
-                                <span id="displayPoints" style="font-weight: 900; color: var(--text-main); font-size: 1.25rem;">-</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="color: var(--text-muted); font-size: 1.125rem; font-weight: 700;">Total Bayar</span>
-                                <span id="displayTotal" style="color: var(--primary); font-size: 2.25rem; font-weight: 900;">Rp 0</span>
+                            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 1.5rem; padding: 2rem; display: flex; align-items: center; gap: 2rem;">
+                                <div style="background: white; padding: 0.75rem; border-radius: 1rem; border: 1.5px solid var(--border); box-shadow: 0 10px 20px rgba(0,0,0,0.04);">
+                                    <img src="{{ asset('qris/qris-dana.png') }}" style="width: 140px; height: 140px; border-radius: 0.5rem;">
+                                </div>
+                                <div>
+                                    <span style="display: block; font-size: 10px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.5rem;">Scan & Bayar Via</span>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Logo_dana_blue.svg/1200px-Logo_dana_blue.svg.png" style="height: 24px; margin-bottom: 1.5rem;">
+                                    <div style="background: white; border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 800; color: var(--text-main);">Rek: 6281932551947</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div style="margin-bottom: 2.5rem;">
-                        <label style="display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px;">Nama Pengirim (Sesuai Bukti)</label>
-                        <input type="text" name="voter_name" required 
-                               style="width: 100%; background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.25rem 1.5rem; color: var(--text-main); font-size: 1rem; font-weight: 600; outline: none; transition: border-color 0.2s;"
-                               onfocus="this.style.borderColor='var(--primary)'"
-                               onblur="this.style.borderColor='var(--border)'"
-                               placeholder="Masukkan nama pengirim transfer">
-                    </div>
+                        <!-- Form Details -->
+                        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 2rem; padding: 2.5rem;">
+                            <div style="margin-bottom: 2.5rem; border-bottom: 2px dashed var(--border); padding-bottom: 2rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted);">Paket Dipilih</span>
+                                    <span id="selectedPackageName" style="font-size: 1rem; font-weight: 900; color: var(--primary);">Pilih Paket Di Atas</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <span style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted);">Total Poin</span>
+                                    <span id="displayPoints" style="font-size: 1rem; font-weight: 900; color: var(--text-main);">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 1.125rem; font-weight: 800; color: var(--text-main);">Total Bayar</span>
+                                    <span id="displayTotal" style="font-size: 1.5rem; font-weight: 900; color: var(--text-main);">Rp 0</span>
+                                </div>
+                            </div>
 
-                    <div style="border: 2px dashed var(--border); border-radius: 2rem; padding: 4rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; margin-bottom: 3rem; background: rgba(0,0,0,0.01);"
-                         onclick="document.getElementById('proofInput').click()"
-                         onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(59, 130, 246, 0.05)'"
-                         onmouseout="this.style.borderColor='var(--border)'; this.style.background='rgba(255,255,255,0.01)'">
-                        <div style="font-size: 3rem; margin-bottom: 1.5rem;">📸</div>
-                        <p style="font-weight: 800; font-size: 1rem; color: var(--text-main); margin-bottom: 8px;">Upload Bukti Transfer</p>
-                        <p style="font-size: 0.875rem; color: var(--text-muted);">Klik untuk memilih file (Maks 2MB)</p>
-                        <input type="file" name="proof_image" id="proofInput" style="display: none;" required onchange="updateFileName(this)">
-                        <div id="fileName" style="margin-top: 1.5rem; color: var(--primary); font-weight: 800; font-size: 0.875rem; background: rgba(59, 130, 246, 0.1); display: inline-block; padding: 8px 20px; border-radius: 30px; display: none;"></div>
-                    </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; font-size: 0.65rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Nama Pengirim</label>
+                                <input type="text" name="voter_name" required class="form-input" placeholder="Nama sesuai bukti transfer">
+                            </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.5rem; font-size: 1rem; letter-spacing: 3px; font-weight: 900; text-transform: uppercase; border-radius: 1.5rem; box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25);">Konfirmasi Top Up</button>
+                            <div style="margin-bottom: 2rem;">
+                                <label style="display: block; font-size: 0.65rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Bukti Transfer</label>
+                                <div style="position: relative;">
+                                    <input type="file" name="proof_image" id="proofInput" required style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10;" onchange="updateFileName(this)">
+                                    <div id="fileDisplay" style="background: white; border: 1.5px solid var(--border); padding: 1rem; border-radius: 1rem; display: flex; align-items: center; gap: 1rem;">
+                                        <div style="width: 32px; height: 32px; background: rgba(37, 99, 235, 0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4" /></svg>
+                                        </div>
+                                        <span id="fileName" style="font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);">Pilih file foto bukti transfer...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.25rem; font-size: 0.9375rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-radius: 1.25rem;">Konfirmasi Top Up</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -111,32 +179,46 @@
 </section>
 
 @push('scripts')
+<style>
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.1) !important;
+        border-color: var(--primary) !important;
+    }
+    .pricing-card.is-popular:hover {
+        transform: translateY(-10px) scale(1.03) !important;
+    }
+    .pricing-tab.active {
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+    }
+</style>
 <script>
-    function selectPackage(points, price, el) {
+    function scrollToForm(points, price, name) {
         document.getElementById('inputNominal').value = price;
         document.getElementById('inputPoints').value = points;
         document.getElementById('displayPoints').innerText = points + ' PTS';
+        document.getElementById('selectedPackageName').innerText = name;
+        
         const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(price);
         document.getElementById('displayTotal').innerText = formattedPrice;
 
-        document.querySelectorAll('.package-card').forEach(card => {
+        document.getElementById('payment-section').scrollIntoView({ behavior: 'smooth' });
+        
+        // Visual feedback on selected card
+        document.querySelectorAll('.pricing-card').forEach(card => {
             card.style.borderColor = 'var(--border)';
-            card.style.background = 'rgba(0,0,0,0.02)';
-            card.style.transform = 'scale(1)';
         });
-        el.style.borderColor = 'var(--primary)';
-        el.style.background = 'rgba(59, 130, 246, 0.05)';
-        el.style.transform = 'scale(1.05)';
+        const selectedCard = event.currentTarget.closest('.pricing-card');
+        selectedCard.style.borderColor = 'var(--primary)';
     }
 
     function updateFileName(input) {
-        const name = input.files[0] ? input.files[0].name : '';
-        const el = document.getElementById('fileName');
-        if (name) {
-            el.innerText = '📁 ' + name;
-            el.style.display = 'inline-block';
-        } else {
-            el.style.display = 'none';
+        const name = input.files[0] ? input.files[0].name : 'Pilih file foto bukti transfer...';
+        document.getElementById('fileName').innerText = name;
+        if(input.files[0]) {
+            document.getElementById('fileName').style.color = 'var(--text-main)';
+            document.getElementById('fileDisplay').style.borderColor = 'var(--primary)';
+            document.getElementById('fileDisplay').style.background = 'rgba(37, 99, 235, 0.03)';
         }
     }
 </script>
