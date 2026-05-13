@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/', [CandidateController::class, 'index'])->name('home');
+Route::get('/api/candidates/{candidate}/voters', [CandidateController::class, 'getVoters'])->name('api.candidates.voters');
 
 // Voting Protected Routes
 Route::middleware('auth')->group(function () {

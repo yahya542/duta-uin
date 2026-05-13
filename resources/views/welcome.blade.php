@@ -255,10 +255,20 @@
                     Poin yang dipilih akan langsung dikurangi dari saldo Anda dan ditambahkan ke total voting kandidat.
                 </p>
 
-                <button type="submit" class="btn btn-primary vote-modal-submit">
+                <button type="submit" class="btn btn-primary vote-modal-submit" style="margin-bottom: 1.5rem;">
                     Gunakan <span id="voteSubmitPoints">1</span> Poin
                 </button>
             </form>
+
+            <!-- PUBLIC VOTERS LIST -->
+            <div id="publicVotersSection" style="border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 0.5rem;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">
+                    Pendukung Terbaru
+                </label>
+                <div id="publicVotersList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 200px; overflow-y: auto; padding-right: 0.5rem;">
+                    <div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Memuat pendukung...</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -321,6 +331,35 @@
 
             modal.classList.add('is-open');
             modal.setAttribute('aria-hidden', 'false');
+
+            // Fetch Voters for this candidate
+            const votersList = document.getElementById('publicVotersList');
+            votersList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Memuat pendukung...</div>';
+
+            fetch(`/api/candidates/${id}/voters`)
+                .then(res => res.json())
+                .then(voters => {
+                    if (voters.length === 0) {
+                        votersList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Belum ada pendukung untuk kandidat ini. Jadilah yang pertama!</div>';
+                        return;
+                    }
+
+                    votersList.innerHTML = voters.map(v => `
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem; background: #f8fafc; border-radius: 0.85rem; border: 1px solid var(--border);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <img src="${v.avatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="font-size: 0.8rem; color: var(--text-main);">${v.name}</strong>
+                                    <span style="font-size: 10px; color: var(--text-muted);">${v.date}</span>
+                                </div>
+                            </div>
+                            <strong style="font-size: 0.8rem; color: var(--primary);">${new Intl.NumberFormat('id-ID').format(v.points)} PTS</strong>
+                        </div>
+                    `).join('');
+                })
+                .catch(err => {
+                    votersList.innerHTML = '<div style="padding: 1rem; text-align: center; color: #dc2626; font-size: 0.8rem;">Gagal memuat data pendukung.</div>';
+                });
         };
 
         const closeModal = () => {
