@@ -36,7 +36,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Kredensial yang Anda berikan tidak cocok dengan data kami.',
+            'login' => 'Username atau Password salah.',
         ]);
     }
 
@@ -77,6 +77,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Anda telah berhasil keluar dari sistem.');
+        return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 }
