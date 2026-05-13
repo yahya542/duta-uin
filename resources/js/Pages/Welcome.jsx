@@ -292,9 +292,17 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     <input 
                                         type="number" 
                                         className="w-full bg-slate-50 border border-black/5 rounded-2xl text-center text-3xl font-black py-5 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" 
-                                        value={votePoints}
+                                        value={votePoints === 0 ? '' : votePoints}
+                                        placeholder="0"
                                         min="1"
-                                        onChange={(e) => setVotePoints(parseInt(e.target.value) || 0)}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (val === '') {
+                                                setVotePoints(0);
+                                            } else {
+                                                setVotePoints(parseInt(val) || 0);
+                                            }
+                                        }}
                                         required
                                     />
                                     <div className="grid grid-cols-4 gap-2 mt-4">
