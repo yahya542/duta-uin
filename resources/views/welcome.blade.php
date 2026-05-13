@@ -71,8 +71,31 @@
                                 $pct = $totalPutra > 0 ? ($p->total_votes / $totalPutra) * 100 : 0;
                             @endphp
                             <div class="circular-item {{ $isP1 ? 'circular-rank-1' : '' }}">
-                                <div class="avatar-wrapper">
-                                    <span class="rank-tag">{{ $isP1 ? '👑 ' : '' }}Juara {{ $rank }}</span>
+                                <div class="avatar-wrapper" style="position: relative;">
+                                    @if($rank === 1)
+                                        <div style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%) rotate(-5deg); z-index: 10; filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.4));">
+                                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V18H19V19Z" fill="#FFD700" stroke="#B8860B" stroke-width="0.5"/>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                    
+                                    <span class="rank-tag rank-{{ $rank }}" style="{{ $rank === 1 ? 'margin-top: 10px;' : '' }}">
+                                        @if($rank === 1)
+                                            <!-- Just text for rank 1 as crown is above -->
+                                        @elseif($rank === 2)
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 2px;">
+                                                <circle cx="12" cy="12" r="8" fill="#C0C0C0" stroke="#808080" stroke-width="0.5"/>
+                                                <path d="M12 7V17M10 9L12 7L14 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        @else
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 2px;">
+                                                <circle cx="12" cy="12" r="8" fill="#CD7F32" stroke="#8B4513" stroke-width="0.5"/>
+                                                <path d="M12 7V17M10 9L12 7L14 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        @endif
+                                        Juara {{ $rank }}
+                                    </span>
                                     <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
                                 </div>
                                 <h3 class="circular-name">{{ $p->name }}</h3>
@@ -145,8 +168,31 @@
                                 $pct = $totalPutri > 0 ? ($p->total_votes / $totalPutri) * 100 : 0;
                             @endphp
                             <div class="circular-item {{ $isP1 ? 'circular-rank-1' : '' }}">
-                                <div class="avatar-wrapper">
-                                    <span class="rank-tag">{{ $isP1 ? '👑 ' : '' }}Juara {{ $rank }}</span>
+                                <div class="avatar-wrapper" style="position: relative;">
+                                    @if($rank === 1)
+                                        <div style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%) rotate(-5deg); z-index: 10; filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.4));">
+                                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V18H19V19Z" fill="#FFD700" stroke="#B8860B" stroke-width="0.5"/>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                    
+                                    <span class="rank-tag rank-{{ $rank }}" style="{{ $rank === 1 ? 'margin-top: 10px;' : '' }}">
+                                        @if($rank === 1)
+                                            <!-- Just text for rank 1 -->
+                                        @elseif($rank === 2)
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 2px;">
+                                                <circle cx="12" cy="12" r="8" fill="#C0C0C0" stroke="#808080" stroke-width="0.5"/>
+                                                <path d="M12 7V17M10 9L12 7L14 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        @else
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 2px;">
+                                                <circle cx="12" cy="12" r="8" fill="#CD7F32" stroke="#8B4513" stroke-width="0.5"/>
+                                                <path d="M12 7V17M10 9L12 7L14 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        @endif
+                                        Juara {{ $rank }}
+                                    </span>
                                     <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
                                 </div>
                                 <h3 class="circular-name">{{ $p->name }}</h3>
