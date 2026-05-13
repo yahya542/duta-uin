@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Welcome({ putra, putri, totalVotes }) {
@@ -8,6 +8,11 @@ export default function Welcome({ putra, putri, totalVotes }) {
     const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [votePoints, setVotePoints] = useState(1);
+
+    const voteForm = useForm({
+        candidate_id: '',
+        points: 1,
+    });
 
     const candidates = category === 'putra' ? putra : putri;
     const totalCategoryVotes = candidates.reduce((sum, c) => sum + c.total_votes, 0);
@@ -26,6 +31,22 @@ export default function Welcome({ putra, putri, totalVotes }) {
         setSelectedCandidate(candidate);
         setVotePoints(1);
         setIsVoteModalOpen(true);
+    };
+
+    const handleVoteSubmit = (e) => {
+        e.preventDefault();
+        
+        // Use post to cast vote
+        voteForm.post('/vote/cast', {
+            data: {
+                candidate_id: selectedCandidate.id,
+                points: votePoints,
+            },
+            onSuccess: () => {
+                setIsVoteModalOpen(false);
+            },
+            preserveScroll: true
+        });
     };
 
     return (
@@ -230,7 +251,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
             {/* VOTE MODAL */}
             {isVoteModalOpen && selectedCandidate && (
                 <div className="vote-modal-backdrop is-open flex items-center justify-center fixed inset-0 z-[3000] bg-black/40 backdrop-blur-xl p-6" onClick={() => setIsVoteModalOpen(false)}>
-                    <div className="vote-modal-card bg-white w-full max-w-[440px] p-8 rounded-[2rem] shadow-2xl relative" onClick={e => e.stopPropagation()}>
+                    <div className="vote-modal-card bg-white w-full max-w-[440px] p-8 rounded-[2rem] shadow-2xl relative animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <span className="text-[11px] font-black text-[#2563eb] uppercase tracking-widest block mb-1">Konfirmasi Voting</span>
@@ -247,26 +268,25 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     <strong className="text-red-500 block mb-1 font-bold">Poin Anda belum tersedia.</strong>
                                     <p className="text-sm text-red-400">Silakan lakukan top-up terlebih dahulu untuk memberikan dukungan.</p>
                                 </div>
-                                <Link href="/topup" className="btn btn-primary w-full py-4 font-black uppercase tracking-widest rounded-2xl shadow-lg">Top Up Sekarang</Link>
+                                <Link href="/topup" className="inline-block w-full py-4 bg-blue-600 text-white text-center font-black uppercase tracking-widest rounded-2xl shadow-lg">Top Up Sekarang</Link>
                             </div>
                         ) : (
-                            <form action="/votes" method="POST" className="space-y-6">
-                                <input type="hidden" name="candidate_id" value={selectedCandidate.id} />
-                                
+                            <form onSubmit={handleVoteSubmit} className="space-y-6">
                                 <div className="flex justify-between items-center bg-blue-50/50 border border-blue-100/50 p-4 rounded-2xl">
                                     <span className="text-[10px] font-black text-[#64748b] uppercase tracking-wider">Saldo Poin</span>
                                     <strong className="text-[#2563eb] text-lg font-black">{auth.user.points.toLocaleString()} PTS</strong>
                                 </div>
 
                                 <div>
-                                    <label className="text-[10px] font-black text-[#64748b] uppercase tracking-wider block mb-2">Jumlah poin yang digunakan</label>
+                                    <label className="text-[10px] font-black text-[#64748b] uppercase tracking-wider block mb-3">Jumlah poin yang digunakan</label>
                                     <input 
                                         type="number" 
-                                        className="form-input text-center text-2xl font-black py-4" 
+                                        className="w-full bg-slate-50 border border-black/5 rounded-2xl text-center text-3xl font-black py-5 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" 
                                         value={votePoints}
                                         min="1"
                                         max={auth.user.points}
                                         onChange={(e) => setVotePoints(Math.min(Math.max(1, parseInt(e.target.value) || 0), auth.user.points))}
+                                        required
                                     />
                                     <div className="grid grid-cols-4 gap-2 mt-4">
                                         {[1, 5, 10, 'max'].map(val => (
@@ -274,7 +294,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                                 key={val} 
                                                 type="button" 
                                                 onClick={() => setVotePoints(val === 'max' ? auth.user.points : val)}
-                                                className={`py-3 rounded-xl text-[10px] font-black border transition-all ${votePoints === (val === 'max' ? auth.user.points : val) ? 'bg-[#2563eb] text-white border-[#2563eb]' : 'bg-[#f8fafc] text-[#0f172a] border-black/5'}`}
+                                                className={`py-3 rounded-xl text-[10px] font-black border transition-all ${votePoints === (val === 'max' ? auth.user.points : val) ? 'bg-[#2563eb] text-white border-[#2563eb] shadow-lg shadow-blue-500/20' : 'bg-[#f8fafc] text-[#0f172a] border-black/5 hover:border-blue-200'}`}
                                             >
                                                 {val === 'max' ? 'Semua' : val}
                                             </button>
@@ -286,8 +306,12 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     Poin yang dipilih akan langsung dikurangi dari saldo Anda dan ditambahkan ke total voting kandidat.
                                 </p>
 
-                                <button className="btn btn-primary w-full py-4 font-black uppercase tracking-widest rounded-2xl shadow-xl hover:scale-[1.02] transition-transform">
-                                    Gunakan {votePoints} Poin
+                                <button 
+                                    type="submit"
+                                    disabled={voteForm.processing}
+                                    className="w-full py-5 bg-[#2563eb] text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                                >
+                                    {voteForm.processing ? 'Memproses...' : `Gunakan ${votePoints} Poin`}
                                 </button>
                             </form>
                         )}
