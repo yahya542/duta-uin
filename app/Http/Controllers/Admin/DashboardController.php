@@ -116,12 +116,12 @@ class DashboardController extends Controller
 
         $user->update($data);
 
-        return redirect()->back()->with('success', 'User updated successfully.');
+        return redirect()->back()->with('success', 'Profil user berhasil diperbarui.');
     }
 
     public function deleteUser(User $user)
     {
         $user->delete();
-        return redirect()->back()->with('success', 'User deleted successfully.');
+        return redirect()->back()->with('success', 'User berhasil dihapus dari sistem.');
     }
 }

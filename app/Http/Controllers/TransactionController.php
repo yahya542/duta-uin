@@ -53,7 +53,7 @@ class TransactionController extends Controller
         $transaction = Transaction::findOrFail($id);
         $this->voteService->approveTransaction($transaction);
 
-        return redirect()->back()->with('success', 'Transaction approved and vote counted.');
+        return redirect()->back()->with('success', 'Transaksi disetujui dan poin telah ditambahkan.');
     }
 
     /**
@@ -65,6 +65,6 @@ class TransactionController extends Controller
         $transaction->update(['status' => 'rejected']);
         $transaction->vote->update(['status' => 'rejected']);
 
-        return redirect()->back()->with('success', 'Transaction rejected.');
+        return redirect()->back()->with('success', 'Transaksi telah ditolak.');
     }
 }

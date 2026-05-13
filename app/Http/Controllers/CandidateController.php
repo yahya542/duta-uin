@@ -82,7 +82,7 @@ class CandidateController extends Controller
 
         Candidate::create($data);
 
-        return redirect()->back()->with('success', 'Candidate added successfully.');
+        return redirect()->back()->with('success', 'Kandidat berhasil ditambahkan.');
     }
 
     /**
@@ -112,13 +112,13 @@ class CandidateController extends Controller
 
         event(new VoteUpdated($all, $total));
 
-        return redirect()->back()->with('success', 'Candidate updated successfully.');
+        return redirect()->back()->with('success', 'Data kandidat berhasil diperbarui.');
     }
 
     public function destroy(Candidate $candidate)
     {
         $candidate->delete();
 
-        return redirect()->back()->with('success', 'Candidate deleted successfully.');
+        return redirect()->back()->with('success', 'Kandidat berhasil dihapus.');
     }
 }
