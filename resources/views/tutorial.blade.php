@@ -46,6 +46,16 @@
             </div>
         </div>
 
+        <div style="background: rgba(37, 99, 235, 0.05); border: 1px solid var(--primary); border-radius: 1.5rem; padding: 2rem; margin-top: 3rem; display: flex; gap: 1.5rem; align-items: center;">
+            <div style="width: 48px; height: 48px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            </div>
+            <p style="color: var(--text-main); font-weight: 700; font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                <span style="color: var(--primary); font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">Penting:</span>
+                Setiap transaksi top up yang Anda lakukan memerlukan verifikasi manual oleh Admin. Mohon tunggu persetujuan dari Admin (maksimal 1x24 jam) sebelum poin voting masuk ke akun Anda.
+            </p>
+        </div>
+
         <div class="text-center mt-12">
             <a href="{{ route('home') }}" class="btn btn-primary px-8 py-3">Kembali ke Beranda</a>
         </div>
