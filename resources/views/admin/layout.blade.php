@@ -193,7 +193,6 @@
     font-size: 0.875rem;
     font-weight: 800;
     text-decoration: none;
-    transition: all 0.2s;
 }
 
 .admin-nav a span {
@@ -211,6 +210,12 @@
 .admin-nav a span svg {
     width: 20px;
     height: 20px;
+}
+
+.admin-nav a, 
+.admin-nav a span, 
+.admin-nav a span svg {
+    transition: none !important;
 }
 
 .admin-nav a:hover,
