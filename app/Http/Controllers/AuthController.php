@@ -28,9 +28,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
             
-            $msg = $user->role === 'admin' 
-                ? 'Selamat datang di Dashboard Admin!' 
-                : 'Selamat datang kembali, ' . ($user->first_name ?? $user->name) . '!';
+            $msg = 'Anda berhasil login, selamat datang ' . $user->username . '!';
 
             return redirect()->intended($user->role === 'admin' ? '/admin' : '/')->with('success', $msg);
         }
