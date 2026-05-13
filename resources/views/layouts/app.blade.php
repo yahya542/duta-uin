@@ -39,6 +39,16 @@
         /* Table rows distinction */
         .lb-table td { background: #ffffff !important; border-bottom: 1px solid rgba(0,0,0,0.02) !important; }
         .lb-table tr:hover td { background: #f8fafc !important; }
+
+        /* Hide Number Input Spinners */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body x-data="{ 
