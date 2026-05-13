@@ -22,12 +22,13 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'whatsapp' => 'nullable|string|max:20',
             'avatar' => 'nullable|image|max:2048',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $data = $request->only(['name', 'username', 'whatsapp']);
+        $data = $request->only(['name', 'username', 'email', 'whatsapp']);
 
         if ($request->hasFile('avatar')) {
             $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
