@@ -35,6 +35,13 @@
         <div class="admin-sidebar-foot">
             <span>Login sebagai</span>
             <strong>{{ Auth::user()->name ?? Auth::user()->username }}</strong>
+            <form method="POST" action="{{ route('logout') }}" style="margin-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 0.75rem;">
+                @csrf
+                <button type="submit" style="background: transparent; border: none; color: #dc2626; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; padding: 0; width: 100%;">
+                    <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    Keluar Sesi
+                </button>
+            </form>
         </div>
     </aside>
 
@@ -138,15 +145,14 @@
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr);
     gap: 0;
-    min-height: calc(100vh - 72px);
-    padding-top: 72px;
+    min-height: 100vh;
     background: var(--bg-dark);
 }
 
 .admin-sidebar {
     position: sticky;
-    top: 72px;
-    height: calc(100vh - 72px);
+    top: 0;
+    height: 100vh;
     padding: 1.25rem;
     background: #ffffff;
     border-right: 1px solid var(--border);
@@ -260,7 +266,13 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg-dark);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
 }
 
 .admin-kicker {

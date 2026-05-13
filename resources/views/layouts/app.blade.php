@@ -245,6 +245,7 @@
         <div class="decoration-blob blob-2"></div>
         <div class="decoration-dots"></div>
 
+    @if(!request()->is('admin*'))
         <!-- SIDEBAR -->
         <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
             <div class="sidebar-header">
@@ -271,11 +272,13 @@
                 @endauth
             </nav>
         </aside>
+    @endif
 
         <!-- MAIN CONTENT AREA -->
-        <div class="main-content" :class="sidebarOpen && window.innerWidth > 1024 ? 'with-sidebar' : ''">
-            <!-- NAVBAR -->
-            <nav class="navbar">
+        <div class="main-content" :class="sidebarOpen && window.innerWidth > 1024 && !{{ request()->is('admin*') ? 'true' : 'false' }} ? 'with-sidebar' : ''">
+            @if(!request()->is('admin*'))
+                <!-- NAVBAR -->
+                <nav class="navbar">
                 <div class="nav-container">
                     <div style="display: flex; align-items: center;">
                         <button @click="sidebarOpen = !sidebarOpen" style="background: none; border: none; padding: 0.5rem; cursor: pointer; color: var(--text-main); display: flex; align-items: center; justify-content: center; margin-right: 1rem; border-radius: 0.5rem; transition: background 0.2s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
@@ -331,9 +334,10 @@
                     </div>
                 </div>
             </nav>
+        @endif
 
             <!-- MAIN CONTENT -->
-            <div style="flex: 1; padding: 0 2rem;">
+            <div style="flex: 1; padding: {{ request()->is('admin*') ? '0' : '0 2rem' }};">
                 @yield('content')
             </div>
 
