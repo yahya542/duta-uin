@@ -10,17 +10,17 @@
     }
     .switch-container {
         background: #f1f5f9 !important;
-        padding: 4px !important;
-        border-radius: 20px !important;
+        padding: 8px !important;
+        border-radius: 32px !important;
         display: flex !important;
-        gap: 4px !important;
+        gap: 8px !important;
         border: 1px solid rgba(0,0,0,0.08) !important;
         width: fit-content !important;
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
     .switch-btn {
-        padding: 10px 32px !important;
-        border-radius: 16px !important;
+        padding: 12px 32px !important;
+        border-radius: 24px !important;
         border: none !important;
         font-size: 0.875rem !important;
         font-weight: 800 !important;
