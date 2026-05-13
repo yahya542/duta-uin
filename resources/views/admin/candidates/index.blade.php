@@ -200,6 +200,19 @@
                 <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Deskripsi</label>
                 <textarea id="editDescInput" name="description" rows="3" class="form-input" style="margin-top: 0.5rem;"></textarea>
             </div>
+
+            <!-- VOTERS LIST SECTION -->
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;">
+                    Daftar Pendukung
+                    <span id="voterCountBadge" class="admin-badge info" style="font-size: 10px;">0 Voter</span>
+                </label>
+                <div id="votersListContainer" style="margin-top: 1rem; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding-right: 0.5rem;">
+                    <!-- Voters will be loaded here -->
+                    <div class="admin-empty" style="padding: 1rem; font-size: 0.8rem;">Memuat data pendukung...</div>
+                </div>
+            </div>
+
             <div>
                 <label class="form-label" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Ganti Foto (Opsional)</label>
                 <input type="file" name="photo" class="form-input js-candidate-photo-input" data-target="editCandidatePreview" style="margin-top: 0.5rem;">
@@ -254,6 +267,38 @@
             editForm.action = `/admin/candidates/${data.id}`;
             deleteForm.action = `/admin/candidates/${data.id}`;
             openModal(editModal);
+
+            // Fetch Voters
+            const container = document.getElementById('votersListContainer');
+            const badge = document.getElementById('voterCountBadge');
+            container.innerHTML = '<div class="admin-empty" style="padding: 1rem; font-size: 0.8rem;">Memuat data pendukung...</div>';
+            
+            fetch(`/admin/api/candidate-voters/${data.id}`)
+                .then(res => res.json())
+                .then(voters => {
+                    badge.innerText = `${voters.length} Voter`;
+                    if (voters.length === 0) {
+                        container.innerHTML = '<div class="admin-empty" style="padding: 1rem; font-size: 0.8rem;">Belum ada pendukung untuk kandidat ini.</div>';
+                        return;
+                    }
+
+                    container.innerHTML = voters.map(v => `
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem; background: #f8fafc; border-radius: 0.85rem; border: 1px solid var(--border);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <img src="${v.avatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <strong style="font-size: 0.8rem; color: var(--text-main);">${v.name}</strong>
+                                    <span style="font-size: 10px; color: var(--text-muted);">${v.date}</span>
+                                </div>
+                            </div>
+                            <strong style="font-size: 0.8rem; color: var(--primary);">${new Intl.NumberFormat('id-ID').format(v.points)} PTS</strong>
+                        </div>
+                    `).join('');
+                })
+                .catch(err => {
+                    console.error(err);
+                    container.innerHTML = '<div class="admin-empty" style="padding: 1rem; font-size: 0.8rem; color: #dc2626;">Gagal memuat data.</div>';
+                });
         };
 
         // Open Add

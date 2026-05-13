@@ -124,4 +124,25 @@ class DashboardController extends Controller
         $user->delete();
         return redirect()->back()->with('success', 'User berhasil dihapus dari sistem.');
     }
+
+    public function getCandidateVoters(Candidate $candidate)
+    {
+        $voters = Vote::with('user')
+            ->where('candidate_id', $candidate->id)
+            ->where('status', 'success')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($vote) {
+                return [
+                    'name' => $vote->user->name ?? $vote->voter_name,
+                    'avatar' => $vote->user && $vote->user->avatar 
+                        ? asset('storage/' . $vote->user->avatar) 
+                        : 'https://ui-avatars.com/api/?name=' . urlencode($vote->user->name ?? $vote->voter_name) . '&size=100&background=f1f5f9&color=64748b',
+                    'points' => $vote->vote_point,
+                    'date' => $vote->created_at->format('d M Y H:i')
+                ];
+            });
+
+        return response()->json($voters);
+    }
 }
