@@ -39,6 +39,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/users', [DashboardController::class, 'users'])->name('admin.users.index');
+    Route::put('/users/{user}', [DashboardController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/users/{user}', [DashboardController::class, 'deleteUser'])->name('admin.users.destroy');
     Route::get('/leaderboard', [DashboardController::class, 'leaderboard'])->name('admin.leaderboard');
     Route::get('/activity', [DashboardController::class, 'activity'])->name('admin.activity');
     Route::get('/api/search-data', [\App\Http\Controllers\Admin\SearchApiController::class, 'getData'])->name('admin.api.search');

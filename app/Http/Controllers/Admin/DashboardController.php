@@ -97,4 +97,31 @@ class DashboardController extends Controller
 
         return view('admin.activity', compact('transactions', 'votes', 'logs'));
     }
+    public function updateUser(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'nullable|string|unique:users,username,' . $user->id,
+            'whatsapp' => 'nullable|string',
+            'role' => 'required|in:voter,admin',
+            'points' => 'required|integer',
+            'avatar' => 'nullable|image|max:2048',
+        ]);
+
+        $data = $request->only(['name', 'username', 'whatsapp', 'role', 'points']);
+        
+        if ($request->hasFile('avatar')) {
+            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        $user->update($data);
+
+        return redirect()->back()->with('success', 'User updated successfully.');
+    }
+
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+        return redirect()->back()->with('success', 'User deleted successfully.');
+    }
 }

@@ -29,8 +29,11 @@
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>Tanggal</th>
+                    <th style="width: 100px;">Tanggal</th>
+                    <th style="width: 50px;"></th>
                     <th>Pengirim</th>
+                    <th style="width: 50px;"></th>
+                    <th>Kandidat</th>
                     <th>Poin</th>
                     <th>Nominal</th>
                     <th>Bukti</th>
@@ -42,7 +45,16 @@
                 @forelse($transactions as $tx)
                     <tr class="js-searchable" data-search="{{ strtolower(($tx->vote->voter_name ?? '') . ' ' . ($tx->candidate->name ?? '') . ' ' . $tx->status) }}">
                         <td>{{ $tx->created_at->format('d/m/Y H:i') }}</td>
+                        <td>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($tx->vote->voter_name ?? 'U') }}&size=100&background=f1f5f9&color=64748b" 
+                                 style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
+                        </td>
                         <td><strong>{{ $tx->vote->voter_name ?? '-' }}</strong></td>
+                        <td>
+                            <img src="{{ $tx->candidate && $tx->candidate->photo ? asset('storage/' . $tx->candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($tx->candidate->name ?? 'C') . '&size=100&background=f1f5f9&color=64748b' }}" 
+                                 style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
+                        </td>
+                        <td><strong>{{ $tx->candidate->name ?? 'Top Up Saja' }}</strong></td>
                         <td>{{ number_format($tx->vote->vote_point ?? 0) }} PTS</td>
                         <td><strong>Rp {{ number_format($tx->nominal, 0, ',', '.') }}</strong></td>
                         <td>
@@ -69,7 +81,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="7" class="admin-empty">Belum ada data pembayaran.</td></tr>
+                    <tr><td colspan="10" class="admin-empty">Belum ada data pembayaran.</td></tr>
                 @endforelse
             </tbody>
         </table>
