@@ -77,32 +77,38 @@ export default function AdminLayout({ children, title, kicker }) {
             )}
 
             {/* Main Content */}
-            <main className="admin-main p-6 lg:p-10">
-                <header className="admin-topbar sticky top-0 bg-[#f8fafc]/80 backdrop-blur-md z-[1000] border-b border-black/5 mb-10 py-6 flex items-center gap-4">
-                    <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-10 h-10 bg-white border border-black/5 rounded-xl flex items-center justify-center shadow-sm">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16m-7 6h7" /></svg>
-                    </button>
-                    <div className="flex-grow">
-                        <p className="text-[10px] font-black text-[#2563eb] uppercase tracking-widest mb-1">{kicker || 'Admin Dashboard'}</p>
-                        <h1 className="text-3xl lg:text-4xl font-black text-[#0f172a] leading-tight">{title}</h1>
-                    </div>
-
-                    <div className="hidden md:flex items-center gap-4">
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                placeholder="Cari data..." 
-                                className="bg-white border border-black/5 rounded-xl pl-10 pr-4 py-2.5 text-sm font-bold w-[240px] focus:w-[320px] focus:border-[#2563eb] outline-none transition-all"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <main className="admin-main flex-1 flex flex-col min-w-0">
+                <header className="admin-topbar sticky top-0 z-[1900] bg-white/80 backdrop-blur-2xl border-b border-slate-200/60 px-6 lg:px-10 h-24 flex items-center shadow-sm">
+                    <div className="w-full flex items-center gap-4 lg:gap-8">
+                        <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-slate-600 shadow-sm active:scale-90 transition-all">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        </button>
+                        
+                        <div className="flex-grow min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <div className="w-1 h-3 bg-blue-600 rounded-full"></div>
+                                <p className="text-[10px] font-black text-blue-600 uppercase tracking-[2px] truncate">{kicker || 'Admin Dashboard'}</p>
+                            </div>
+                            <h1 className="text-xl lg:text-2xl font-black text-slate-900 leading-tight truncate">{title}</h1>
                         </div>
-                        <Link href="/" className="px-5 py-2.5 bg-white border border-black/5 rounded-xl text-[10px] font-black uppercase tracking-wider text-[#0f172a] hover:bg-gray-50 shadow-sm transition-all">Lihat Situs</Link>
+
+                        <div className="hidden md:flex items-center gap-6">
+                            <div className="relative group">
+                                <input 
+                                    type="text" 
+                                    placeholder="Cari data..." 
+                                    className="bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm font-bold w-[240px] focus:w-[320px] focus:bg-white focus:border-blue-500 focus:shadow-xl focus:shadow-blue-500/10 outline-none transition-all duration-300"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </div>
+                            <Link href="/" className="px-6 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 shadow-sm transition-all duration-300">Lihat Situs</Link>
+                        </div>
                     </div>
                 </header>
 
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="p-6 lg:p-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {children}
                 </div>
             </main>
