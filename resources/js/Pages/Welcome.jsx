@@ -113,7 +113,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     <div key={candidate.id} className={`text-center relative w-full max-w-[260px] transition-all duration-700 ${rank === 1 ? 'lg:max-w-[340px] z-20 lg:-translate-y-6' : 'z-10'}`}>
                                         <div className="relative p-2.5 rounded-full mb-12 group">
                                             {rank === 1 ? (
-                                                <div className="absolute -top-16 left-1/2 -translate-x-1/2 -rotate-12 z-30 drop-shadow-[0_20px_20px_rgba(255,215,0,0.5)] animate-bounce duration-[3000ms]">
+                                                <div className="absolute -top-16 left-1/2 -translate-x-[80%] -rotate-12 z-30 drop-shadow-[0_20px_20px_rgba(255,215,0,0.5)] animate-bounce duration-[3000ms]">
                                                     <svg width="100" height="100" viewBox="0 0 24 24" fill="none"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V18H19V19Z" fill="#FFD700" stroke="#B8860B" strokeWidth="0.5"/></svg>
                                                 </div>
                                             ) : (
