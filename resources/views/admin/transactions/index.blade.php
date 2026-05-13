@@ -40,7 +40,7 @@
             </thead>
             <tbody>
                 @forelse($transactions as $tx)
-                    <tr>
+                    <tr class="js-searchable" data-search="{{ strtolower(($tx->vote->voter_name ?? '') . ' ' . ($tx->candidate->name ?? '') . ' ' . $tx->status) }}">
                         <td>{{ $tx->created_at->format('d/m/Y H:i') }}</td>
                         <td><strong>{{ $tx->vote->voter_name ?? '-' }}</strong></td>
                         <td>{{ number_format($tx->vote->vote_point ?? 0) }} PTS</td>

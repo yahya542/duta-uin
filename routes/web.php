@@ -41,6 +41,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/users', [DashboardController::class, 'users'])->name('admin.users.index');
     Route::get('/leaderboard', [DashboardController::class, 'leaderboard'])->name('admin.leaderboard');
     Route::get('/activity', [DashboardController::class, 'activity'])->name('admin.activity');
+    Route::get('/api/search-data', [\App\Http\Controllers\Admin\SearchApiController::class, 'getData'])->name('admin.api.search');
     
     // Candidates Management
     Route::get('/candidates', [CandidateController::class, 'adminIndex'])->name('admin.candidates.index');

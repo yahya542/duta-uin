@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 @forelse($users as $user)
-                    <tr>
+                    <tr class="js-searchable" data-search="{{ strtolower(($user->name ?? $user->first_name . ' ' . $user->last_name) . ' ' . $user->username . ' ' . $user->email) }}">
                         <td><strong>{{ $user->name ?? trim($user->first_name . ' ' . $user->last_name) ?: '-' }}</strong></td>
                         <td>{{ $user->username ? '@' . $user->username : '-' }}</td>
                         <td>{{ $user->email }}</td>

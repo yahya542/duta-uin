@@ -52,13 +52,81 @@
             </div>
 
             @if(!request()->routeIs('admin.dashboard') && !request()->routeIs('admin.leaderboard'))
-            <form action="{{ url()->current() }}" method="GET" class="admin-search-form" style="position: relative; margin-right: 1.5rem;">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari data..." 
+            <div class="admin-search-form" style="position: relative; margin-right: 1.5rem;">
+                <input type="text" 
+                       id="adminSearchInput"
+                       placeholder="Cari data..." 
+                       autocomplete="off"
                        style="padding: 0.75rem 1rem 0.75rem 2.75rem; border-radius: 1rem; border: 1px solid var(--border); background: #f8fafc; font-size: 0.875rem; width: clamp(200px, 20vw, 300px); outline: none; transition: all 0.2s;"
                        onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.05)';"
-                       onblur="this.style.borderColor='var(--border)'; this.style.background='#f8fafc'; this.style.boxShadow='none';">
+                       onblur="this.style.borderColor='var(--border)'; this.style.background='#f8fafc'; this.style.boxShadow='none';"
+                       oninput="handleSearch(this.value)">
                 <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            </form>
+            </div>
+
+            <script>
+                let searchTimeout;
+                const searchType = "{{ request()->routeIs('admin.candidates.*') ? 'candidates' : (request()->routeIs('admin.users.*') ? 'users' : (request()->routeIs('admin.transactions.*') ? 'transactions' : 'activity')) }}";
+                
+                // 1. Fetch & Store in LocalStorage (Background/Initial)
+                async function syncSearchData() {
+                    if (searchType === 'activity') return; // Activity is complex, keep basic
+                    
+                    try {
+                        const response = await fetch(`/admin/api/search-data?type=${searchType}`);
+                        const data = await response.json();
+                        localStorage.setItem(`admin_data_${searchType}`, JSON.stringify({
+                            timestamp: Date.now(),
+                            items: data
+                        }));
+                    } catch (e) {
+                        console.error('Search sync failed', e);
+                    }
+                }
+
+                // Sync on load if not exists or older than 5 mins
+                const cached = JSON.parse(localStorage.getItem(`admin_data_${searchType}`));
+                if (!cached || (Date.now() - cached.timestamp > 300000)) {
+                    syncSearchData();
+                }
+
+                // 2. Perform Search (Client-side DOM Filter)
+                function handleSearch(query) {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        const term = query.toLowerCase().trim();
+                        const items = document.querySelectorAll('.js-searchable');
+                        
+                        items.forEach(item => {
+                            const content = item.getAttribute('data-search') || item.innerText.toLowerCase();
+                            if (content.includes(term)) {
+                                item.style.display = '';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+
+                        // Show empty state if nothing found
+                        const container = document.querySelector('.admin-table tbody') || document.querySelector('.admin-grid-2 > div:last-child > div');
+                        if (container) {
+                            const visible = Array.from(items).some(i => i.style.display !== 'none');
+                            let emptyMsg = document.getElementById('search-empty-msg');
+                            
+                            if (!visible) {
+                                if (!emptyMsg) {
+                                    emptyMsg = document.createElement('div');
+                                    emptyMsg.id = 'search-empty-msg';
+                                    emptyMsg.className = 'admin-empty';
+                                    emptyMsg.innerText = 'Tidak ada hasil ditemukan.';
+                                    container.appendChild(emptyMsg);
+                                }
+                            } else if (emptyMsg) {
+                                emptyMsg.remove();
+                            }
+                        }
+                    }, 300); // Fast debounce
+                }
+            </script>
             @endif
 
             <a href="{{ route('home') }}" class="btn btn-outline admin-home-link">Lihat Situs</a>

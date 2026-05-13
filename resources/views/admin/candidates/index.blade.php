@@ -43,7 +43,7 @@
         <h2 class="admin-section-title">Daftar Kandidat</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
             @forelse($candidates as $candidate)
-                <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;">
+                <div class="js-searchable" data-search="{{ strtolower($candidate->name . ' ' . $candidate->category) }}" style="background: #f8fafc; border: 1px solid var(--border); border-radius: 1rem; overflow: hidden;">
                     <img src="{{ $candidate->photo ? asset('storage/' . $candidate->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=400&background=2563eb&color=ffffff' }}" alt="{{ $candidate->name }}" style="width: 100%; height: 160px; object-fit: cover;">
                     <div style="padding: 1rem;">
                         <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: start;">
