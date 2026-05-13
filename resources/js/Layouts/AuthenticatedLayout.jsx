@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import Toast from '@/Components/Toast';
 
 export default function AuthenticatedLayout({ children }) {
     const { auth, flash } = usePage().props;
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-    const [showToast, setShowToast] = useState(!!(flash.success || flash.error));
-    const [progress, setProgress] = useState(100);
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
-        if (showToast) {
-            const timer = setInterval(() => {
-                setProgress((prev) => {
-                    if (prev <= 0) {
-                        clearInterval(timer);
-                        setShowToast(false);
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 50);
-            return () => clearInterval(timer);
+        if (flash?.success) {
+            setToast({ message: flash.success, type: 'success' });
+        } else if (flash?.error) {
+            setToast({ message: flash.error, type: 'error' });
         }
-    }, [showToast]);
+    }, [flash]);
 
     const isAdminRoute = window.location.pathname.startsWith('/admin');
 
@@ -183,22 +175,12 @@ export default function AuthenticatedLayout({ children }) {
             </div>
 
             {/* TOAST NOTIFICATION */}
-            {showToast && (
-                <div className="toast-wrap">
-                    <div className={`toast-card ${flash.success ? 'toast-success' : 'toast-error'}`}>
-                        <div className="toast-content">
-                            <div className="toast-icon">
-                                {flash.success ? (
-                                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                                ) : (
-                                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                                )}
-                            </div>
-                            <span className="toast-message">{flash.success || flash.error}</span>
-                        </div>
-                        <div className="toast-progress" style={{ width: `${progress}%` }}></div>
-                    </div>
-                </div>
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
             )}
         </div>
     );
