@@ -85,7 +85,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                         </div>
 
                         {/* Podium Section */}
-                        <div className="flex flex-col lg:flex-row justify-center items-center lg:items-end gap-16 lg:gap-8 mb-32 relative">
+                        <div className="flex flex-col lg:flex-row justify-center items-center lg:items-end gap-16 lg:gap-8 mb-12 relative">
                             {podiumOrder.map((candidate, idx) => {
                                 if (!candidate) return null;
                                 const rank = candidate.id === topThree[0]?.id ? 1 : (candidate.id === topThree[1]?.id ? 2 : 3);
@@ -134,7 +134,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                         </div>
 
                         {/* Desktop Table Section (Visible on LG screens) */}
-                        <div className="hidden lg:block border-t border-slate-100 pt-20 overflow-x-auto">
+                        <div className="hidden lg:block border-t border-slate-100 pt-8 overflow-x-auto">
                             <table className="w-full border-separate border-spacing-y-5 min-w-[800px]">
                                 <thead>
                                     <tr className="text-[11px] font-black text-slate-400 uppercase tracking-[3px]">
@@ -184,7 +184,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                         </div>
 
                         {/* Mobile List Section (Visible on Mobile/Tablet) */}
-                        <div className="lg:hidden space-y-6 pt-10">
+                        <div className="lg:hidden space-y-6 pt-8">
                             {remaining.map((candidate, idx) => {
                                 const pct = totalCategoryVotes > 0 ? (candidate.total_votes / totalCategoryVotes) * 100 : 0;
                                 return (
