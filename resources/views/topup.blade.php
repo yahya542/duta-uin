@@ -4,8 +4,9 @@
 <section class="candidate-section">
     <div class="container">
         <div class="mb-12">
-            <a href="{{ route('home') }}" class="text-slate-500 hover:text-primary transition-colors text-sm font-bold flex items-center gap-2">
-                <span>←</span> KEMBALI KE BERANDA
+            <a href="{{ route('home') }}" class="btn btn-outline" style="border-radius: 30px; padding: 0.625rem 1.25rem; font-size: 0.75rem; letter-spacing: 1.5px; gap: 0.75rem; background: rgba(255,255,255,0.03);">
+                <svg style="width: 14px; height: 14px; transform: rotate(180deg);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                KEMBALI KE BERANDA
             </a>
         </div>
 
