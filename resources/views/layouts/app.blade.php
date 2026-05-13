@@ -67,7 +67,7 @@
                 @auth
                     <div style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 0.5rem;">
                         <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Saldo Poin</span>
-                        <span style="font-size: 14px; font-weight: 900; color: var(--primary);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: white;">PTS</span></span>
+                        <span style="font-size: 14px; font-weight: 900; color: var(--primary);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: var(--text-muted);">PTS</span></span>
                     </div>
 
                     @if(Auth::user()->role === 'admin')
