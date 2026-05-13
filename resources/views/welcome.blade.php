@@ -46,6 +46,12 @@
         <!-- LEADERBOARD CONTENT -->
         <div class="leaderboard-container">
             <div id="leaderboard"></div>
+            
+            @php
+                $totalPutra = $putra->sum('total_votes');
+                $totalPutri = $putri->sum('total_votes');
+            @endphp
+
             <!-- PUTRA SECTION -->
             <div x-show="category === 'putra'" x-transition>
                 @php
@@ -57,44 +63,27 @@
                 @endphp
                 
                 <div class="podium-circular">
-                    <!-- Rank 2 -->
-                    @if($p2)
-                    <div class="circular-item">
-                        <div class="avatar-wrapper">
-                            <span class="rank-tag">Juara 2</span>
-                            <img class="avatar-img" src="{{ $p2->photo ? asset('storage/' . $p2->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p2->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p2->name }}">
-                        </div>
-                        <h3 class="circular-name">{{ $p2->name }}</h3>
-                        <p class="circular-score"><span id="candidate-votes-{{ $p2->id }}">{{ number_format($p2->total_votes) }}</span></p>
-                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p2->id }}" data-candidate-name="{{ e($p2->name) }}">Vote Sekarang</button>
-                    </div>
-                    @endif
-
-                    <!-- Rank 1 -->
-                    @if($p1)
-                    <div class="circular-item circular-rank-1">
-                        <div class="avatar-wrapper">
-                            <span class="rank-tag">👑 Juara 1</span>
-                            <img class="avatar-img" src="{{ $p1->photo ? asset('storage/' . $p1->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p1->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p1->name }}">
-                        </div>
-                        <h3 class="circular-name">{{ $p1->name }}</h3>
-                        <p class="circular-score"><span id="candidate-votes-{{ $p1->id }}">{{ number_format($p1->total_votes) }}</span></p>
-                        <button type="button" class="btn btn-primary py-2 px-6 text-xs mt-4 js-vote-trigger" data-candidate-id="{{ $p1->id }}" data-candidate-name="{{ e($p1->name) }}">Vote Sekarang</button>
-                    </div>
-                    @endif
-
-                    <!-- Rank 3 -->
-                    @if($p3)
-                    <div class="circular-item">
-                        <div class="avatar-wrapper">
-                            <span class="rank-tag">Juara 3</span>
-                            <img class="avatar-img" src="{{ $p3->photo ? asset('storage/' . $p3->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p3->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p3->name }}">
-                        </div>
-                        <h3 class="circular-name">{{ $p3->name }}</h3>
-                        <p class="circular-score"><span id="candidate-votes-{{ $p3->id }}">{{ number_format($p3->total_votes) }}</span></p>
-                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p3->id }}" data-candidate-name="{{ e($p3->name) }}">Vote Sekarang</button>
-                    </div>
-                    @endif
+                    @foreach([$p2, $p1, $p3] as $index => $p)
+                        @if($p)
+                            @php 
+                                $isP1 = $p->id === ($p1->id ?? null);
+                                $rank = $p->id === ($p1->id ?? null) ? 1 : ($p->id === ($p2->id ?? null) ? 2 : 3);
+                                $pct = $totalPutra > 0 ? ($p->total_votes / $totalPutra) * 100 : 0;
+                            @endphp
+                            <div class="circular-item {{ $isP1 ? 'circular-rank-1' : '' }}">
+                                <div class="avatar-wrapper">
+                                    <span class="rank-tag">{{ $isP1 ? '👑 ' : '' }}Juara {{ $rank }}</span>
+                                    <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
+                                </div>
+                                <h3 class="circular-name">{{ $p->name }}</h3>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                                    <p class="circular-score"><span id="candidate-votes-{{ $p->id }}">{{ number_format($p->total_votes) }}</span></p>
+                                    <span id="candidate-pct-{{ $p->id }}" class="admin-badge info" style="font-size: 14px; padding: 0.35rem 0.75rem; font-weight: 900;">{{ number_format($pct, 1) }}%</span>
+                                </div>
+                                <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p->id }}" data-candidate-name="{{ e($p->name) }}">Vote Sekarang</button>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
 
                 <div class="lb-table-wrapper">
@@ -104,11 +93,13 @@
                                 <th class="col-rank">Peringkat</th>
                                 <th class="col-name">Nama Kandidat</th>
                                 <th class="col-votes">Total Voting</th>
+                                <th class="col-pct">Persentase</th>
                                 <th class="col-action">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($remainingPutra as $candidate)
+                            @php $pct = $totalPutra > 0 ? ($candidate->total_votes / $totalPutra) * 100 : 0; @endphp
                             <tr>
                                 <td class="rank-num">{{ $loop->iteration + 3 }}</td>
                                 <td>
@@ -119,6 +110,9 @@
                                 </td>
                                 <td class="col-votes">
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
+                                </td>
+                                <td class="col-pct">
+                                    <span id="candidate-pct-{{ $candidate->id }}" style="font-size: 14px; font-weight: 900; color: var(--primary);">{{ number_format($pct, 1) }}%</span>
                                 </td>
                                 <td class="col-action">
                                     <button type="button" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black js-vote-trigger" data-candidate-id="{{ $candidate->id }}" data-candidate-name="{{ e($candidate->name) }}">Vote</button>
@@ -141,44 +135,27 @@
                 @endphp
 
                 <div class="podium-circular">
-                    <!-- Rank 2 -->
-                    @if($pi2)
-                    <div class="circular-item">
-                        <div class="avatar-wrapper">
-                            <span class="rank-tag">Juara 2</span>
-                            <img class="avatar-img" src="{{ $pi2->photo ? asset('storage/' . $pi2->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($pi2->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $pi2->name }}">
-                        </div>
-                        <h3 class="circular-name">{{ $pi2->name }}</h3>
-                        <p class="circular-score"><span id="candidate-votes-{{ $pi2->id }}">{{ number_format($pi2->total_votes) }}</span></p>
-                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $pi2->id }}" data-candidate-name="{{ e($pi2->name) }}">Vote Sekarang</button>
-                    </div>
-                    @endif
-
-                    <!-- Rank 1 -->
-                    @if($pi1)
-                    <div class="circular-item circular-rank-1">
-                        <div class="avatar-wrapper">
-                            <span class="rank-tag">👑 Juara 1</span>
-                            <img class="avatar-img" src="{{ $pi1->photo ? asset('storage/' . $pi1->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($pi1->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $pi1->name }}">
-                        </div>
-                        <h3 class="circular-name">{{ $pi1->name }}</h3>
-                        <p class="circular-score"><span id="candidate-votes-{{ $pi1->id }}">{{ number_format($pi1->total_votes) }}</span></p>
-                        <button type="button" class="btn btn-primary py-2 px-6 text-xs mt-4 js-vote-trigger" data-candidate-id="{{ $pi1->id }}" data-candidate-name="{{ e($pi1->name) }}">Vote Sekarang</button>
-                    </div>
-                    @endif
-
-                    <!-- Rank 3 -->
-                    @if($pi3)
-                    <div class="circular-item">
-                        <div class="avatar-wrapper">
-                            <span class="rank-tag">Juara 3</span>
-                            <img class="avatar-img" src="{{ $pi3->photo ? asset('storage/' . $pi3->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($pi3->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $pi3->name }}">
-                        </div>
-                        <h3 class="circular-name">{{ $pi3->name }}</h3>
-                        <p class="circular-score"><span id="candidate-votes-{{ $pi3->id }}">{{ number_format($pi3->total_votes) }}</span></p>
-                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $pi3->id }}" data-candidate-name="{{ e($pi3->name) }}">Vote Sekarang</button>
-                    </div>
-                    @endif
+                    @foreach([$pi2, $pi1, $pi3] as $index => $p)
+                        @if($p)
+                            @php 
+                                $isP1 = $p->id === ($pi1->id ?? null);
+                                $rank = $p->id === ($pi1->id ?? null) ? 1 : ($p->id === ($pi2->id ?? null) ? 2 : 3);
+                                $pct = $totalPutri > 0 ? ($p->total_votes / $totalPutri) * 100 : 0;
+                            @endphp
+                            <div class="circular-item {{ $isP1 ? 'circular-rank-1' : '' }}">
+                                <div class="avatar-wrapper">
+                                    <span class="rank-tag">{{ $isP1 ? '👑 ' : '' }}Juara {{ $rank }}</span>
+                                    <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
+                                </div>
+                                <h3 class="circular-name">{{ $p->name }}</h3>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                                    <p class="circular-score"><span id="candidate-votes-{{ $p->id }}">{{ number_format($p->total_votes) }}</span></p>
+                                    <span id="candidate-pct-{{ $p->id }}" class="admin-badge info" style="font-size: 14px; padding: 0.35rem 0.75rem; font-weight: 900;">{{ number_format($pct, 1) }}%</span>
+                                </div>
+                                <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p->id }}" data-candidate-name="{{ e($p->name) }}">Vote Sekarang</button>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
 
                 <div class="lb-table-wrapper">
@@ -188,11 +165,13 @@
                                 <th class="col-rank">Peringkat</th>
                                 <th class="col-name">Nama Kandidat</th>
                                 <th class="col-votes">Total Voting</th>
+                                <th class="col-pct">Persentase</th>
                                 <th class="col-action">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($remainingPutri as $candidate)
+                            @php $pct = $totalPutri > 0 ? ($candidate->total_votes / $totalPutri) * 100 : 0; @endphp
                             <tr>
                                 <td class="rank-num">{{ $loop->iteration + 3 }}</td>
                                 <td>
@@ -203,6 +182,9 @@
                                 </td>
                                 <td class="col-votes">
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
+                                </td>
+                                <td class="col-pct">
+                                    <span id="candidate-pct-{{ $candidate->id }}" style="font-size: 14px; font-weight: 900; color: var(--primary);">{{ number_format($pct, 1) }}%</span>
                                 </td>
                                 <td class="col-action">
                                     <button type="button" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black js-vote-trigger" data-candidate-id="{{ $candidate->id }}" data-candidate-name="{{ e($candidate->name) }}">Vote</button>
@@ -216,6 +198,7 @@
         </div>
     </div>
 
+    <!-- MODAL VOTE (Hidden for brevity, unchanged) -->
     <div id="voteModal" class="vote-modal-backdrop" aria-hidden="true">
         <div class="vote-modal-card">
             <div class="vote-modal-header">
@@ -378,9 +361,20 @@
                 const totalVotesEl = document.getElementById('total-votes-display');
                 if (totalVotesEl) totalVotesEl.innerText = new Intl.NumberFormat('id-ID').format(e.totalVotes);
 
+                // Calculate Category Totals for Percentages
+                const putraTotal = e.candidates.filter(c => c.category === 'putra').reduce((sum, c) => sum + parseInt(c.total_votes), 0);
+                const putriTotal = e.candidates.filter(c => c.category === 'putri').reduce((sum, c) => sum + parseInt(c.total_votes), 0);
+
                 e.candidates.forEach(candidate => {
+                    // Update Votes
                     const votesEls = document.querySelectorAll(`[id^="candidate-votes-${candidate.id}"]`);
                     votesEls.forEach(el => el.innerText = new Intl.NumberFormat('id-ID').format(candidate.total_votes));
+
+                    // Update Percentages
+                    const catTotal = candidate.category === 'putra' ? putraTotal : putriTotal;
+                    const pct = catTotal > 0 ? (candidate.total_votes / catTotal) * 100 : 0;
+                    const pctEls = document.querySelectorAll(`[id^="candidate-pct-${candidate.id}"]`);
+                    pctEls.forEach(el => el.innerText = pct.toFixed(1) + '%');
                 });
             });
         }

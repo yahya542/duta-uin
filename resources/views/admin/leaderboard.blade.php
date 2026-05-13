@@ -27,12 +27,12 @@
                                 <span style="width: 30px; height: 30px; border-radius: 999px; background: var(--primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 900;">{{ $loop->iteration }}</span>
                                 <strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $candidate->name }}</strong>
                             </div>
-                            <strong style="color: var(--primary);">{{ number_format($candidate->total_votes) }}</strong>
+                            <strong class="js-votes-{{ $candidate->id }}" style="color: var(--primary);">{{ number_format($candidate->total_votes) }}</strong>
                         </div>
                         <div style="height: 8px; background: rgba(15, 23, 42, 0.06); border-radius: 999px; overflow: hidden;">
-                            <div style="width: {{ $percentage }}%; height: 100%; background: var(--primary); border-radius: 999px;"></div>
+                            <div class="js-bar-{{ $candidate->id }}" style="width: {{ $percentage }}%; height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.5s;"></div>
                         </div>
-                        <span style="display: block; margin-top: 0.45rem; color: var(--text-muted); font-size: 0.75rem; font-weight: 800;">{{ number_format($percentage, 1) }}%</span>
+                        <span class="js-pct-{{ $candidate->id }}" style="display: block; margin-top: 0.45rem; color: var(--text-muted); font-size: 0.75rem; font-weight: 800;">{{ number_format($percentage, 1) }}%</span>
                     </div>
                 @empty
                     <div class="admin-empty">Belum ada kandidat.</div>
@@ -41,4 +41,36 @@
         </div>
     @endforeach
 </div>
+@push('scripts')
+<script type="module">
+    window.addEventListener('load', () => {
+        if (window.Echo) {
+            window.Echo.channel('voting-channel').listen('.vote.updated', (e) => {
+                // Update Global Stats
+                const totalVotesStrong = document.querySelector('.admin-stat strong');
+                if (totalVotesStrong) totalVotesStrong.innerText = new Intl.NumberFormat('id-ID').format(e.totalVotes);
+
+                // Calculate Category Totals
+                const putraTotal = e.candidates.filter(c => c.category === 'putra').reduce((sum, c) => sum + parseInt(c.total_votes), 0);
+                const putriTotal = e.candidates.filter(c => c.category === 'putri').reduce((sum, c) => sum + parseInt(c.total_votes), 0);
+
+                e.candidates.forEach(candidate => {
+                    const id = candidate.id;
+                    const catTotal = candidate.category === 'putra' ? putraTotal : putriTotal;
+                    const pct = catTotal > 0 ? (candidate.total_votes / catTotal) * 100 : 0;
+
+                    // Update UI Elements in this row/card
+                    const voteDisplay = document.querySelector(`.js-votes-${id}`);
+                    const barDisplay = document.querySelector(`.js-bar-${id}`);
+                    const pctDisplay = document.querySelector(`.js-pct-${id}`);
+
+                    if (voteDisplay) voteDisplay.innerText = new Intl.NumberFormat('id-ID').format(candidate.total_votes);
+                    if (barDisplay) barDisplay.style.width = pct.toFixed(1) + '%';
+                    if (pctDisplay) pctDisplay.innerText = pct.toFixed(1) + '%';
+                });
+            });
+        }
+    });
+</script>
+@endpush
 @endsection
