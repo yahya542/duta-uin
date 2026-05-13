@@ -32,104 +32,101 @@ export default function Welcome({ putra, putri, totalVotes }) {
         <AuthenticatedLayout>
             <Head title="Pilih Duta Favorit Anda Sekarang" />
             
-            <section className="candidate-section">
-                <div className="container mx-auto">
+            <section className="pt-16 pb-24 px-6">
+                <div className="max-w-7xl mx-auto">
                     {/* Hero Content */}
-                    <div className="text-center mb-16 pt-12">
-                        <h1 className="hero-title text-4xl lg:text-6xl font-black mb-4">
-                            Pilih <span className="text-[#2563eb]">Duta Favorit</span> Anda Sekarang
+                    <div className="text-center mb-24">
+                        <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 mb-8 tracking-tight leading-[1.1]">
+                            Pilih <span className="text-blue-600">Duta Favorit</span> <br className="hidden lg:block" /> Anda Sekarang
                         </h1>
-                        <p className="hero-desc max-w-2xl mx-auto text-[#64748b]">
-                            Gunakan poin Anda untuk mendukung kandidat terbaik mewakili UIN Madura tahun 2026.
+                        <p className="max-w-2xl mx-auto text-slate-500 text-lg lg:text-xl font-medium leading-relaxed opacity-80">
+                            Gunakan poin Anda untuk mendukung kandidat terbaik mewakili UIN Madura tahun 2026. Dukung sekarang sebelum voting ditutup!
                         </p>
                     </div>
 
                     {/* Stats Bar */}
-                    <div className="stats-grid grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-                        <div className="stat-card bg-white p-6 rounded-2xl border border-black/5 text-center shadow-sm">
-                            <span className="stat-value block text-2xl font-black">{putra.length + putri.length}</span>
-                            <span className="stat-label text-[10px] font-bold text-[#64748b] uppercase">Total Kandidat</span>
-                        </div>
-                        <div className="stat-card bg-white p-6 rounded-2xl border border-black/5 text-center shadow-sm">
-                            <span className="stat-value block text-2xl font-black">{totalVotes.toLocaleString()}</span>
-                            <span className="stat-label text-[10px] font-bold text-[#64748b] uppercase">Total Suara</span>
-                        </div>
-                        <div className="stat-card bg-white p-6 rounded-2xl border border-black/5 text-center shadow-sm">
-                            <span className="stat-value block text-2xl font-black">2026</span>
-                            <span className="stat-label text-[10px] font-bold text-[#64748b] uppercase">Tahun</span>
-                        </div>
-                        <div className="stat-card bg-white p-6 rounded-2xl border border-black/5 text-center shadow-sm">
-                            <span className="stat-value block text-2xl font-black">30</span>
-                            <span className="stat-label text-[10px] font-bold text-[#64748b] uppercase">Hari Lagi</span>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+                        {[
+                            { label: 'Total Kandidat', value: putra.length + putri.length, icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
+                            { label: 'Total Suara', value: totalVotes.toLocaleString(), icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
+                            { label: 'Tahun Pelaksanaan', value: '2026', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+                            { label: 'Sisa Waktu', value: '30 Hari', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' }
+                        ].map((stat, i) => (
+                            <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/20 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 group">
+                                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                                    <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d={stat.icon} /></svg>
+                                </div>
+                                <span className="block text-4xl font-black text-slate-900 mb-1 tracking-tighter">{stat.value}</span>
+                                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-[2px]">{stat.label}</span>
+                            </div>
+                        ))}
                     </div>
 
                     {/* LEADERBOARD CONTENT */}
-                    <div className="leaderboard-container bg-white rounded-[2.5rem] p-8 lg:p-12 border border-black/5 shadow-xl relative">
+                    <div id="leaderboard" className="bg-white rounded-[3.5rem] p-8 lg:p-20 border border-slate-100 shadow-2xl relative overflow-hidden">
                         {/* Premium Segmented Switch */}
-                        <div className="flex justify-center mb-16">
-                            <div className="switch-container bg-[#f1f5f9] p-2 rounded-[32px] flex gap-2 border border-black/5 shadow-inner">
+                        <div className="flex justify-center mb-24 relative z-40">
+                            <div className="bg-slate-100/80 backdrop-blur-md p-2 rounded-[32px] flex gap-2 border border-slate-200 shadow-inner">
                                 <button 
                                     onClick={() => setCategory('putra')}
-                                    className={`switch-btn px-8 py-3 rounded-[24px] font-extrabold text-sm flex items-center gap-2 transition-all duration-300 ${category === 'putra' ? 'bg-[#2563eb] text-white shadow-lg scale-105' : 'text-[#64748b]'}`}
+                                    className={`px-12 py-4 rounded-[24px] font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-500 ${category === 'putra' ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/40 scale-105' : 'text-slate-500 hover:text-slate-900'}`}
                                 >
-                                    <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                     Duta Putra
                                 </button>
                                 <button 
                                     onClick={() => setCategory('putri')}
-                                    className={`switch-btn px-8 py-3 rounded-[24px] font-extrabold text-sm flex items-center gap-2 transition-all duration-300 ${category === 'putri' ? 'bg-[#2563eb] text-white shadow-lg scale-105' : 'text-[#64748b]'}`}
+                                    className={`px-12 py-4 rounded-[24px] font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-500 ${category === 'putri' ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/40 scale-105' : 'text-slate-500 hover:text-slate-900'}`}
                                 >
-                                    <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                     Duta Putri
                                 </button>
                             </div>
                         </div>
 
                         {/* Podium Section */}
-                        <div className="podium-circular flex flex-col lg:flex-row justify-center items-center lg:items-end gap-12 lg:gap-12 mb-20">
+                        <div className="flex flex-col lg:flex-row justify-center items-center lg:items-end gap-16 lg:gap-8 mb-32 relative">
                             {podiumOrder.map((candidate, idx) => {
                                 if (!candidate) return null;
                                 const rank = candidate.id === topThree[0]?.id ? 1 : (candidate.id === topThree[1]?.id ? 2 : 3);
                                 const pct = totalCategoryVotes > 0 ? (candidate.total_votes / totalCategoryVotes) * 100 : 0;
                                 
                                 return (
-                                    <div key={candidate.id} className={`circular-item text-center relative w-full max-w-[200px] ${rank === 1 ? 'lg:max-w-[240px] z-20 order-first lg:order-none' : ''}`}>
-                                        <div className="avatar-wrapper relative p-2 rounded-full mb-6 group">
+                                    <div key={candidate.id} className={`text-center relative w-full max-w-[260px] transition-all duration-700 ${rank === 1 ? 'lg:max-w-[340px] z-20 lg:-translate-y-6' : 'z-10'}`}>
+                                        <div className="relative p-2.5 rounded-full mb-12 group">
                                             {rank === 1 ? (
-                                                <div className="absolute -top-[45px] left-1/2 -translate-x-1/2 -rotate-[5deg] z-10 drop-shadow-xl">
-                                                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V18H19V19Z" fill="#FFD700" stroke="#B8860B" strokeWidth="0.5"/></svg>
+                                                <div className="absolute -top-16 left-1/2 -translate-x-1/2 -rotate-12 z-30 drop-shadow-[0_20px_20px_rgba(255,215,0,0.5)] animate-bounce duration-[3000ms]">
+                                                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V18H19V19Z" fill="#FFD700" stroke="#B8860B" strokeWidth="0.5"/></svg>
                                                 </div>
                                             ) : (
-                                                <span className={`rank-tag absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black uppercase whitespace-nowrap z-10 flex items-center gap-1 ${rank === 2 ? 'bg-[#C0C0C0] text-gray-800' : 'bg-[#CD7F32] text-white'}`}>
-                                                    {rank === 2 ? (
-                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#C0C0C0" stroke="#808080" strokeWidth="0.5"/><text x="12" y="15.5" fontSize="10" fontWeight="900" fill="white" textAnchor="middle">2</text></svg>
-                                                    ) : (
-                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#CD7F32" stroke="#8B4513" strokeWidth="0.5"/><text x="12" y="15.5" fontSize="10" fontWeight="900" fill="white" textAnchor="middle">3</text></svg>
-                                                    )}
-                                                    Juara {rank}
+                                                <span className={`absolute -top-6 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-[2px] whitespace-nowrap z-30 flex items-center gap-2 shadow-2xl border-4 border-white ${rank === 2 ? 'bg-slate-400 text-white' : 'bg-orange-600 text-white'}`}>
+                                                    RANK #{rank}
                                                 </span>
                                             )}
-                                            <div className={`aspect-square rounded-full p-2 ${rank === 1 ? 'bg-[#FFD700] shadow-[0_15px_50px_rgba(255,215,0,0.4)]' : rank === 2 ? 'bg-[#C0C0C0] shadow-[0_10px_30px_rgba(192,192,192,0.3)]' : 'bg-[#CD7F32] shadow-[0_10px_30px_rgba(205,127,50,0.3)]'}`}>
+                                            <div className={`aspect-square rounded-full p-4 transition-transform duration-500 group-hover:scale-[1.02] ${rank === 1 ? 'bg-gradient-to-tr from-yellow-400 via-yellow-100 to-yellow-600 shadow-[0_30px_90px_rgba(255,215,0,0.4)]' : rank === 2 ? 'bg-gradient-to-tr from-slate-400 via-slate-100 to-slate-600 shadow-[0_25px_60px_rgba(148,163,184,0.2)]' : 'bg-gradient-to-tr from-orange-500 via-orange-100 to-orange-800 shadow-[0_25px_60px_rgba(234,88,12,0.2)]'}`}>
                                                 <img 
-                                                    className="w-full h-full rounded-full object-cover border-4 border-white" 
-                                                    src={candidate.photo ? `/storage/${candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&size=400&background=1e293b&color=${rank === 1 ? 'F59E0B' : rank === 2 ? '94A3B8' : 'EA580C'}`} 
+                                                    className="w-full h-full rounded-full object-cover border-[8px] border-white shadow-inner bg-slate-50" 
+                                                    src={candidate.photo ? `/storage/${candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&size=400&background=f8fafc&color=2563eb&bold=true`} 
                                                     alt={candidate.name} 
                                                 />
                                             </div>
                                         </div>
-                                        <h3 className={`circular-name font-black mb-1 ${rank === 1 ? 'text-2xl' : 'text-lg'}`}>{candidate.name}</h3>
-                                        <div className="flex flex-col items-center gap-0.5">
-                                            <p className="font-black text-[#2563eb] text-lg leading-none">
-                                                {candidate.total_votes.toLocaleString()} <span className="text-xs font-bold text-gray-500 uppercase">Suara</span>
-                                            </p>
-                                            <span className="text-xs font-extrabold text-[#64748b]">({pct.toFixed(1)}%)</span>
+                                        <h3 className={`font-black text-slate-900 mb-3 tracking-tight ${rank === 1 ? 'text-4xl' : 'text-2xl'}`}>{candidate.name}</h3>
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className="flex items-baseline gap-1.5">
+                                                <span className="text-3xl font-black text-blue-600 tracking-tighter">{candidate.total_votes.toLocaleString()}</span>
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Suara</span>
+                                            </div>
+                                            <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                                                <div className="h-full bg-blue-600 rounded-full transition-all duration-[1500ms]" style={{ width: `${pct}%` }}></div>
+                                            </div>
+                                            <span className="text-[12px] font-black text-slate-500 uppercase tracking-tighter bg-slate-50 px-3 py-1 rounded-full">{pct.toFixed(1)}% Kontribusi</span>
                                         </div>
                                         <button 
                                             onClick={() => openVoteModal(candidate)}
-                                            className="btn btn-primary mt-4 py-2 px-6 text-[10px] font-black uppercase tracking-wider rounded-full shadow-lg hover:scale-105 transition-transform"
+                                            className="mt-10 py-4 px-12 bg-blue-600 text-white text-[11px] font-black uppercase tracking-[2px] rounded-2xl shadow-2xl shadow-blue-500/30 hover:bg-blue-700 hover:-translate-y-1.5 active:translate-y-0 transition-all duration-300"
                                         >
-                                            Vote Sekarang
+                                            VOTE KANDIDAT
                                         </button>
                                     </div>
                                 );
@@ -137,15 +134,15 @@ export default function Welcome({ putra, putri, totalVotes }) {
                         </div>
 
                         {/* Table Section */}
-                        <div className="lb-table-wrapper border-t border-black/5 pt-8">
-                            <table className="lb-table w-full border-separate border-spacing-y-3">
-                                <thead className="hidden lg:table-header-group">
-                                    <tr>
-                                        <th className="text-left px-6 py-4 text-[10px] font-black text-[#64748b] uppercase tracking-[2px]">Rank</th>
-                                        <th className="text-left px-6 py-4 text-[10px] font-black text-[#64748b] uppercase tracking-[2px]">Kandidat</th>
-                                        <th className="text-right px-6 py-4 text-[10px] font-black text-[#64748b] uppercase tracking-[2px]">Votes</th>
-                                        <th className="text-right px-6 py-4 text-[10px] font-black text-[#64748b] uppercase tracking-[2px]">Persen</th>
-                                        <th className="text-right px-6 py-4 text-[10px] font-black text-[#64748b] uppercase tracking-[2px]">Aksi</th>
+                        <div className="border-t border-slate-100 pt-20 overflow-x-auto">
+                            <table className="w-full border-separate border-spacing-y-5 min-w-[800px]">
+                                <thead>
+                                    <tr className="text-[11px] font-black text-slate-400 uppercase tracking-[3px]">
+                                        <th className="text-left px-10 pb-6">Peringkat</th>
+                                        <th className="text-left px-10 pb-6">Informasi Kandidat</th>
+                                        <th className="text-right px-10 pb-6">Total Perolehan</th>
+                                        <th className="text-right px-10 pb-6">Statistik %</th>
+                                        <th className="text-right px-10 pb-6">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -153,28 +150,28 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                         const pct = totalCategoryVotes > 0 ? (candidate.total_votes / totalCategoryVotes) * 100 : 0;
                                         return (
                                             <tr key={candidate.id} className="group">
-                                                <td className="bg-[#f8fafc] group-hover:bg-[#ebf2ff] px-6 py-4 rounded-l-2xl transition-colors">
-                                                    <span className="text-xl font-black text-black/10">#{idx + 4}</span>
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 rounded-l-[2.5rem] transition-all duration-500">
+                                                    <span className="text-4xl font-black text-slate-200 group-hover:text-blue-100 italic transition-colors">#{idx + 4}</span>
                                                 </td>
-                                                <td className="bg-[#f8fafc] group-hover:bg-[#ebf2ff] px-6 py-4 transition-colors">
-                                                    <div className="flex items-center gap-4">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 transition-all duration-500">
+                                                    <div className="flex items-center gap-6">
                                                         <img 
-                                                            className="w-11 h-11 rounded-full object-cover border-2 border-black/5" 
-                                                            src={candidate.photo ? `/storage/${candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&size=200&background=1e293b&color=3b82f6`} 
+                                                            className="w-16 h-16 rounded-2xl object-cover border-4 border-white shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" 
+                                                            src={candidate.photo ? `/storage/${candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&size=200&background=f1f5f9&color=2563eb&bold=true`} 
                                                         />
-                                                        <span className="font-bold text-[#0f172a]">{candidate.name}</span>
+                                                        <span className="font-black text-slate-900 text-xl tracking-tight group-hover:text-blue-600 transition-colors">{candidate.name}</span>
                                                     </div>
                                                 </td>
-                                                <td className="bg-[#f8fafc] group-hover:bg-[#ebf2ff] px-6 py-4 text-right transition-colors">
-                                                    <span className="font-black text-lg">{candidate.total_votes.toLocaleString()}</span>
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 text-right transition-all duration-500">
+                                                    <span className="font-black text-slate-900 text-2xl tracking-tighter">{candidate.total_votes.toLocaleString()}</span>
                                                 </td>
-                                                <td className="bg-[#f8fafc] group-hover:bg-[#ebf2ff] px-6 py-4 text-right transition-colors">
-                                                    <span className="font-black text-[#2563eb]">{pct.toFixed(1)}%</span>
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 text-right transition-all duration-500">
+                                                    <span className="bg-white text-blue-600 px-5 py-2 rounded-2xl text-xs font-black shadow-lg shadow-blue-500/5 border border-slate-100">{pct.toFixed(1)}%</span>
                                                 </td>
-                                                <td className="bg-[#f8fafc] group-hover:bg-[#ebf2ff] px-6 py-4 text-right rounded-r-2xl transition-colors">
+                                                <td className="bg-slate-50/50 group-hover:bg-blue-50 px-10 py-7 text-right rounded-r-[2.5rem] transition-all duration-500">
                                                     <button 
                                                         onClick={() => openVoteModal(candidate)}
-                                                        className="btn btn-primary py-2 px-4 text-[10px] font-black uppercase tracking-wider rounded-xl shadow-md"
+                                                        className="py-4 px-10 bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[2px] rounded-2xl shadow-sm group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 group-hover:shadow-xl group-hover:shadow-blue-500/20 transition-all active:scale-95"
                                                     >
                                                         Vote
                                                     </button>
