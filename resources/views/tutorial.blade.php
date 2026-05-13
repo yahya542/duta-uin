@@ -56,7 +56,7 @@
             </p>
         </div>
 
-        <div class="text-center mt-12">
+        <div class="text-center" style="margin-top: 5rem;">
             <a href="{{ route('home') }}" class="btn btn-primary px-8 py-3">Kembali ke Beranda</a>
         </div>
     </div>
