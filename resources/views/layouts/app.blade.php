@@ -6,6 +6,40 @@
     <title>@yield('title', 'VOTE DUTA KAMPUS — UIN Madura 2026')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb !important;
+            --primary-hover: #1d4ed8 !important;
+            --bg-dark: #f1f5f9 !important; /* Slightly darker background for contrast */
+            --bg-card: #ffffff !important;
+            --border: rgba(0, 0, 0, 0.06) !important;
+            --text-main: #0f172a !important;
+            --text-muted: #64748b !important;
+        }
+        body { background-color: var(--bg-dark) !important; color: var(--text-main) !important; }
+        .navbar { background: rgba(255, 255, 255, 0.9) !important; border-bottom: 1px solid var(--border) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important; }
+        .nav-brand, .nav-links a { color: var(--text-main) !important; }
+        
+        /* High Contrast Card System */
+        .leaderboard-container { 
+            background: #ffffff !important; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08) !important; 
+            border: 1px solid var(--border) !important; 
+        }
+        .stat-card { 
+            background: #ffffff !important; 
+            border: 1px solid var(--border) !important; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04) !important; 
+        }
+        .circular-item h3, .voter-name { color: var(--text-main) !important; }
+        .rank-num { color: rgba(0,0,0,0.15) !important; }
+        .rank-tag { background: #ffffff !important; border: 1px solid var(--border) !important; color: var(--text-main) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.03) !important; }
+        .circular-rank-1 .rank-tag { background: #fbbf24 !important; color: #451a03 !important; border: none !important; }
+        
+        /* Table rows distinction */
+        .lb-table td { background: #ffffff !important; border-bottom: 1px solid rgba(0,0,0,0.02) !important; }
+        .lb-table tr:hover td { background: #f8fafc !important; }
+    </style>
 </head>
 <body x-data="{ 
     showToast: {{ session('success') || session('error') ? 'true' : 'false' }}, 
