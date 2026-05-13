@@ -24,9 +24,40 @@
 </div>
 
 <div class="admin-card admin-card-pad">
-    <h2 class="admin-section-title">Daftar Pembayaran</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 class="admin-section-title" style="margin: 0;">Daftar Pembayaran</h2>
+        
+        <!-- Filter Tabs -->
+        <div class="admin-filter-tabs" style="display: flex; background: #f1f5f9; padding: 0.35rem; border-radius: 0.85rem; gap: 0.25rem;">
+            <button type="button" class="filter-tab active" data-filter="all">Semua</button>
+            <button type="button" class="filter-tab" data-filter="pending">Pending</button>
+            <button type="button" class="filter-tab" data-filter="success">Berhasil</button>
+            <button type="button" class="filter-tab" data-filter="rejected">Ditolak</button>
+        </div>
+    </div>
+
+    <style>
+        .filter-tab {
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.65rem;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #64748b;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-tab:hover { color: var(--primary); }
+        .filter-tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+    </style>
+
     <div class="admin-table-wrap">
-        <table class="admin-table">
+        <table class="admin-table" id="transactionTable">
             <thead>
                 <tr>
                     <th style="width: 100px;">Tanggal</th>
@@ -43,7 +74,9 @@
             </thead>
             <tbody>
                 @forelse($transactions as $tx)
-                    <tr class="js-searchable" data-search="{{ strtolower(($tx->vote->voter_name ?? '') . ' ' . ($tx->candidate->name ?? '') . ' ' . $tx->status) }}">
+                    <tr class="js-searchable transaction-row" 
+                        data-status="{{ $tx->status }}"
+                        data-search="{{ strtolower(($tx->vote->voter_name ?? '') . ' ' . ($tx->candidate->name ?? '') . ' ' . $tx->status) }}">
                         <td>{{ $tx->created_at->format('d/m/Y H:i') }}</td>
                         <td>
                             <img src="https://ui-avatars.com/api/?name={{ urlencode($tx->vote->voter_name ?? 'U') }}&size=100&background=f1f5f9&color=64748b" 
@@ -68,15 +101,15 @@
                                 <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
                                     <form action="{{ route('admin.transactions.approve', $tx->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 0.8rem; font-size: 0.72rem; background: #16a34a;">Terima</button>
+                                        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 0.8rem; font-size: 0.72rem; background: #16a34a; border-color: #16a34a;">Terima</button>
                                     </form>
                                     <form action="{{ route('admin.transactions.reject', $tx->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 0.8rem; font-size: 0.72rem; background: #dc2626;">Tolak</button>
+                                        <button type="submit" class="btn btn-primary" style="padding: 0.5rem 0.8rem; font-size: 0.72rem; background: #dc2626; border-color: #dc2626;">Tolak</button>
                                     </form>
                                 </div>
                             @else
-                                <span style="color: var(--text-muted); font-size: 0.8rem;">Selesai</span>
+                                <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: 800;">SELESAI</span>
                             @endif
                         </td>
                     </tr>
@@ -87,4 +120,29 @@
         </table>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.filter-tab');
+        const rows = document.querySelectorAll('.transaction-row');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const filter = tab.dataset.filter;
+
+                rows.forEach(row => {
+                    if (filter === 'all' || row.dataset.status === filter) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
 @endsection
