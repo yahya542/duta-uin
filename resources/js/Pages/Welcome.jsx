@@ -7,7 +7,6 @@ export default function Welcome({ putra, putri, totalVotes }) {
     const [category, setCategory] = useState('putra');
     const [isVoteModalOpen, setIsVoteModalOpen] = useState(false);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
-    const [votePoints, setVotePoints] = useState(1);
 
     const voteForm = useForm({
         candidate_id: '',
@@ -29,19 +28,17 @@ export default function Welcome({ putra, putri, totalVotes }) {
             return;
         }
         setSelectedCandidate(candidate);
-        setVotePoints(1);
+        voteForm.setData({
+            candidate_id: candidate.id,
+            points: 1
+        });
         setIsVoteModalOpen(true);
     };
 
     const handleVoteSubmit = (e) => {
         e.preventDefault();
         
-        // Use post to cast vote
         voteForm.post('/vote/cast', {
-            data: {
-                candidate_id: selectedCandidate.id,
-                points: votePoints,
-            },
             onSuccess: () => {
                 setIsVoteModalOpen(false);
             },
@@ -278,7 +275,7 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                 </div>
 
                                 {/* ERROR ALERT - STYLE MATCHING LOGIN PAGE */}
-                                {(votePoints > auth.user.points || voteForm.errors.points) && (
+                                {(voteForm.data.points > auth.user.points || voteForm.errors.points) && (
                                     <div className="bg-red-50 border border-red-100 p-4 rounded-2xl flex items-center gap-3 animate-pulse">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-red-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                         <span className="text-red-500 text-xs font-black uppercase tracking-tight">
@@ -292,16 +289,12 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                     <input 
                                         type="number" 
                                         className="w-full bg-slate-50 border border-black/5 rounded-2xl text-center text-3xl font-black py-5 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" 
-                                        value={votePoints === 0 ? '' : votePoints}
+                                        value={voteForm.data.points === 0 ? '' : voteForm.data.points}
                                         placeholder="0"
                                         min="1"
                                         onChange={(e) => {
                                             const val = e.target.value;
-                                            if (val === '') {
-                                                setVotePoints(0);
-                                            } else {
-                                                setVotePoints(parseInt(val) || 0);
-                                            }
+                                            voteForm.setData('points', val === '' ? 0 : (parseInt(val) || 0));
                                         }}
                                         required
                                     />
@@ -310,8 +303,8 @@ export default function Welcome({ putra, putri, totalVotes }) {
                                             <button 
                                                 key={val} 
                                                 type="button" 
-                                                onClick={() => setVotePoints(val === 'max' ? auth.user.points : val)}
-                                                className={`py-3 rounded-xl text-[10px] font-black border transition-all ${votePoints === (val === 'max' ? auth.user.points : val) ? 'bg-[#2563eb] text-white border-[#2563eb] shadow-lg shadow-blue-500/20' : 'bg-[#f8fafc] text-[#0f172a] border-black/5 hover:border-blue-200'}`}
+                                                onClick={() => voteForm.setData('points', val === 'max' ? auth.user.points : val)}
+                                                className={`py-3 rounded-xl text-[10px] font-black border transition-all ${voteForm.data.points === (val === 'max' ? auth.user.points : val) ? 'bg-[#2563eb] text-white border-[#2563eb] shadow-lg shadow-blue-500/20' : 'bg-[#f8fafc] text-[#0f172a] border-black/5 hover:border-blue-200'}`}
                                             >
                                                 {val === 'max' ? 'Semua' : val}
                                             </button>
@@ -325,10 +318,10 @@ export default function Welcome({ putra, putri, totalVotes }) {
 
                                 <button 
                                     type="submit"
-                                    disabled={voteForm.processing || votePoints > auth.user.points || votePoints <= 0}
+                                    disabled={voteForm.processing || voteForm.data.points > auth.user.points || voteForm.data.points <= 0}
                                     className="w-full py-5 bg-[#2563eb] text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:grayscale disabled:scale-100"
                                 >
-                                    {voteForm.processing ? 'Memproses...' : votePoints > auth.user.points ? 'Saldo Tidak Cukup' : `Gunakan ${votePoints} Poin`}
+                                    {voteForm.processing ? 'Memproses...' : voteForm.data.points > auth.user.points ? 'Saldo Tidak Cukup' : `Gunakan ${voteForm.data.points} Poin`}
                                 </button>
                             </form>
                         )}
