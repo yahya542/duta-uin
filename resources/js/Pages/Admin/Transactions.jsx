@@ -7,7 +7,10 @@ export default function Transactions({ transactions, stats }) {
     const [filter, setFilter] = useState('all');
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [confirmingAction, setConfirmingAction] = useState(null); // { id, action, voter_name }
     const itemsPerPage = 10;
+
+    const actionForm = useForm();
 
     // Reset page when search or filter changes
     useEffect(() => {
@@ -29,10 +32,16 @@ export default function Transactions({ transactions, stats }) {
         currentPage * itemsPerPage
     );
 
-    const handleAction = (id, action) => {
-        if (confirm(`Apakah Anda yakin ingin ${action === 'approve' ? 'menyetujui' : 'menolak'} pembayaran ini?`)) {
-            useForm().post(`/admin/transactions/${id}/${action}`);
-        }
+    const handleAction = (id, action, voter_name) => {
+        setConfirmingAction({ id, action, voter_name });
+    };
+
+    const submitAction = () => {
+        if (!confirmingAction) return;
+        
+        actionForm.post(`/admin/transactions/${confirmingAction.id}/${confirmingAction.action}`, {
+            onSuccess: () => setConfirmingAction(null)
+        });
     };
 
     return (
@@ -147,13 +156,13 @@ export default function Transactions({ transactions, stats }) {
                                         {tx.status === 'pending' ? (
                                             <div className="flex justify-end gap-2">
                                                 <button 
-                                                    onClick={() => handleAction(tx.id, 'approve')}
+                                                    onClick={() => handleAction(tx.id, 'approve', tx.vote?.voter_name)}
                                                     className="bg-green-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-md shadow-green-100"
                                                 >
                                                     Terima
                                                 </button>
                                                 <button 
-                                                    onClick={() => handleAction(tx.id, 'reject')}
+                                                    onClick={() => handleAction(tx.id, 'reject', tx.vote?.voter_name)}
                                                     className="bg-red-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-md shadow-red-100"
                                                 >
                                                     Tolak
@@ -179,6 +188,49 @@ export default function Transactions({ transactions, stats }) {
                     itemsPerPage={itemsPerPage}
                 />
             </div>
+
+            {/* CUSTOM ACTION MODAL */}
+            {confirmingAction && (
+                <div className="fixed inset-0 z-[5000] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setConfirmingAction(null)}>
+                    <div 
+                        className="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-[0_40px_100px_rgba(0,0,0,0.2)] relative animate-in zoom-in-95 duration-300"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="text-center">
+                            <div className={`w-20 h-20 ${confirmingAction.action === 'approve' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner`}>
+                                {confirmingAction.action === 'approve' ? (
+                                    <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                ) : (
+                                    <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                )}
+                            </div>
+
+                            <h3 className="text-2xl font-black text-[#0f172a] mb-4 tracking-tight">
+                                {confirmingAction.action === 'approve' ? 'Setujui Pembayaran?' : 'Tolak Pembayaran?'}
+                            </h3>
+                            <p className="text-[#64748b] font-bold text-sm leading-relaxed mb-10 px-4">
+                                Anda akan {confirmingAction.action === 'approve' ? 'menyetujui' : 'menolak'} pembayaran dari <span className="text-[#0f172a] font-black underline decoration-blue-500/30 underline-offset-4">{confirmingAction.voter_name}</span>. Aksi ini akan mempengaruhi saldo poin pengguna.
+                            </p>
+
+                            <div className="flex flex-col gap-3">
+                                <button 
+                                    onClick={submitAction}
+                                    disabled={actionForm.processing}
+                                    className={`w-full py-4 rounded-2xl text-[11px] font-black uppercase tracking-[2px] text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 ${confirmingAction.action === 'approve' ? 'bg-green-600 shadow-green-200' : 'bg-red-500 shadow-red-200'}`}
+                                >
+                                    {actionForm.processing ? 'Memproses...' : `Ya, ${confirmingAction.action === 'approve' ? 'Setujui' : 'Tolak'} Sekarang`}
+                                </button>
+                                <button 
+                                    onClick={() => setConfirmingAction(null)}
+                                    className="w-full py-4 rounded-2xl text-[11px] font-black uppercase tracking-[2px] text-[#64748b] hover:bg-slate-50 transition-all"
+                                >
+                                    Batalkan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }
