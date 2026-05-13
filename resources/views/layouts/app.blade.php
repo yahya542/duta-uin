@@ -34,7 +34,9 @@
         .circular-item h3, .voter-name { color: var(--text-main) !important; }
         .rank-num { color: rgba(0,0,0,0.15) !important; }
         .rank-tag { background: #ffffff !important; border: 1px solid var(--border) !important; color: var(--text-main) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.03) !important; }
-        .circular-rank-1 .rank-tag { background: #fbbf24 !important; color: #451a03 !important; border: none !important; }
+        .circular-rank-1 .rank-tag { background: #FFD700 !important; color: #451a03 !important; border: none !important; }
+        .circular-rank-2 .rank-tag { background: #C0C0C0 !important; color: #333 !important; border: none !important; }
+        .circular-rank-3 .rank-tag { background: #CD7F32 !important; color: #fff !important; border: none !important; }
         
         /* Table rows distinction */
         .lb-table td { background: #ffffff !important; border-bottom: 1px solid rgba(0,0,0,0.02) !important; }

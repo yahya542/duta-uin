@@ -70,7 +70,7 @@
                                 $rank = $p->id === ($p1->id ?? null) ? 1 : ($p->id === ($p2->id ?? null) ? 2 : 3);
                                 $pct = $totalPutra > 0 ? ($p->total_votes / $totalPutra) * 100 : 0;
                             @endphp
-                            <div class="circular-item {{ $isP1 ? 'circular-rank-1' : '' }}">
+                            <div class="circular-item circular-rank-{{ $rank }}">
                                 <div class="avatar-wrapper" style="position: relative;">
                                     @if($rank === 1)
                                         <div style="position: absolute; top: -45px; left: 50%; transform: translateX(-50%) rotate(-5deg); z-index: 10; filter: drop-shadow(0 8px 20px rgba(212, 175, 55, 0.5));">
@@ -94,7 +94,7 @@
                                             Juara {{ $rank }}
                                         </span>
                                     @endif
-                                    <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
+                                    <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=' . ($rank === 1 ? 'F59E0B' : ($rank === 2 ? '94A3B8' : 'EA580C')) }}" alt="{{ $p->name }}">
                                 </div>
                                 <h3 class="circular-name">{{ $p->name }}</h3>
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 0.15rem;">
@@ -165,7 +165,7 @@
                                 $rank = $p->id === ($pi1->id ?? null) ? 1 : ($p->id === ($pi2->id ?? null) ? 2 : 3);
                                 $pct = $totalPutri > 0 ? ($p->total_votes / $totalPutri) * 100 : 0;
                             @endphp
-                            <div class="circular-item {{ $isP1 ? 'circular-rank-1' : '' }}">
+                            <div class="circular-item circular-rank-{{ $rank }}">
                                 <div class="avatar-wrapper" style="position: relative;">
                                     @if($rank === 1)
                                         <div style="position: absolute; top: -45px; left: 50%; transform: translateX(-50%) rotate(-5deg); z-index: 10; filter: drop-shadow(0 8px 20px rgba(212, 175, 55, 0.5));">
@@ -189,7 +189,7 @@
                                             Juara {{ $rank }}
                                         </span>
                                     @endif
-                                    <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=3b82f6' }}" alt="{{ $p->name }}">
+                                    <img class="avatar-img" src="{{ $p->photo ? asset('storage/' . $p->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($p->name) . '&size=400&background=1e293b&color=' . ($rank === 1 ? 'F59E0B' : ($rank === 2 ? '94A3B8' : 'EA580C')) }}" alt="{{ $p->name }}">
                                 </div>
                                 <h3 class="circular-name">{{ $p->name }}</h3>
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 0.15rem;">
@@ -318,6 +318,26 @@
 @push('scripts')
 <style>
 [x-cloak] { display: none !important; }
+
+/* Dynamic Podium Colors */
+.circular-rank-1 .avatar-wrapper {
+    background: #FFD700 !important;
+    box-shadow: 0 15px 50px rgba(255, 215, 0, 0.4) !important;
+}
+.circular-rank-2 .avatar-wrapper {
+    background: #C0C0C0 !important;
+    box-shadow: 0 10px 30px rgba(192, 192, 192, 0.3) !important;
+}
+.circular-rank-3 .avatar-wrapper {
+    background: #CD7F32 !important;
+    box-shadow: 0 10px 30px rgba(205, 127, 50, 0.3) !important;
+}
+
+/* Force colors on placeholders */
+.circular-rank-1 .avatar-img { border-color: #ffffff !important; }
+.circular-rank-2 .avatar-img { border-color: #ffffff !important; }
+.circular-rank-3 .avatar-img { border-color: #ffffff !important; }
+
 </style>
 <script type="module">
     window.addEventListener('load', () => {

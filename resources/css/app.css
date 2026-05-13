@@ -130,14 +130,25 @@ body {
     aspect-ratio: 1;
     border-radius: 50%;
     padding: 8px;
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.14) 0%, rgba(15, 23, 42, 0.04) 100%);
     margin-bottom: 1.5rem;
 }
 
 .circular-rank-1 .avatar-wrapper {
-    background: linear-gradient(135deg, var(--primary) 0%, #60a5fa 100%);
-    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.15);
+    background: #FFD700; /* Gold/Kuning */
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.3);
 }
+
+.circular-rank-2 .avatar-wrapper {
+    background: #C0C0C0; /* Silver/Abu-abu */
+    box-shadow: 0 8px 30px rgba(192, 192, 192, 0.25);
+}
+
+.circular-rank-3 .avatar-wrapper {
+    background: #CD7F32; /* Bronze/Perunggu */
+    box-shadow: 0 8px 30px rgba(205, 127, 50, 0.25);
+}
+
+
 
 .avatar-img {
     width: 100%;
@@ -163,11 +174,25 @@ body {
 }
 
 .circular-rank-1 .rank-tag {
-    background: #fbbf24;
+    background: #FFD700;
     color: #451a03;
     border: none;
     font-size: 12px;
 }
+
+.circular-rank-2 .rank-tag {
+    background: #C0C0C0;
+    color: #333;
+    border: none;
+}
+
+.circular-rank-3 .rank-tag {
+    background: #CD7F32;
+    color: #fff;
+    border: none;
+}
+
+
 
 .circular-name { font-weight: 800; font-size: 1.125rem; margin-bottom: 0.25rem; }
 .circular-rank-1 .circular-name { font-size: 1.5rem; }
