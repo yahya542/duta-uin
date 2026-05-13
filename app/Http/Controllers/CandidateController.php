@@ -43,9 +43,15 @@ class CandidateController extends Controller
     /**
      * Show candidates for admin.
      */
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $candidates = Candidate::orderBy('category')->orderBy('total_votes', 'desc')->get();
+        $query = Candidate::query();
+        
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $candidates = $query->orderBy('category')->orderBy('total_votes', 'desc')->get();
         $stats = [
             'total' => $candidates->count(),
             'putra' => $candidates->where('category', 'putra')->count(),

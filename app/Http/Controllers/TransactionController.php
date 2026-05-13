@@ -18,11 +18,22 @@ class TransactionController extends Controller
     /**
      * Show pending transactions for admin.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Transaction::with(['candidate', 'vote'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Transaction::with(['candidate', 'vote']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('vote', function($sq) use ($search) {
+                    $sq->where('voter_name', 'like', '%' . $search . '%');
+                })->orWhereHas('candidate', function($sq) use ($search) {
+                    $sq->where('name', 'like', '%' . $search . '%');
+                });
+            });
+        }
+
+        $transactions = $query->orderBy('created_at', 'desc')->get();
 
         $stats = [
             'pending' => $transactions->where('status', 'pending')->count(),

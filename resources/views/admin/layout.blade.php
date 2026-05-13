@@ -46,10 +46,21 @@
     <div class="admin-main">
         <header class="admin-topbar">
             <button type="button" class="admin-menu-btn" @click="sidebarOpen = true" aria-label="Buka sidebar">Nav</button>
-            <div>
+            <div style="flex-grow: 1;">
                 <p class="admin-kicker">@yield('admin-kicker', 'Admin Dashboard')</p>
-                <h1>@yield('admin-title')</h1>
+                <h1 style="margin: 0;">@yield('admin-title')</h1>
             </div>
+
+            @if(!request()->routeIs('admin.dashboard') && !request()->routeIs('admin.leaderboard'))
+            <form action="{{ url()->current() }}" method="GET" class="admin-search-form" style="position: relative; margin-right: 1.5rem;">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari data..." 
+                       style="padding: 0.75rem 1rem 0.75rem 2.75rem; border-radius: 1rem; border: 1px solid var(--border); background: #f8fafc; font-size: 0.875rem; width: clamp(200px, 20vw, 300px); outline: none; transition: all 0.2s;"
+                       onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.05)';"
+                       onblur="this.style.borderColor='var(--border)'; this.style.background='#f8fafc'; this.style.boxShadow='none';">
+                <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </form>
+            @endif
+
             <a href="{{ route('home') }}" class="btn btn-outline admin-home-link">Lihat Situs</a>
         </header>
 
