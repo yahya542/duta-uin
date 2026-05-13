@@ -29,7 +29,7 @@
                         @php
                             $packages = [
                                 ['points' => 10, 'price' => 10000, 'label' => 'Basic'],
-                                ['points' => 50, 'price' => 50000, 'label' => 'Popular', 'popular' => true],
+                                ['points' => 50, 'price' => 50000, 'label' => 'Popular'],
                                 ['points' => 100, 'price' => 100000, 'label' => 'Premium'],
                                 ['points' => 500, 'price' => 500000, 'label' => 'Ultimate'],
                             ];
@@ -38,9 +38,6 @@
                         @foreach($packages as $pkg)
                             <div class="package-card" style="cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; border: 1px solid var(--border); background: rgba(255,255,255,0.02); padding: 2.5rem 1.5rem; border-radius: 2rem; text-align: center; overflow: hidden;" 
                                  onclick="selectPackage({{ $pkg['points'] }}, {{ $pkg['price'] }}, this)">
-                                @if(isset($pkg['popular']))
-                                    <div style="position: absolute; top: 0; left: 0; right: 0; background: var(--primary); color: white; font-size: 9px; font-weight: 900; padding: 6px 0; text-transform: uppercase; letter-spacing: 1.5px;">Terpopuler</div>
-                                @endif
                                 <span style="display: block; font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; color: white;">{{ $pkg['points'] }}</span>
                                 <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Points</span>
                                 <div style="margin-top: 2rem; font-weight: 800; color: var(--primary); font-size: 1.125rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">Rp {{ number_format($pkg['price'], 0, ',', '.') }}</div>
