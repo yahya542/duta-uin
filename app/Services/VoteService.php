@@ -80,12 +80,15 @@ class VoteService
     public function castVote(User $user, Candidate $candidate, int $points)
     {
         return DB::transaction(function () use ($user, $candidate, $points) {
-            if ($user->points < $points) {
+            $lockedUser = User::whereKey($user->id)->lockForUpdate()->first();
+            $lockedCandidate = Candidate::whereKey($candidate->id)->lockForUpdate()->first();
+
+            if (! $lockedUser || ! $lockedCandidate || $lockedUser->points < $points) {
                 return false;
             }
 
-            $user->decrement('points', $points);
-            $candidate->increment('total_votes', $points);
+            $lockedUser->decrement('points', $points);
+            $lockedCandidate->increment('total_votes', $points);
 
             $this->refreshStatistics();
             

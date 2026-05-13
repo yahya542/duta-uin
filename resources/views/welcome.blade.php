@@ -66,12 +66,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p2->id }}">{{ number_format($p2->total_votes) }}</span></p>
-                        <form action="{{ route('votes.cast') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="candidate_id" value="{{ $p2->id }}">
-                            <input type="hidden" name="points" value="1">
-                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
-                        </form>
+                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p2->id }}" data-candidate-name="{{ e($p2->name) }}">Vote Sekarang</button>
                     </div>
                     @endif
 
@@ -84,12 +79,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p1->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p1->id }}">{{ number_format($p1->total_votes) }}</span></p>
-                        <form action="{{ route('votes.cast') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="candidate_id" value="{{ $p1->id }}">
-                            <input type="hidden" name="points" value="1">
-                            <button type="submit" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE (1 PTS)</button>
-                        </form>
+                        <button type="button" class="btn btn-primary py-2 px-6 text-xs mt-4 js-vote-trigger" data-candidate-id="{{ $p1->id }}" data-candidate-name="{{ e($p1->name) }}">Vote Sekarang</button>
                     </div>
                     @endif
 
@@ -102,12 +92,7 @@
                         </div>
                         <h3 class="circular-name">{{ $p3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $p3->id }}">{{ number_format($p3->total_votes) }}</span></p>
-                        <form action="{{ route('votes.cast') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="candidate_id" value="{{ $p3->id }}">
-                            <input type="hidden" name="points" value="1">
-                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
-                        </form>
+                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $p3->id }}" data-candidate-name="{{ e($p3->name) }}">Vote Sekarang</button>
                     </div>
                     @endif
                 </div>
@@ -136,12 +121,7 @@
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
                                 </td>
                                 <td class="col-action">
-                                    <form action="{{ route('votes.cast') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
-                                        <input type="hidden" name="points" value="1">
-                                        <button type="submit" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</button>
-                                    </form>
+                                    <button type="button" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black js-vote-trigger" data-candidate-id="{{ $candidate->id }}" data-candidate-name="{{ e($candidate->name) }}">Vote</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -170,12 +150,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi2->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi2->id }}">{{ number_format($pi2->total_votes) }}</span></p>
-                        <form action="{{ route('votes.cast') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="candidate_id" value="{{ $pi2->id }}">
-                            <input type="hidden" name="points" value="1">
-                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
-                        </form>
+                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $pi2->id }}" data-candidate-name="{{ e($pi2->name) }}">Vote Sekarang</button>
                     </div>
                     @endif
 
@@ -188,12 +163,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi1->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi1->id }}">{{ number_format($pi1->total_votes) }}</span></p>
-                        <form action="{{ route('votes.cast') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="candidate_id" value="{{ $pi1->id }}">
-                            <input type="hidden" name="points" value="1">
-                            <button type="submit" class="btn btn-primary py-2 px-6 text-xs mt-4">VOTE (1 PTS)</button>
-                        </form>
+                        <button type="button" class="btn btn-primary py-2 px-6 text-xs mt-4 js-vote-trigger" data-candidate-id="{{ $pi1->id }}" data-candidate-name="{{ e($pi1->name) }}">Vote Sekarang</button>
                     </div>
                     @endif
 
@@ -206,12 +176,7 @@
                         </div>
                         <h3 class="circular-name">{{ $pi3->name }}</h3>
                         <p class="circular-score"><span id="candidate-votes-{{ $pi3->id }}">{{ number_format($pi3->total_votes) }}</span></p>
-                        <form action="{{ route('votes.cast') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="candidate_id" value="{{ $pi3->id }}">
-                            <input type="hidden" name="points" value="1">
-                            <button type="submit" class="btn btn-primary py-1 px-4 text-[10px] mt-4">VOTE (1 PTS)</button>
-                        </form>
+                        <button type="button" class="btn btn-primary py-1 px-4 text-[10px] mt-4 js-vote-trigger" data-candidate-id="{{ $pi3->id }}" data-candidate-name="{{ e($pi3->name) }}">Vote Sekarang</button>
                     </div>
                     @endif
                 </div>
@@ -240,12 +205,7 @@
                                     <div class="voter-score"><span id="candidate-votes-{{ $candidate->id }}">{{ number_format($candidate->total_votes) }}</span></div>
                                 </td>
                                 <td class="col-action">
-                                    <form action="{{ route('votes.cast') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
-                                        <input type="hidden" name="points" value="1">
-                                        <button type="submit" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black">VOTE</button>
-                                    </form>
+                                    <button type="button" class="btn btn-primary py-1.5 px-4 text-[10px] tracking-wider uppercase font-black js-vote-trigger" data-candidate-id="{{ $candidate->id }}" data-candidate-name="{{ e($candidate->name) }}">Vote</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -253,6 +213,65 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="voteModal" class="vote-modal-backdrop" aria-hidden="true">
+        <div class="vote-modal-card">
+            <div class="vote-modal-header">
+                <div>
+                    <span class="vote-modal-kicker">Konfirmasi Voting</span>
+                    <h2 id="voteCandidateName" class="vote-modal-title"></h2>
+                </div>
+                <button type="button" class="vote-modal-close js-vote-close" aria-label="Tutup modal">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div id="voteTopUpState" hidden>
+                <div class="vote-empty-state">
+                    <strong>Poin Anda belum tersedia.</strong>
+                    <span>Silakan lakukan top-up terlebih dahulu untuk memberikan dukungan kepada kandidat.</span>
+                </div>
+                <a href="{{ route('topup.index') }}" class="btn btn-primary vote-modal-submit">Top Up Sekarang</a>
+            </div>
+
+            <form id="voteForm" action="{{ route('votes.cast') }}" method="POST" hidden>
+                @csrf
+                <input id="voteCandidateId" type="hidden" name="candidate_id">
+
+                <div class="vote-balance">
+                    <span>Saldo Poin</span>
+                    <strong><span id="voteUserPoints">{{ number_format(Auth::check() ? Auth::user()->points : 0) }}</span> PTS</strong>
+                </div>
+
+                <label for="votePointsInput" class="vote-input-label">Jumlah poin yang digunakan</label>
+                <input id="votePointsInput"
+                       class="form-input vote-points-input"
+                       type="number"
+                       name="points"
+                       min="1"
+                       max="{{ Auth::check() ? (int) Auth::user()->points : 0 }}"
+                       value="1"
+                       required>
+
+                <div class="vote-point-options">
+                    <button type="button" data-vote-points="1">1</button>
+                    <button type="button" data-vote-points="5">5</button>
+                    <button type="button" data-vote-points="10">10</button>
+                    <button type="button" data-vote-points="max">Semua</button>
+                </div>
+
+                <p class="vote-modal-note">
+                    Poin yang dipilih akan langsung dikurangi dari saldo Anda dan ditambahkan ke total voting kandidat.
+                </p>
+
+                <button type="submit" class="btn btn-primary vote-modal-submit">
+                    Gunakan <span id="voteSubmitPoints">1</span> Poin
+                </button>
+            </form>
         </div>
     </div>
 </section>
@@ -263,6 +282,90 @@
 </style>
 <script type="module">
     window.addEventListener('load', () => {
+        const userPoints = {{ Auth::check() ? (int) Auth::user()->points : 0 }};
+        const modal = document.getElementById('voteModal');
+        const form = document.getElementById('voteForm');
+        const topUpState = document.getElementById('voteTopUpState');
+        const candidateIdInput = document.getElementById('voteCandidateId');
+        const candidateName = document.getElementById('voteCandidateName');
+        const pointsInput = document.getElementById('votePointsInput');
+        const submitPoints = document.getElementById('voteSubmitPoints');
+        const optionButtons = document.querySelectorAll('[data-vote-points]');
+
+        const clampPoints = (value) => {
+            const parsed = parseInt(value, 10);
+            if (Number.isNaN(parsed)) return 1;
+            return Math.min(Math.max(parsed, 1), Math.max(userPoints, 1));
+        };
+
+        const syncPoints = (value) => {
+            const points = clampPoints(value);
+            pointsInput.value = points;
+            submitPoints.innerText = points;
+
+            optionButtons.forEach((button) => {
+                const target = button.dataset.votePoints === 'max' ? userPoints : parseInt(button.dataset.votePoints, 10);
+                button.disabled = target > userPoints;
+                button.classList.toggle('active', points === target);
+            });
+        };
+
+        const openModal = (id, name) => {
+            candidateIdInput.value = id;
+            candidateName.innerText = name;
+
+            if (userPoints <= 0) {
+                form.hidden = true;
+                topUpState.hidden = false;
+            } else {
+                topUpState.hidden = true;
+                form.hidden = false;
+                pointsInput.max = userPoints;
+                syncPoints(1);
+                setTimeout(() => pointsInput.focus(), 50);
+            }
+
+            modal.classList.add('is-open');
+            modal.setAttribute('aria-hidden', 'false');
+        };
+
+        const closeModal = () => {
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+        };
+
+        document.querySelectorAll('.js-vote-trigger').forEach((button) => {
+            button.addEventListener('click', () => {
+                openModal(button.dataset.candidateId, button.dataset.candidateName);
+            });
+        });
+
+        document.querySelectorAll('.js-vote-close').forEach((button) => {
+            button.addEventListener('click', closeModal);
+        });
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeModal();
+        });
+
+        pointsInput.addEventListener('input', () => {
+            syncPoints(pointsInput.value);
+        });
+
+        optionButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                syncPoints(button.dataset.votePoints === 'max' ? userPoints : button.dataset.votePoints);
+            });
+        });
+
+        form.addEventListener('submit', () => {
+            syncPoints(pointsInput.value);
+        });
+
         if (window.Echo) {
             window.Echo.channel('voting-channel').listen('.vote.updated', (e) => {
                 const totalVotesEl = document.getElementById('total-votes-display');
