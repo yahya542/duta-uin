@@ -77,7 +77,7 @@
                                     <td style="font-size: 0.8125rem; font-weight: 600;">{{ $tx->candidate->name }}</td>
                                     <td style="text-align: right; font-weight: 800; color: white; font-size: 0.875rem;">Rp {{ number_format($tx->nominal, 0, ',', '.') }}</td>
                                     <td style="text-align: right;">
-                                        @if($tx->status === 'approved')
+                                        @if($tx->status === 'success')
                                             <span style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 900; text-transform: uppercase; border: 1px solid rgba(34, 197, 94, 0.2);">Valid</span>
                                         @elseif($tx->status === 'pending')
                                             <span style="background: rgba(234, 179, 8, 0.1); color: #eab308; padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 900; text-transform: uppercase; border: 1px solid rgba(234, 179, 8, 0.2);">Pending</span>

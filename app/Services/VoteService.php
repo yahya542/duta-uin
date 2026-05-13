@@ -51,20 +51,26 @@ class VoteService
     public function approveTransaction(Transaction $transaction)
     {
         DB::transaction(function () use ($transaction) {
-            $transaction->update(['status' => 'approved']);
+            // Re-calculate points to prevent client-side manipulation
+            $finalPoints = $this->calculatePoints($transaction->nominal);
+
+            $transaction->update(['status' => 'success']);
             
             $vote = $transaction->vote;
-            $vote->update(['status' => 'approved']);
+            $vote->update([
+                'status' => 'success',
+                'vote_point' => $finalPoints // Update to correct points
+            ]);
 
-            // Update total_votes on candidate first
+            // Update total_votes on candidate
             $candidate = $vote->candidate;
-            $candidate->increment('total_votes', $vote->vote_point);
+            $candidate->increment('total_votes', $finalPoints);
 
             $this->refreshStatistics();
             
             event(new VoteUpdated(
                 Candidate::orderBy('total_votes', 'desc')->get(),
-                Vote::where('status', 'approved')->sum('vote_point')
+                Vote::where('status', 'success')->sum('vote_point')
             ));
         });
     }

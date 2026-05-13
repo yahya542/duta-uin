@@ -13,8 +13,8 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'total_votes' => Vote::where('status', 'approved')->sum('vote_point'),
-            'total_revenue' => Transaction::where('status', 'approved')->sum('nominal'),
+            'total_votes' => Vote::where('status', 'success')->sum('vote_point'),
+            'total_revenue' => Transaction::where('status', 'success')->sum('nominal'),
             'pending_transactions' => Transaction::where('status', 'pending')->count(),
             'total_candidates' => Candidate::count(),
         ];
