@@ -4,10 +4,8 @@ use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 // Public Routes
 Route::get('/', [CandidateController::class, 'index'])->name('home');
@@ -26,69 +24,12 @@ Route::get('/tutorial', function () {
     return view('tutorial');
 })->name('tutorial');
 
-// Auth Routes (Unified Login & Register)
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::post('/login', function (\Illuminate\Http\Request $request) {
-    $request->validate([
-        'login' => ['required', 'string'],
-        'password' => ['required'],
-    ]);
-
-    $login = $request->input('login');
-    $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-    if (Auth::attempt([$fieldType => $login, 'password' => $request->password])) {
-        $request->session()->regenerate();
-        if (Auth::user()->role === 'admin') {
-            return redirect()->intended('/admin');
-        }
-        return redirect()->intended('/');
-    }
-
-    return back()->withErrors([
-        'login' => 'The provided credentials do not match our records.',
-    ]);
-});
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::post('/register', function (\Illuminate\Http\Request $request) {
-    $data = $request->validate([
-        'first_name' => ['required', 'string', 'max:100'],
-        'last_name' => ['required', 'string', 'max:100'],
-        'username' => ['required', 'string', 'max:50', 'unique:users'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'whatsapp' => ['required', 'string', 'max:20'],
-        'password' => ['required', 'string', 'min:8', 'confirmed'],
-    ]);
-
-    $user = User::create([
-        'first_name' => $data['first_name'],
-        'last_name' => $data['last_name'],
-        'username' => $data['username'],
-        'name' => $data['first_name'] . ' ' . $data['last_name'],
-        'email' => $data['email'],
-        'whatsapp' => $data['whatsapp'],
-        'password' => Hash::make($data['password']),
-        'role' => 'voter',
-    ]);
-
-    Auth::login($user);
-
-    return redirect('/');
-});
-
-Route::post('/logout', function (\Illuminate\Http\Request $request) {
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect('/');
-})->name('logout');
+// Auth Routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
