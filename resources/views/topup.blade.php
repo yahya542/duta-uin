@@ -20,42 +20,42 @@
                         'desc' => 'Dukungan awal untuk kandidat.',
                         'price' => 5000,
                         'points' => 1,
-                        'features' => ['1x Poin Suara', 'Update Realtime', 'Akses Leaderboard']
+                        'features' => ['1x Poin Suara']
                     ],
                     [
                         'name' => 'Lite',
                         'desc' => 'Pilihan praktis untuk supporter.',
                         'price' => 10000,
                         'points' => 2,
-                        'features' => ['2x Poin Suara', 'Update Realtime', 'Akses Leaderboard']
+                        'features' => ['2x Poin Suara']
                     ],
                     [
                         'name' => 'Popular',
                         'desc' => 'Dukungan yang signifikan.',
                         'price' => 25000,
                         'points' => 5,
-                        'features' => ['5x Poin Suara', 'Update Realtime', 'Akses Leaderboard', 'History Voting']
+                        'features' => ['5x Poin Suara']
                     ],
                     [
                         'name' => 'Pro',
                         'desc' => 'Dukungan kuat untuk menang.',
                         'price' => 50000,
                         'points' => 10,
-                        'features' => ['10x Poin Suara', 'Semua Fitur Basic', 'Badge Supporter']
+                        'features' => ['10x Poin Suara']
                     ],
                     [
                         'name' => 'Ultra',
                         'desc' => 'Bawa kandidatmu ke puncak.',
                         'price' => 100000,
                         'points' => 20,
-                        'features' => ['20x Poin Suara', 'Semua Fitur Pro', 'Badge Supporter Plus']
+                        'features' => ['20x Poin Suara']
                     ],
                     [
                         'name' => 'Whale',
                         'desc' => 'Dukungan maksimal tanpa batas.',
                         'price' => 250000,
                         'points' => 50,
-                        'features' => ['50x Poin Suara', 'Eksklusif Badge', 'Support Prioritas', 'Voter Utama']
+                        'features' => ['50x Poin Suara']
                     ]
                 ];
             @endphp
@@ -77,7 +77,7 @@
                         <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 1px;">{{ $pkg['points'] }} Voting Points</p>
                     </div>
 
-                    <button type="button" class="btn btn-outline" 
+                    <button type="button" class="btn btn-primary" 
                             style="width: 100%; padding: 1rem; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 0.85rem; margin-bottom: 2rem;"
                             onclick="scrollToForm({{ $pkg['points'] }}, {{ $pkg['price'] }}, '{{ $pkg['name'] }}')">
                         Pilih Paket
@@ -87,10 +87,17 @@
                         <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
                             @foreach($pkg['features'] as $feature)
                                 <li style="display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">
-                                    <svg style="width: 14px; height: 14px; color: #10b981; flex-shrink: 0; margin-top: 1px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    {{ $feature }}
+                                    @if(str_contains($feature, 'Poin Suara'))
+                                        <div style="width: 16px; height: 16px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; box-shadow: 0 2px 5px rgba(251, 191, 36, 0.3);">
+                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                        </div>
+                                        <span style="color: var(--text-main); font-weight: 800;">{{ $feature }}</span>
+                                    @else
+                                        <svg style="width: 14px; height: 14px; color: #10b981; flex-shrink: 0; margin-top: 1px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {{ $feature }}
+                                    @endif
                                 </li>
                             @endforeach
                         </ul>
