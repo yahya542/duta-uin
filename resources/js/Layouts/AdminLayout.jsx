@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, usePage, Head } from '@inertiajs/react';
 
 export default function AdminLayout({ children, title, kicker }) {
-    const { auth, url } = usePage().props;
+    const { auth } = usePage().props;
+    const { url } = usePage();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -16,15 +17,13 @@ export default function AdminLayout({ children, title, kicker }) {
         { name: 'Manajemen User', href: '/admin/users', icon: (
             <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
         )},
-        { name: 'Laporan Aktivitas', href: '/admin/activity', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-        )},
         { name: 'Kelola Kandidat', href: '/admin/candidates', icon: (
             <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
         )},
     ];
 
     const isActive = (href) => {
+        if (!url) return false;
         if (href === '/admin') return url === '/admin';
         return url.startsWith(href);
     };
@@ -47,8 +46,10 @@ export default function AdminLayout({ children, title, kicker }) {
                             href={item.href}
                             className={`flex items-center gap-4 p-4 rounded-2xl font-extrabold text-sm transition-all ${isActive(item.href) ? 'bg-blue-50 text-[#2563eb] border border-blue-100/50' : 'text-[#64748b] hover:bg-gray-50 hover:text-[#0f172a]'}`}
                         >
-                            <span className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${isActive(item.href) ? 'bg-[#2563eb] text-white shadow-lg shadow-blue-100' : 'bg-gray-50 text-[#2563eb]'}`}>
-                                {item.icon}
+                            <span className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shrink-0 ${isActive(item.href) ? 'bg-[#2563eb] text-white shadow-lg shadow-blue-100' : 'bg-gray-50 text-[#2563eb]'}`}>
+                                <div className="w-5 h-5">
+                                    {item.icon}
+                                </div>
                             </span>
                             {item.name}
                         </Link>
