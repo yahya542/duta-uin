@@ -161,11 +161,14 @@
                                 <label style="display: block; font-size: 0.65rem; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">Bukti Transfer</label>
                                 <div style="position: relative;">
                                     <input type="file" name="proof_image" id="proofInput" required style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 10;" onchange="updateFileName(this)">
-                                    <div id="fileDisplay" style="background: white; border: 1.5px solid var(--border); padding: 1rem; border-radius: 1rem; display: flex; align-items: center; gap: 1rem;">
-                                        <div style="width: 32px; height: 32px; background: rgba(37, 99, 235, 0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4" /></svg>
+                                    <div id="fileDisplay" style="background: white; border: 1.5px solid var(--border); padding: 1rem; border-radius: 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; transition: all 0.2s;">
+                                        <div id="uploadPlaceholder" style="display: flex; align-items: center; gap: 1rem; width: 100%;">
+                                            <div style="width: 32px; height: 32px; background: rgba(37, 99, 235, 0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4" /></svg>
+                                            </div>
+                                            <span id="fileName" style="font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);">Pilih file foto bukti transfer...</span>
                                         </div>
-                                        <span id="fileName" style="font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);">Pilih file foto bukti transfer...</span>
+                                        <img id="imagePreview" style="display: none; width: 100%; max-height: 300px; object-fit: contain; border-radius: 0.75rem; border: 1px solid var(--border); margin-top: 0.5rem;">
                                     </div>
                                 </div>
                             </div>
@@ -214,12 +217,28 @@
     }
 
     function updateFileName(input) {
-        const name = input.files[0] ? input.files[0].name : 'Pilih file foto bukti transfer...';
-        document.getElementById('fileName').innerText = name;
-        if(input.files[0]) {
-            document.getElementById('fileName').style.color = 'var(--text-main)';
-            document.getElementById('fileDisplay').style.borderColor = 'var(--primary)';
-            document.getElementById('fileDisplay').style.background = 'rgba(37, 99, 235, 0.03)';
+        const file = input.files[0];
+        const fileName = document.getElementById('fileName');
+        const preview = document.getElementById('imagePreview');
+        const display = document.getElementById('fileDisplay');
+        const placeholder = document.getElementById('uploadPlaceholder');
+
+        if (file) {
+            fileName.innerText = file.name;
+            fileName.style.color = 'var(--text-main)';
+            display.style.borderColor = 'var(--primary)';
+            display.style.background = 'rgba(37, 99, 235, 0.03)';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                placeholder.style.marginBottom = '0.5rem';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            fileName.innerText = 'Pilih file foto bukti transfer...';
+            preview.style.display = 'none';
         }
     }
 </script>
