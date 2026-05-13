@@ -19,9 +19,9 @@ export default function Success({ waUrl, gformUrl }) {
                         </div>
                     </div>
                     
-                    <h1 className="text-4xl lg:text-5xl font-black text-[#0f172a] mb-4">Terima Kasih!</h1>
-                    <p className="text-lg text-[#64748b] leading-relaxed mb-12">
-                        Bukti transfer Anda telah berhasil diunggah. Silakan selesaikan langkah terakhir untuk mempercepat verifikasi.
+                    <h1 className="text-4xl lg:text-5xl font-black text-[#0f172a] mb-6">Berhasil Diunggah!</h1>
+                    <p className="text-lg text-[#64748b] leading-relaxed mb-12 max-w-lg mx-auto">
+                        Bukti transfer Anda telah kami terima. Mohon tunggu verifikasi dari Admin. Untuk proses yang lebih cepat, silakan klik tombol konfirmasi WhatsApp di bawah ini. Poin Anda akan otomatis bertambah setelah transaksi disetujui.
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
