@@ -27,7 +27,7 @@
                         <tr>
                             <td style="font-size: 0.75rem; color: var(--text-muted);">{{ $tx->created_at->format('d/m/Y H:i') }}</td>
                             <td style="font-size: 0.875rem; font-weight: 700;">{{ $tx->vote->voter_name }}</td>
-                            <td style="font-size: 0.875rem; font-weight: 700;">{{ $tx->candidate->name }}</td>
+                            <td style="font-size: 0.875rem; font-weight: 700;">{{ $tx->candidate->name ?? 'TOP UP' }}</td>
                             <td style="font-size: 1rem; font-weight: 900; color: white;">Rp {{ number_format($tx->nominal, 0, ',', '.') }}</td>
                             <td style="text-align: center;">
                                 <a href="{{ asset('storage/' . $tx->proof_image) }}" target="_blank" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 9px; display: inline-flex; border-color: rgba(255,255,255,0.1);">LIHAT GAMBAR</a>

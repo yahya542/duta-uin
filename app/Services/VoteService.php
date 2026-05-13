@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Candidate;
 use App\Models\Vote;
 use App\Models\Transaction;

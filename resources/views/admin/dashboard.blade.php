@@ -74,7 +74,7 @@
                             @foreach($recentTransactions as $tx)
                                 <tr>
                                     <td style="font-size: 0.8125rem; font-weight: 600;">{{ $tx->vote->voter_name }}</td>
-                                    <td style="font-size: 0.8125rem; font-weight: 600;">{{ $tx->candidate->name }}</td>
+                                    <td style="font-size: 0.8125rem; font-weight: 600;">{{ $tx->candidate->name ?? 'Top Up Poin' }}</td>
                                     <td style="text-align: right; font-weight: 800; color: white; font-size: 0.875rem;">Rp {{ number_format($tx->nominal, 0, ',', '.') }}</td>
                                     <td style="text-align: right;">
                                         @if($tx->status === 'success')
