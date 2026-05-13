@@ -119,6 +119,29 @@
         .nav-brand { font-size: 1.25rem; font-weight: 900; text-decoration: none; color: var(--text-main); }
         .nav-brand span { color: var(--primary); }
 
+        /* Abstract Decorations */
+        .decoration-blob {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+        .blob-1 { top: -100px; right: -100px; }
+        .blob-2 { bottom: -100px; left: 180px; background: radial-gradient(circle, rgba(251, 191, 36, 0.03) 0%, rgba(251, 191, 36, 0) 70%); }
+        
+        .decoration-dots {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(15, 23, 42, 0.02) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         /* Toast Styles */
         .toast-wrap { position: fixed; top: 90px; right: 2rem; z-index: 9999; width: min(360px, calc(100vw - 2rem)); }
         .toast-card { background: white; border-radius: 1rem; border: 1px solid var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden; }
@@ -133,7 +156,7 @@
     </style>
 </head>
 <body x-data="{ 
-    sidebarOpen: window.innerWidth > 1024,
+    sidebarOpen: false,
     profileOpen: false,
     showToast: {{ session('success') || session('error') ? 'true' : 'false' }}, 
     toastMsg: '{{ session('success') ?? session('error') }}',
@@ -155,6 +178,11 @@
     <div x-show="sidebarOpen && window.innerWidth <= 1024" @click="sidebarOpen = false" class="sidebar-overlay" style="display: none;"></div>
 
     <div class="app-layout">
+        <!-- BACKGROUND DECORATIONS -->
+        <div class="decoration-blob blob-1"></div>
+        <div class="decoration-blob blob-2"></div>
+        <div class="decoration-dots"></div>
+
         <!-- SIDEBAR -->
         <aside class="sidebar" :class="sidebarOpen ? 'open' : ''">
             <div class="sidebar-header">
@@ -243,7 +271,7 @@
             </nav>
 
             <!-- MAIN CONTENT -->
-            <div style="flex: 1; padding: 2.5rem 2rem;">
+            <div style="flex: 1; padding: 0 2rem;">
                 @yield('content')
             </div>
 
