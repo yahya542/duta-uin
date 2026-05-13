@@ -310,7 +310,14 @@
             });
         };
 
+        const isGuest = {{ Auth::check() ? 'false' : 'true' }};
+
         const openModal = (id, name) => {
+            if (isGuest) {
+                window.location.href = "{{ route('login') }}";
+                return;
+            }
+
             candidateIdInput.value = id;
             candidateName.innerText = name;
 
