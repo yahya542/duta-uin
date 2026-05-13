@@ -98,9 +98,15 @@
 
             <div style="display: flex; gap: 1rem; align-items: center;">
                 @auth
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 0.5rem;">
-                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Saldo Poin</span>
-                        <span style="font-size: 14px; font-weight: 900; color: var(--primary);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: var(--text-muted);">PTS</span></span>
+                    <!-- Enhanced Points Display -->
+                    <div style="background: rgba(37, 99, 235, 0.05); border: 1.5px solid rgba(37, 99, 235, 0.12); padding: 0.4rem 0.85rem; border-radius: 999px; display: flex; align-items: center; gap: 0.65rem; margin-right: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                        <div style="width: 24px; height: 24px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <div style="display: flex; flex-direction: column; line-height: 1;">
+                            <span style="font-size: 9px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Saldo Anda</span>
+                            <span style="font-size: 15px; font-weight: 900; color: var(--text-main);">{{ number_format(Auth::user()->points) }} <span style="font-size: 10px; color: var(--primary); font-weight: 900;">PTS</span></span>
+                        </div>
                     </div>
 
                     <a href="{{ route('profile.index') }}" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
