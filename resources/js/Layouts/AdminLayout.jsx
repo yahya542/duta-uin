@@ -6,8 +6,6 @@ export default function AdminLayout({ children, title, kicker }) {
     const { auth, flash } = usePage().props;
     const { url } = usePage();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [profileOpen, setProfileOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
     const [toast, setToast] = useState(null);
 
     useEffect(() => {
@@ -23,13 +21,13 @@ export default function AdminLayout({ children, title, kicker }) {
             <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
         )},
         { name: 'Verifikasi Pembayaran', href: '/admin/transactions', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
         )},
         { name: 'Manajemen User', href: '/admin/users', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         )},
         { name: 'Kelola Kandidat', href: '/admin/candidates', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
         )},
     ];
 
@@ -40,125 +38,104 @@ export default function AdminLayout({ children, title, kicker }) {
     };
 
     return (
-        <div className="admin-shell min-h-screen lg:grid lg:grid-cols-[280px_minmax(0,1fr)] bg-[#f8fafc]">
+        <div className="min-h-screen bg-[#f1f5f3] font-sans selection:bg-blue-100 selection:text-blue-600">
             <Head title={title} />
-            
-            {/* Sidebar */}
-            <aside className={`admin-sidebar fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-white border-r border-black/5 p-6 flex flex-col z-[1100] transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-                <div className="admin-sidebar-head flex items-center justify-between mb-10">
-                    <Link href="/admin" className="text-xl font-black text-[#0f172a]">Admin<span className="text-[#2563eb]">Panel</span></Link>
-                </div>
+            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-                <nav className="admin-nav space-y-2">
-                    {navigation.map((item) => (
-                        <Link 
-                            key={item.name}
-                            href={item.href}
-                            className={`flex items-center gap-4 p-4 rounded-2xl font-extrabold text-sm transition-all ${isActive(item.href) ? 'bg-blue-50 text-[#2563eb] border border-blue-100/50' : 'text-[#64748b] hover:bg-gray-50 hover:text-[#0f172a]'}`}
-                        >
-                            <span className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shrink-0 ${isActive(item.href) ? 'bg-[#2563eb] text-white shadow-lg shadow-blue-100' : 'bg-gray-50 text-[#2563eb]'}`}>
-                                <div className="w-5 h-5">
-                                    {item.icon}
-                                </div>
-                            </span>
-                            {item.name}
-                        </Link>
-                    ))}
-                </nav>
-
-                <div className="admin-sidebar-foot mt-auto bg-[#f8fafc] border border-black/5 rounded-2xl p-5">
-                    <span className="block text-[9px] font-black text-[#64748b] uppercase tracking-widest mb-1">Login sebagai</span>
-                    <strong className="block text-[#0f172a] font-black text-sm mb-4 truncate">{auth.user.name}</strong>
-                    <Link 
-                        href="/logout" 
-                        method="post" 
-                        as="button" 
-                        className="flex items-center gap-2 w-full pt-4 border-t border-black/5 text-[10px] font-black text-red-500 uppercase tracking-wider hover:translate-x-1 transition-transform"
-                    >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                        Keluar Sesi
-                    </Link>
-                </div>
-            </aside>
-
-            {/* Overlay */}
-            {sidebarOpen && (
-                <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[1050] lg:hidden animate-in fade-in duration-300"></div>
-            )}
-
-            {/* Main Content */}
-            <main className="admin-main flex-1 flex flex-col min-w-0">
-                <header className="admin-topbar sticky top-0 z-[1900] bg-white/80 backdrop-blur-2xl border-b border-slate-200/60 px-6 lg:px-10 h-24 flex items-center shadow-sm">
-                    <div className="w-full flex items-center gap-4 lg:gap-8">
-                        <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-slate-600 shadow-sm active:scale-90 transition-all">
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                        </button>
-                        
-                        <div className="flex-grow min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                                <div className="w-1 h-3 bg-blue-600 rounded-full"></div>
-                                <p className="text-[10px] font-black text-blue-600 uppercase tracking-[2px] truncate">{kicker || 'Admin Dashboard'}</p>
-                            </div>
-                            <h1 className="text-xl lg:text-2xl font-black text-slate-900 leading-tight truncate">{title}</h1>
+            <div className="flex">
+                {/* Sidebar */}
+                <aside className={`fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-white p-8 flex flex-col z-[1000] transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+                    <div className="mb-12 flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-blue-500/20">
+                            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                         </div>
+                        <span className="text-2xl font-black text-slate-900 tracking-tighter">Gymove<span className="text-blue-600">.</span></span>
+                    </div>
 
-                        <div className="flex items-center gap-4 lg:gap-8">
-                            <Link href="/" className="hidden sm:flex px-6 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 shadow-sm transition-all duration-300">Lihat Situs</Link>
-
-                            <div className="relative">
-                                <button 
-                                    onClick={() => setProfileOpen(!profileOpen)}
-                                    className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-50 transition-all duration-300 group active:scale-95"
+                    <div className="mb-8 overflow-y-auto custom-scrollbar pr-2">
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-6">Main Menu</span>
+                        <nav className="space-y-3">
+                            {navigation.map((item) => (
+                                <Link 
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-sm transition-all duration-300 relative group ${isActive(item.href) ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'}`}
                                 >
-                                    <div className="w-11 h-11 rounded-2xl border-2 border-white shadow-lg overflow-hidden group-hover:border-blue-100 transition-all">
-                                        <img 
-                                            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(auth.user.name)}&background=2563eb&color=fff&bold=true`} 
-                                            className="w-full h-full object-cover" 
-                                        />
+                                    <div className={`w-5 h-5 transition-colors ${isActive(item.href) ? 'text-white' : 'text-slate-400 group-hover:text-slate-900'}`}>
+                                        {item.icon}
                                     </div>
-                                    <div className="hidden md:block text-left">
-                                        <p className="text-xs font-black text-slate-900 leading-none mb-1">{auth.user.username}</p>
-                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider leading-none">Administrator</p>
-                                    </div>
-                                    <svg className={`hidden md:block w-4 h-4 text-slate-300 transition-transform duration-500 ${profileOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4"><path d="M19 9l-7 7-7-7" /></svg>
-                                </button>
+                                    <span className="truncate">{item.name}</span>
+                                    {isActive(item.href) && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-blue-300 rounded-l-full"></div>}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
 
-                                {profileOpen && (
-                                    <>
-                                        <div className="fixed inset-0 z-[2000]" onClick={() => setProfileOpen(false)}></div>
-                                        <div className="absolute right-0 mt-4 w-[280px] bg-white border border-slate-200 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.12)] z-[2100] py-6 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-                                            <div className="px-8 py-4 border-b border-slate-50 bg-slate-50/50 mb-4">
-                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[2px] mb-1 text-center">Profil Admin</p>
-                                                <p className="text-sm font-bold text-slate-900 text-center truncate">{auth.user.email}</p>
-                                            </div>
-                                            <div className="px-3 space-y-1.5">
-                                                <Link href="/profile" className="flex items-center gap-4 w-full p-4 px-6 text-sm font-bold text-slate-700 hover:bg-blue-600 hover:text-white rounded-[1.5rem] transition-all duration-300 group">
-                                                    <svg className="w-5 h-5 opacity-60 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                                                    Pengaturan Profil
-                                                </Link>
-                                                <Link href="/logout" method="post" as="button" className="flex items-center gap-4 w-full p-4 px-6 text-sm font-bold text-red-500 hover:bg-red-50 rounded-[1.5rem] transition-all duration-300 group text-left">
-                                                    <svg className="w-5 h-5 opacity-60 group-hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                                                    Keluar
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
+                    <div className="mt-auto p-6 bg-blue-600 rounded-[2rem] text-center relative overflow-hidden group">
+                        <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                        <div className="relative z-10">
+                            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4 text-white">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             </div>
+                            <p className="text-white font-black text-xs uppercase tracking-widest mb-1">Create Workout</p>
+                            <p className="text-white/60 text-[10px] font-bold">Plan Now</p>
                         </div>
                     </div>
-                </header>
+                </aside>
 
-                <div className="p-6 lg:p-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    {children}
-                </div>
-            </main>
-            {/* Toast Notification */}
-            {toast && (
-                <Toast 
-                    message={toast.message} 
-                    type={toast.type} 
-                    onClose={() => setToast(null)} 
+                {/* Main Content */}
+                <main className="flex-1 min-w-0 flex flex-col p-4 lg:p-8">
+                    {/* Topbar */}
+                    <header className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+                        <div className="flex items-center gap-6 w-full md:w-auto">
+                            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 shadow-sm border border-slate-100">
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                            </button>
+                            <h1 className="text-2xl font-black text-slate-900 truncate">{title || 'Workout Plan'}</h1>
+                        </div>
+
+                        <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
+                            <div className="relative flex-1 md:w-[320px]">
+                                <input 
+                                    type="text" 
+                                    placeholder="Find something here..." 
+                                    className="w-full bg-white border-none rounded-2xl pl-12 pr-4 py-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 shadow-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                                />
+                                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </div>
+
+                            <div className="flex items-center gap-3 shrink-0">
+                                <button className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-400 hover:text-blue-600 transition-all shadow-sm relative border border-slate-50">
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                                    <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-orange-500 border-2 border-white rounded-full"></span>
+                                </button>
+                                <div className="h-12 w-px bg-slate-200 mx-2 hidden md:block"></div>
+                                <div className="flex items-center gap-4 group cursor-pointer">
+                                    <div className="text-right hidden md:block">
+                                        <p className="text-sm font-black text-slate-900 leading-none mb-1 group-hover:text-blue-600 transition-colors">{auth.user.name}</p>
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Administrator</p>
+                                    </div>
+                                    <img 
+                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(auth.user.name)}&background=2563eb&color=fff&bold=true`} 
+                                        className="w-12 h-12 rounded-2xl border-2 border-white shadow-lg group-hover:scale-105 transition-transform duration-300" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Page Content */}
+                    <div className="flex-1 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {children}
+                    </div>
+                </main>
+            </div>
+
+            {/* Global Overlay for Mobile Sidebar */}
+            {sidebarOpen && (
+                <div 
+                    className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[900] lg:hidden animate-in fade-in duration-300" 
+                    onClick={() => setSidebarOpen(false)}
                 />
             )}
         </div>

@@ -46,147 +46,149 @@ export default function Transactions({ transactions, stats }) {
 
     return (
         <AdminLayout title="Verifikasi Pembayaran" kicker="Kelola top up poin">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-                <div className="bg-white border border-black/5 rounded-3xl p-8 shadow-xl shadow-gray-200/50">
-                    <span className="block text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-3">Menunggu</span>
-                    <strong className="block text-3xl font-black text-yellow-600">{stats.pending}</strong>
-                </div>
-                <div className="bg-white border border-black/5 rounded-3xl p-8 shadow-xl shadow-gray-200/50">
-                    <span className="block text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-3">Disetujui</span>
-                    <strong className="block text-3xl font-black text-green-600">{stats.success}</strong>
-                </div>
-                <div className="bg-white border border-black/5 rounded-3xl p-8 shadow-xl shadow-gray-200/50">
-                    <span className="block text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-3">Ditolak</span>
-                    <strong className="block text-3xl font-black text-red-500">{stats.rejected}</strong>
-                </div>
-                <div className="bg-white border border-black/5 rounded-3xl p-8 shadow-xl shadow-gray-200/50">
-                    <span className="block text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-3">Total Masuk</span>
-                    <strong className="block text-3xl font-black text-[#0f172a]">Rp {stats.revenue.toLocaleString()}</strong>
-                </div>
-            </div>
-
-            <div className="bg-white border border-black/5 rounded-[2.5rem] p-8 shadow-xl shadow-gray-200/50">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
-                    <h2 className="text-xl font-black text-[#0f172a] flex items-center gap-3">
-                        <span className="w-2 h-7 bg-[#2563eb] rounded-full"></span>
-                        Daftar Pembayaran
-                    </h2>
-                    
-                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-                        {/* Search Input */}
-                        <div className="relative group w-full sm:w-[280px]">
-                            <input 
-                                type="text" 
-                                placeholder="Cari pengirim/kandidat..." 
-                                className="w-full bg-[#f8fafc] border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm font-bold focus:bg-white focus:border-blue-500 focus:shadow-xl focus:shadow-blue-500/10 outline-none transition-all duration-300"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <div className="space-y-8">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="bg-white border border-white rounded-[2rem] p-5 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center shrink-0">
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         </div>
-
-                        {/* Filter Tabs */}
-                        <div className="bg-[#f1f5f9] p-1.5 rounded-2xl flex gap-1 border border-black/5 shadow-inner w-full sm:w-auto overflow-x-auto">
-                            {['all', 'pending', 'success', 'rejected'].map(f => (
-                                <button 
-                                    key={f}
-                                    onClick={() => setFilter(f)}
-                                    className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === f ? 'bg-white text-[#2563eb] shadow-sm' : 'text-[#64748b] hover:text-[#0f172a]'}`}
-                                >
-                                    {f === 'all' ? 'Semua' : f}
-                                </button>
-                            ))}
+                        <div>
+                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Menunggu</p>
+                            <h3 className="text-lg font-black text-slate-900 leading-none">{stats.pending}</h3>
+                        </div>
+                    </div>
+                    <div className="bg-white border border-white rounded-[2rem] p-5 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center shrink-0">
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M5 13l4 4L19 7" /></svg>
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Disetujui</p>
+                            <h3 className="text-lg font-black text-slate-900 leading-none">{stats.success}</h3>
+                        </div>
+                    </div>
+                    <div className="bg-white border border-white rounded-[2rem] p-5 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center shrink-0">
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Ditolak</p>
+                            <h3 className="text-lg font-black text-slate-900 leading-none">{stats.rejected}</h3>
+                        </div>
+                    </div>
+                    <div className="bg-white border border-white rounded-[2rem] p-5 shadow-sm flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM17 16v2a2 2 0 01-2 2H9a2 2 0 01-2-2v-2" /></svg>
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Masuk</p>
+                            <h3 className="text-lg font-black text-slate-900 leading-none">Rp {stats.revenue.toLocaleString()}</h3>
                         </div>
                     </div>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-separate border-spacing-y-2">
-                        <thead>
-                            <tr className="text-[10px] font-black text-[#64748b] uppercase tracking-widest">
-                                <th className="px-6 pb-2">Tanggal</th>
-                                <th className="px-6 pb-2">Pengirim</th>
-                                <th className="px-6 pb-2">Kandidat</th>
-                                <th className="px-6 pb-2">Poin</th>
-                                <th className="px-6 pb-2">Nominal</th>
-                                <th className="px-6 pb-2">Bukti</th>
-                                <th className="px-6 pb-2 text-center">Status</th>
-                                <th className="px-6 pb-2 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedTransactions.length > 0 ? paginatedTransactions.map((tx) => (
-                                <tr key={tx.id} className="group">
-                                    <td className="bg-[#f8fafc] px-6 py-4 rounded-l-2xl group-hover:bg-blue-50 transition-colors text-[11px] font-bold text-[#64748b]">
-                                        {new Date(tx.created_at).toLocaleString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 group-hover:bg-blue-50 transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(tx.vote?.voter_name || 'U')}&size=80&background=f1f5f9&color=64748b`} className="w-8 h-8 rounded-full border-2 border-white shadow-sm" />
-                                            <strong className="text-sm font-black text-[#0f172a]">{tx.vote?.voter_name || '-'}</strong>
-                                        </div>
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 group-hover:bg-blue-50 transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <img 
-                                                src={tx.candidate?.photo ? `/storage/${tx.candidate.photo}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(tx.candidate?.name || 'C')}&size=80&background=f1f5f9&color=64748b`} 
-                                                className="w-8 h-8 rounded-full border-2 border-white shadow-sm" 
-                                            />
-                                            <strong className="text-sm font-black text-[#64748b]">{tx.candidate?.name || 'Top Up Saja'}</strong>
-                                        </div>
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 group-hover:bg-blue-50 transition-colors text-sm font-black text-[#0f172a]">
-                                        {(tx.vote?.vote_point || 0).toLocaleString()} PTS
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 group-hover:bg-blue-50 transition-colors text-sm font-black text-[#0f172a]">
-                                        Rp {tx.nominal.toLocaleString()}
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 group-hover:bg-blue-50 transition-colors">
-                                        <a href={`/storage/${tx.proof_image}`} target="_blank" className="bg-white border border-black/5 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest text-[#2563eb] hover:bg-blue-50 transition-all inline-block shadow-sm">Lihat Bukti</a>
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 text-center group-hover:bg-blue-50 transition-colors">
-                                        <span className={`inline-block px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                                            tx.status === 'success' ? 'bg-green-100 text-green-700' : 
-                                            tx.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'
-                                        }`}>
-                                            {tx.status}
-                                        </span>
-                                    </td>
-                                    <td className="bg-[#f8fafc] px-6 py-4 rounded-r-2xl text-right group-hover:bg-blue-50 transition-colors">
-                                        {tx.status === 'pending' ? (
-                                            <div className="flex justify-end gap-2">
-                                                <button 
-                                                    onClick={() => handleAction(tx.id, 'approve', tx.vote?.voter_name)}
-                                                    className="bg-green-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-md shadow-green-100"
-                                                >
-                                                    Terima
-                                                </button>
-                                                <button 
-                                                    onClick={() => handleAction(tx.id, 'reject', tx.vote?.voter_name)}
-                                                    className="bg-red-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-md shadow-red-100"
-                                                >
-                                                    Tolak
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <span className="text-[10px] font-black text-[#64748b] uppercase tracking-widest opacity-50">SELESAI</span>
-                                        )}
-                                    </td>
-                                </tr>
-                            )) : (
-                                <tr><td colSpan="8" className="text-center py-20 text-[#64748b] font-bold">Belum ada data pembayaran.</td></tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-white">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                        <div>
+                            <h2 className="text-xl font-black text-slate-900 mb-1">Transaction List</h2>
+                            <p className="text-xs font-bold text-slate-400">Manage and verify user top-up points</p>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                            <div className="bg-slate-200/50 p-1 rounded-2xl flex gap-1 border border-white shadow-inner w-full sm:w-auto">
+                                {[
+                                    { id: 'all', label: 'All' },
+                                    { id: 'pending', label: 'Pending' },
+                                    { id: 'success', label: 'Finished' },
+                                    { id: 'rejected', label: 'Rejected' }
+                                ].map(f => (
+                                    <button 
+                                        key={f.id}
+                                        onClick={() => setFilter(f.id)}
+                                        className={`px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === f.id ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-900'}`}
+                                    >
+                                        {f.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
-                <Pagination 
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                    totalItems={filteredTransactions.length}
-                    itemsPerPage={itemsPerPage}
-                />
+                    <div className="space-y-4 mb-10">
+                        {paginatedTransactions.length > 0 ? paginatedTransactions.map((tx) => (
+                            <div 
+                                key={tx.id} 
+                                className={`group bg-slate-50/50 p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-white flex flex-col lg:flex-row items-center gap-8 transition-all hover:shadow-xl hover:shadow-slate-200/20 ${tx.status === 'pending' ? 'ring-1 ring-blue-600/10' : ''}`}
+                            >
+                                <div className="flex flex-col items-center justify-center w-16 h-16 bg-white rounded-2xl shrink-0 shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <span className="text-lg font-black">{new Date(tx.created_at).getDate()}</span>
+                                    <span className="text-[8px] font-black uppercase opacity-60">
+                                        {new Date(tx.created_at).toLocaleString('id-ID', { month: 'short' })}
+                                    </span>
+                                </div>
+
+                                <div className="flex-1 min-w-0 flex flex-col sm:flex-row items-center gap-8">
+                                    <div className="flex items-center gap-4">
+                                        <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(tx.vote?.voter_name || 'U')}&background=f1f5f9&color=64748b&bold=true`} className="w-10 h-10 rounded-xl" />
+                                        <div>
+                                            <h4 className="text-sm font-black text-slate-900 truncate">{tx.vote?.voter_name || 'Anonymous'}</h4>
+                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{tx.status}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="hidden xl:block h-8 w-px bg-slate-100"></div>
+
+                                    <div className="flex-1">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Candidate</p>
+                                        <p className="text-xs font-bold text-slate-900 truncate">{tx.candidate?.name || 'Points Only'}</p>
+                                    </div>
+
+                                    <div className="text-right shrink-0">
+                                        <p className="text-sm font-black text-blue-600 mb-1">Rp {tx.nominal.toLocaleString()}</p>
+                                        <a href={`/storage/${tx.proof_image}`} target="_blank" className="text-[9px] font-black uppercase tracking-[2px] text-slate-400 hover:text-blue-600 transition-colors">View Proof</a>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-2 shrink-0">
+                                    {tx.status === 'pending' ? (
+                                        <>
+                                            <button 
+                                                onClick={() => handleAction(tx.id, 'approve', tx.vote?.voter_name)}
+                                                className="px-6 py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/20"
+                                            >
+                                                Approve
+                                            </button>
+                                            <button 
+                                                onClick={() => handleAction(tx.id, 'reject', tx.vote?.voter_name)}
+                                                className="p-3.5 bg-white text-slate-400 rounded-2xl hover:text-red-500 hover:bg-red-50 transition-all shadow-sm"
+                                            >
+                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div className="px-6 py-3 text-[10px] font-black text-slate-300 uppercase tracking-widest">Processed</div>
+                                    )}
+                                </div>
+                            </div>
+                        )) : (
+                            <div className="bg-white p-20 rounded-[2.5rem] border border-dashed border-slate-200 text-center">
+                                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg className="w-10 h-10 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </div>
+                                <h3 className="text-slate-900 font-black text-lg">No transactions found</h3>
+                                <p className="text-slate-400 font-bold text-sm">Try adjusting your filters or search query.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    <Pagination 
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                        totalItems={filteredTransactions.length}
+                        itemsPerPage={itemsPerPage}
+                    />
+                </div>
             </div>
 
             {/* CUSTOM ACTION MODAL */}
