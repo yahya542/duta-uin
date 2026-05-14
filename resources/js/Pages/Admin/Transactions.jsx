@@ -8,6 +8,7 @@ export default function Transactions({ transactions, stats }) {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [confirmingAction, setConfirmingAction] = useState(null); // { id, action, voter_name }
+    const [selectedProof, setSelectedProof] = useState(null);
     const itemsPerPage = 10;
 
     const actionForm = useForm();
@@ -114,60 +115,85 @@ export default function Transactions({ transactions, stats }) {
                         </div>
                     </div>
 
+                    <div className="hidden lg:grid grid-cols-12 gap-8 px-6 mb-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <div className="col-span-1">Tanggal</div>
+                        <div className="col-span-3">Pemilih / User</div>
+                        <div className="col-span-3">Kandidat / Tipe</div>
+                        <div className="col-span-2 text-right">Nominal / Bukti</div>
+                        <div className="col-span-3 text-right">Aksi</div>
+                    </div>
+
                     <div className="space-y-4 mb-10">
                         {paginatedTransactions.length > 0 ? paginatedTransactions.map((tx) => (
                             <div 
                                 key={tx.id} 
-                                className={`group bg-slate-50/50 p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-white flex flex-col lg:flex-row items-center gap-8 transition-all hover:shadow-xl hover:shadow-slate-200/20 ${tx.status === 'pending' ? 'ring-1 ring-blue-600/10' : ''}`}
+                                className={`group bg-slate-50/50 p-6 rounded-3xl border border-transparent hover:border-slate-100 hover:bg-white transition-all hover:shadow-xl hover:shadow-slate-200/20 ${tx.status === 'pending' ? 'ring-1 ring-blue-600/10' : ''}`}
                             >
-                                <div className="flex flex-col items-center justify-center w-16 h-16 bg-white rounded-2xl shrink-0 shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                    <span className="text-lg font-black">{new Date(tx.created_at).getDate()}</span>
-                                    <span className="text-[8px] font-black uppercase opacity-60">
-                                        {new Date(tx.created_at).toLocaleString('id-ID', { month: 'short' })}
-                                    </span>
-                                </div>
-
-                                <div className="flex-1 min-w-0 flex flex-col sm:flex-row items-center gap-8">
-                                    <div className="flex items-center gap-4">
-                                        <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(tx.vote?.voter_name || 'U')}&background=f1f5f9&color=64748b&bold=true`} className="w-10 h-10 rounded-xl" />
-                                        <div>
-                                            <h4 className="text-sm font-black text-slate-900 truncate">{tx.vote?.voter_name || 'Anonymous'}</h4>
-                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{tx.status}</span>
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center w-full">
+                                    {/* Date */}
+                                    <div className="col-span-1">
+                                        <div className="flex flex-col items-center justify-center w-14 h-14 bg-white rounded-2xl shrink-0 shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors mx-auto lg:mx-0">
+                                            <span className="text-lg font-black">{new Date(tx.created_at).getDate()}</span>
+                                            <span className="text-[8px] font-black uppercase opacity-60">
+                                                {new Date(tx.created_at).toLocaleString('id-ID', { month: 'short' })}
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <div className="hidden xl:block h-8 w-px bg-slate-100"></div>
-
-                                    <div className="flex-1">
-                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Candidate</p>
-                                        <p className="text-xs font-bold text-slate-900 truncate">{tx.candidate?.name || 'Points Only'}</p>
+                                    {/* Voter */}
+                                    <div className="col-span-3">
+                                        <div className="flex items-center gap-4">
+                                            <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(tx.vote?.voter_name || 'U')}&background=f1f5f9&color=64748b&bold=true`} className="w-10 h-10 rounded-xl" />
+                                            <div className="min-w-0">
+                                                <h4 className="text-sm font-black text-slate-900 truncate">{tx.vote?.voter_name || 'Anonymous'}</h4>
+                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{tx.status}</span>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div className="text-right shrink-0">
-                                        <p className="text-sm font-black text-blue-600 mb-1">Rp {tx.nominal.toLocaleString()}</p>
-                                        <a href={`/storage/${tx.proof_image}`} target="_blank" className="text-[9px] font-black uppercase tracking-[2px] text-slate-400 hover:text-blue-600 transition-colors">View Proof</a>
+                                    {/* Candidate */}
+                                    <div className="col-span-3">
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 lg:hidden">Candidate</p>
+                                            <p className="text-xs font-bold text-slate-900 truncate">{tx.candidate?.name || 'Points Only'}</p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center gap-2 shrink-0">
-                                    {tx.status === 'pending' ? (
-                                        <>
-                                            <button 
-                                                onClick={() => handleAction(tx.id, 'approve', tx.vote?.voter_name)}
-                                                className="px-6 py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/20"
-                                            >
-                                                Approve
-                                            </button>
-                                            <button 
-                                                onClick={() => handleAction(tx.id, 'reject', tx.vote?.voter_name)}
-                                                className="p-3.5 bg-white text-slate-400 rounded-2xl hover:text-red-500 hover:bg-red-50 transition-all shadow-sm"
-                                            >
-                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M6 18L18 6M6 6l12 12" /></svg>
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <div className="px-6 py-3 text-[10px] font-black text-slate-300 uppercase tracking-widest">Processed</div>
-                                    )}
+                                    {/* Amount & Proof */}
+                                    <div className="col-span-2 text-center lg:text-right">
+                                        <p className="text-sm font-black text-blue-600 mb-2">Rp {tx.nominal.toLocaleString()}</p>
+                                        <div 
+                                            onClick={() => setSelectedProof(`/storage/${tx.proof_image}`)}
+                                            className="group/proof relative w-16 h-10 bg-slate-100 rounded-xl overflow-hidden cursor-pointer border border-slate-200 mx-auto lg:ml-auto transition-all hover:scale-110 active:scale-95 shadow-sm"
+                                        >
+                                            <img src={`/storage/${tx.proof_image}`} className="w-full h-full object-cover opacity-60 group-hover/proof:opacity-100 transition-opacity" />
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/proof:opacity-100 bg-black/20 transition-opacity">
+                                                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Actions */}
+                                    <div className="col-span-3 flex justify-center lg:justify-end gap-2">
+                                        {tx.status === 'pending' ? (
+                                            <>
+                                                <button 
+                                                    onClick={() => handleAction(tx.id, 'approve', tx.vote?.voter_name)}
+                                                    className="px-6 py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/20"
+                                                >
+                                                    Approve
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleAction(tx.id, 'reject', tx.vote?.voter_name)}
+                                                    className="p-3.5 bg-white text-slate-400 rounded-2xl hover:text-red-500 hover:bg-red-50 transition-all shadow-sm border border-slate-100"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <div className="px-6 py-3 text-[10px] font-black text-slate-300 uppercase tracking-widest border border-dashed border-slate-200 rounded-2xl">Processed</div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         )) : (
@@ -230,6 +256,28 @@ export default function Transactions({ transactions, stats }) {
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            )}
+            {/* PROOF PREVIEW MODAL */}
+            {selectedProof && (
+                <div className="fixed inset-0 z-[6000] flex items-center justify-center p-6 sm:p-10 bg-slate-900/90 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setSelectedProof(null)}>
+                    <button 
+                        onClick={() => setSelectedProof(null)}
+                        className="absolute top-8 right-8 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-2xl flex items-center justify-center backdrop-blur-md transition-all hover:rotate-90"
+                    >
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                    
+                    <div 
+                        className="relative max-w-5xl w-full h-full flex items-center justify-center animate-in zoom-in-95 duration-300"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <img 
+                            src={selectedProof} 
+                            className="max-w-full max-h-full object-contain rounded-3xl shadow-2xl border-8 border-white/5"
+                            alt="Bukti Transfer"
+                        />
                     </div>
                 </div>
             )}
