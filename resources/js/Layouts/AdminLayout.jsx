@@ -47,7 +47,6 @@ export default function AdminLayout({ children, title, kicker }) {
             <aside className={`admin-sidebar fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-white border-r border-black/5 p-6 flex flex-col z-[1100] transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
                 <div className="admin-sidebar-head flex items-center justify-between mb-10">
                     <Link href="/admin" className="text-xl font-black text-[#0f172a]">Admin<span className="text-[#2563eb]">Panel</span></Link>
-                    <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-2xl">×</button>
                 </div>
 
                 <nav className="admin-nav space-y-2">

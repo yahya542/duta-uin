@@ -37,9 +37,6 @@ export default function AuthenticatedLayout({ children }) {
                         </div>
                         <span className="text-2xl font-black text-slate-900 tracking-tighter">DUTA<span className="text-blue-600">KAMPUS</span></span>
                     </Link>
-                    <button onClick={() => setSidebarOpen(false)} className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all">
-                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
                 </div>
                 
                 <nav className="p-8 space-y-2">
