@@ -6,6 +6,7 @@ export default function AdminLayout({ children, title, kicker }) {
     const { auth, flash } = usePage().props;
     const { url } = usePage();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const [toast, setToast] = useState(null);
 
     useEffect(() => {
@@ -18,16 +19,16 @@ export default function AdminLayout({ children, title, kicker }) {
 
     const navigation = [
         { name: 'Ringkasan', href: '/admin', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
         )},
         { name: 'Verifikasi Pembayaran', href: '/admin/transactions', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
         )},
         { name: 'Manajemen User', href: '/admin/users', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         )},
         { name: 'Kelola Kandidat', href: '/admin/candidates', icon: (
-            <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
         )},
     ];
 
@@ -38,68 +39,86 @@ export default function AdminLayout({ children, title, kicker }) {
     };
 
     return (
-        <div className="min-h-screen bg-[#f1f5f3] font-sans selection:bg-blue-100 selection:text-blue-600">
+        <div className="min-h-screen bg-[#f1f5f3] font-sans selection:bg-blue-100 selection:text-blue-600 overflow-x-hidden">
             <Head title={title} />
             {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
             <div className="flex">
                 {/* Sidebar */}
-                <aside className={`fixed lg:sticky top-0 left-0 h-screen w-[280px] bg-white p-8 flex flex-col z-[1000] transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-                    <div className="mb-12 flex items-center gap-4">
-                        <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-blue-500/20">
+                <aside className={`fixed lg:sticky top-0 left-0 h-screen bg-white flex flex-col z-[1000] transition-all duration-500 ease-in-out border-r border-slate-100 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} ${isCollapsed ? 'w-[100px] p-6' : 'w-[280px] p-8'}`}>
+                    {/* Logo & Toggle */}
+                    <div className={`mb-12 flex items-center transition-all duration-500 ${isCollapsed ? 'justify-center' : 'gap-4'}`}>
+                        <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-blue-500/20 shrink-0">
                             <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                         </div>
-                        <span className="text-2xl font-black text-slate-900 tracking-tighter">Gymove<span className="text-blue-600">.</span></span>
+                        {!isCollapsed && (
+                            <div className="flex-1 animate-in fade-in slide-in-from-left-2 duration-300">
+                                <span className="text-2xl font-black text-slate-900 tracking-tighter">Gymove<span className="text-blue-600">.</span></span>
+                            </div>
+                        )}
+                        <button 
+                            onClick={() => setIsCollapsed(!isCollapsed)}
+                            className={`hidden lg:flex w-8 h-8 bg-slate-50 border border-slate-100 rounded-lg items-center justify-center text-slate-400 hover:text-blue-600 transition-all ${isCollapsed ? 'rotate-180' : ''}`}
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M15 19l-7-7 7-7" /></svg>
+                        </button>
                     </div>
 
-                    <div className="mb-8 overflow-y-auto custom-scrollbar pr-2">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-6">Main Menu</span>
+                    {/* Navigation */}
+                    <div className="mb-8 overflow-y-auto custom-scrollbar flex-1">
+                        {!isCollapsed && <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-6 px-4 animate-in fade-in duration-300">Main Menu</span>}
                         <nav className="space-y-3">
                             {navigation.map((item) => (
                                 <Link 
                                     key={item.name}
                                     href={item.href}
-                                    className={`flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-sm transition-all duration-300 relative group ${isActive(item.href) ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'}`}
+                                    className={`flex items-center gap-4 py-4 rounded-2xl font-bold text-sm transition-all duration-300 relative group ${isCollapsed ? 'px-0 justify-center' : 'px-6'} ${isActive(item.href) ? 'bg-blue-600 text-white shadow-2xl shadow-blue-500/30' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'}`}
                                 >
-                                    <div className={`w-5 h-5 transition-colors ${isActive(item.href) ? 'text-white' : 'text-slate-400 group-hover:text-slate-900'}`}>
+                                    <div className={`w-5 h-5 shrink-0 transition-colors ${isActive(item.href) ? 'text-white' : 'text-slate-400 group-hover:text-slate-900'}`}>
                                         {item.icon}
                                     </div>
-                                    <span className="truncate">{item.name}</span>
-                                    {isActive(item.href) && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-blue-300 rounded-l-full"></div>}
+                                    {!isCollapsed && <span className="truncate animate-in fade-in slide-in-from-left-2 duration-300">{item.name}</span>}
+                                    {isActive(item.href) && !isCollapsed && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-blue-300 rounded-l-full"></div>}
                                 </Link>
                             ))}
                         </nav>
                     </div>
 
-                    <div className="mt-auto p-6 bg-blue-600 rounded-[2rem] text-center relative overflow-hidden group">
-                        <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
-                        <div className="relative z-10">
-                            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4 text-white">
-                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                    {!isCollapsed ? (
+                        <div className="p-6 bg-blue-600 rounded-[2rem] text-center relative overflow-hidden group animate-in zoom-in-95 duration-300">
+                            <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                            <div className="relative z-10">
+                                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4 text-white">
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                                </div>
+                                <p className="text-white font-black text-xs uppercase tracking-widest mb-1">Duta UIN</p>
+                                <p className="text-white/60 text-[10px] font-bold">Admin Panel</p>
                             </div>
-                            <p className="text-white font-black text-xs uppercase tracking-widest mb-1">Create Workout</p>
-                            <p className="text-white/60 text-[10px] font-bold">Plan Now</p>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto shadow-lg shadow-blue-500/20 cursor-pointer hover:scale-110 transition-transform">
+                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                        </div>
+                    )}
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 min-w-0 flex flex-col p-4 lg:p-8">
+                <main className="flex-1 min-w-0 flex flex-col p-4 lg:p-8 transition-all duration-500 ease-in-out">
                     {/* Topbar */}
                     <header className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
                         <div className="flex items-center gap-6 w-full md:w-auto">
                             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 shadow-sm border border-slate-100">
                                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path d="M4 6h16M4 12h16m-7 6h7" /></svg>
                             </button>
-                            <h1 className="text-2xl font-black text-slate-900 truncate">{title || 'Workout Plan'}</h1>
+                            <h1 className="text-2xl font-black text-slate-900 truncate tracking-tight">{title || 'Dashboard'}</h1>
                         </div>
 
                         <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
                             <div className="relative flex-1 md:w-[320px]">
                                 <input 
                                     type="text" 
-                                    placeholder="Find something here..." 
-                                    className="w-full bg-white border-none rounded-2xl pl-12 pr-4 py-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 shadow-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                                    placeholder="Search statistics..." 
+                                    className="w-full bg-white border border-transparent rounded-2xl pl-12 pr-4 py-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 shadow-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all"
                                 />
                                 <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                             </div>
@@ -124,7 +143,6 @@ export default function AdminLayout({ children, title, kicker }) {
                         </div>
                     </header>
 
-                    {/* Page Content */}
                     <div className="flex-1 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {children}
                     </div>
